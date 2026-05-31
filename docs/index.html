@@ -33,17 +33,51 @@
 
     /* ── HERO ── */
     .hero{
-      background:linear-gradient(118deg,rgba(11,44,26,.97),rgba(10,100,88,.88));
-      color:white;padding:44px 28px 36px;
+      position:relative;isolation:isolate;overflow:hidden;
+      color:white;padding:42px 28px 36px;
+      background:linear-gradient(115deg,#105a38 0%,#20877a 52%,#244f82 100%);
     }
-    .hero-inner{max-width:860px;margin:0 auto;}
-    .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:900;color:#c7efe6;margin:0 0 8px;}
-    h1{margin:0;font-size:36px;line-height:1.1;overflow-wrap:break-word;}
-    .hero-sub{margin:12px 0 0;font-size:16px;color:rgba(255,255,255,.86);max-width:860px;line-height:1.55;}
-    .hero-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px;}
-    .hero-card{border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:14px 16px;background:rgba(255,255,255,.09);}
-    .hero-card span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#d8f5ee;font-weight:900;margin-bottom:5px;}
-    .hero-card strong{font-size:16px;line-height:1.25;}
+    .hero::before{
+      content:"";position:absolute;inset:0;z-index:-2;
+      background:url("from-data-to-decisions-3hour-assets/screenshot-042.png") center/cover no-repeat;
+      opacity:.18;filter:blur(1.2px) saturate(.85);transform:scale(1.04);
+    }
+    .hero::after{
+      content:"";position:absolute;inset:0;z-index:-1;
+      background:linear-gradient(90deg,rgba(8,64,42,.76),rgba(13,129,115,.64) 55%,rgba(27,61,105,.74));
+    }
+    .hero-inner{max-width:1776px;margin:0 auto;}
+    .poster-top{display:flex;align-items:flex-start;justify-content:space-between;gap:28px;}
+    .hero-title-block{max-width:1180px;}
+    .eyebrow{font-size:20px;letter-spacing:.22em;text-transform:uppercase;font-weight:900;color:#ecfff7;margin:0 0 12px;text-shadow:0 2px 8px rgba(0,0,0,.22);}
+    .hero-brand{border:1px solid rgba(255,255,255,.35);border-radius:8px;background:rgba(255,255,255,.16);box-shadow:0 16px 28px rgba(0,0,0,.14);padding:17px 19px;min-width:292px;text-align:center;}
+    .hero-brand span{display:block;text-transform:uppercase;letter-spacing:.14em;font-size:14px;font-weight:900;color:#eefdf8;margin-bottom:5px;}
+    .hero-brand strong{display:block;font-size:27px;line-height:1.12;}
+    h1{margin:0;font-size:clamp(42px,4.2vw,64px);line-height:1.05;overflow-wrap:break-word;letter-spacing:0;text-shadow:0 4px 18px rgba(0,0,0,.25);}
+    .hero-sub{margin:18px 0 0;font-size:clamp(17px,1.25vw,21px);color:rgba(255,255,255,.94);max-width:1190px;line-height:1.34;text-shadow:0 2px 10px rgba(0,0,0,.18);}
+    .hero-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px;}
+    .hero-card{border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:16px 18px;background:rgba(255,255,255,.13);box-shadow:0 14px 28px rgba(0,0,0,.12);}
+    .hero-card span{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:#d8f5ee;font-weight:900;margin-bottom:6px;}
+    .hero-card strong{display:block;font-size:22px;line-height:1.16;margin-bottom:5px;}
+    .hero-card p{font-size:15px;line-height:1.32;color:rgba(255,255,255,.9);margin:0;}
+    .poster-layout{display:grid;grid-template-columns:1.1fr 1fr;gap:22px;margin-top:22px;}
+    .poster-panel{background:rgba(255,255,255,.93);color:#063525;border-radius:8px;padding:20px 22px 22px;box-shadow:0 18px 32px rgba(0,0,0,.16);}
+    .poster-panel h2{font-size:28px;line-height:1.12;color:#063525;margin-bottom:15px;}
+    .storyline-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;}
+    .storyline-card{background:#fff;border:1px solid #d9e1dc;border-top:5px solid var(--accent,#0a7b6f);border-radius:6px;padding:14px 14px;min-height:155px;}
+    .storyline-card span,.build-step span,.outcome-card span{display:block;text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:900;color:#586877;margin-bottom:7px;}
+    .storyline-card strong{display:block;color:#061c30;font-size:20px;line-height:1.08;margin-bottom:8px;}
+    .storyline-card p{color:#061c30;font-size:14px;line-height:1.32;margin:0;}
+    .storyline-card.issue{--accent:#c53735}.storyline-card.approach{--accent:#0a7b6f}.storyline-card.action{--accent:#0c8e7e}.storyline-card.result{--accent:#17623a}
+    .build-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .build-step{display:grid;grid-template-columns:auto 1fr;gap:13px;align-items:start;background:#fff;border:1px solid #d9e1dc;border-radius:8px;padding:14px 13px;min-height:94px;}
+    .build-num{display:grid;place-items:center;width:31px;height:31px;border-radius:50%;background:#e2f1e8;color:#063525;font-weight:900;font-size:16px;}
+    .build-step strong{display:block;color:#063525;font-size:18px;line-height:1.12;margin-bottom:3px;}
+    .build-step p{font-size:14px;line-height:1.22;color:#061c30;margin:0;}
+    .outcome-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px;}
+    .outcome-card{border:1px solid rgba(255,255,255,.23);border-radius:8px;background:rgba(5,45,59,.42);padding:17px 22px;text-align:center;box-shadow:0 14px 26px rgba(0,0,0,.12);}
+    .outcome-card span{color:#ecfff7;margin-bottom:4px;}
+    .outcome-card strong{font-size:22px;line-height:1.2;text-shadow:0 2px 10px rgba(0,0,0,.22);}
 
     /* ── LAYOUT ── */
     .layout{display:grid;grid-template-columns:240px minmax(0,1fr);max-width:1100px;margin:0 auto;gap:22px;padding:22px 24px;}
@@ -204,10 +238,20 @@
       .topbar-title{white-space:normal;line-height:1.25;}
       .progress-wrap{width:100%;justify-content:flex-start;}
       #overall-bar{flex:1;min-width:120px;}
+      .hero{padding:34px 18px 30px;}
+      .poster-top{display:block;}
+      .hero-brand{min-width:0;text-align:left;margin-top:20px;padding:16px 17px;}
+      .hero-brand strong{font-size:24px;}
+      .eyebrow{font-size:14px;letter-spacing:.16em;}
       .layout{grid-template-columns:1fr;padding:14px;}
       aside.nav{position:relative;top:auto;}
-      .hero-cards,.story-strip,.canvas-check,.scatter-grid,.mission-grid,.success-grid,.persona-grid,.checkpoint-strip,.screenshot-grid,.download-grid{grid-template-columns:1fr;}
-      h1{font-size:28px;}
+      .hero-cards,.poster-layout,.storyline-grid,.build-grid,.outcome-strip,.story-strip,.canvas-check,.scatter-grid,.mission-grid,.success-grid,.persona-grid,.checkpoint-strip,.screenshot-grid,.download-grid{grid-template-columns:1fr;}
+      .hero-cards{gap:10px;margin-top:20px;}
+      .hero-card,.poster-panel,.outcome-card{padding:16px;}
+      .poster-panel h2{font-size:25px;}
+      .storyline-card{min-height:0;}
+      h1{font-size:35px;}
+      .hero-sub{font-size:16px;line-height:1.48;}
     }
     @media print{
       #overall-bar,#overall-fill,#overall-pct,.topbar,.complete-btn{display:none;}
@@ -235,13 +279,90 @@
 <!-- ── HERO ── -->
 <header class="hero">
   <div class="hero-inner">
-    <p class="eyebrow">Oracle Analytics Cloud · Hands-On Workshop</p>
-    <h1>From Data to Decisions using Oracle Analytics Cloud</h1>
-    <p class="hero-sub">This hands-on Oracle Analytics Cloud DV workshop guides participants through building an end-to-end analytics workbook, starting with raw insurance data and ending with an actionable retention-priority view. Attendees learn how to upload and join datasets, create business metrics such as churn rate and loss ratio, build interactive visual canvases, apply filters, interpret customer risk patterns, and turn dashboard insights into business decisions about which at-risk customers to retain first.</p>
-    <div class="hero-cards">
-      <div class="hero-card"><span>What You'll Build</span><strong>3 analysis canvases in OAC</strong></div>
-      <div class="hero-card"><span>The Business Question</span><strong>Which at-risk customers do we save first?</strong></div>
-      <div class="hero-card"><span>Time</span><strong>3 hours · Follow along step by step</strong></div>
+    <div class="poster-top">
+      <div class="hero-title-block">
+        <p class="eyebrow">Day 1 Hands-On Workshop</p>
+        <h1>From Data to Decisions using Oracle Analytics Cloud</h1>
+        <p class="hero-sub">This hands-on Oracle Analytics Cloud DV workshop guides participants through building an end-to-end analytics workbook, starting with raw insurance data and ending with an actionable retention-priority view. Attendees learn how to upload and join datasets, create business metrics such as churn rate and loss ratio, build interactive visual canvases, apply filters, interpret customer risk patterns, and turn dashboard insights into business decisions about which at-risk customers to retain first.</p>
+      </div>
+      <div class="hero-brand" aria-label="Oracle Analytics Cloud Data to Decisions workshop">
+        <span>Oracle Analytics Cloud</span>
+        <strong>Data to Decisions</strong>
+      </div>
+    </div>
+
+    <div class="hero-cards" aria-label="Workshop focus areas">
+      <div class="hero-card">
+        <span>Case Study Lens</span>
+        <strong>Identify high-risk churn groups</strong>
+        <p>Find vulnerable customer groups, understand churn signals, and create action lists.</p>
+      </div>
+      <div class="hero-card">
+        <span>Segmentation Lens</span>
+        <strong>Separate loyal and vulnerable customers</strong>
+        <p>Use premium, claims, renewal, and driver context to compare customer segments.</p>
+      </div>
+      <div class="hero-card">
+        <span>Business Lens</span>
+        <strong>Improve retention decisions</strong>
+        <p>Connect customer experience, risk, profitability, and business value.</p>
+      </div>
+    </div>
+
+    <div class="poster-layout">
+      <div class="poster-panel">
+        <h2>Case Study Storyline</h2>
+        <div class="storyline-grid">
+          <div class="storyline-card issue">
+            <span>Issue</span>
+            <strong>Customers may leave</strong>
+            <p>Churn puts future premium revenue at risk.</p>
+          </div>
+          <div class="storyline-card approach">
+            <span>Approach</span>
+            <strong>Predict and explain risk</strong>
+            <p>Identify who may churn and why they may churn.</p>
+          </div>
+          <div class="storyline-card action">
+            <span>Action</span>
+            <strong>Prioritize the right response</strong>
+            <p>Segment customers and create targeted retention actions.</p>
+          </div>
+          <div class="storyline-card result">
+            <span>Result</span>
+            <strong>Improve retention decisions</strong>
+            <p>Focus effort where it can matter most.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="poster-panel">
+        <h2>Today We Build In OAC</h2>
+        <div class="build-grid">
+          <div class="build-step">
+            <div class="build-num">1</div>
+            <div><strong>Data foundation</strong><p>Bring policy, premium, claims, renewal, and customer data together.</p></div>
+          </div>
+          <div class="build-step">
+            <div class="build-num">2</div>
+            <div><strong>Decision calculations</strong><p>Create Policy Count, Claims Count, Churn Rate, Loss Ratio, and Customer Value Score.</p></div>
+          </div>
+          <div class="build-step">
+            <div class="build-num">3</div>
+            <div><strong>Visual story</strong><p>Design overview, loss ratio, and retention priority canvases.</p></div>
+          </div>
+          <div class="build-step">
+            <div class="build-num">4</div>
+            <div><strong>Business outcome</strong><p>Create a smart review list for at-risk customers worth attention first.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="outcome-strip" aria-label="Workshop outcomes">
+      <div class="outcome-card"><span>Insight</span><strong>Know who may churn</strong></div>
+      <div class="outcome-card"><span>Action</span><strong>Take the right retention step</strong></div>
+      <div class="outcome-card"><span>Outcome</span><strong>Improve retention decisions</strong></div>
     </div>
   </div>
 </header>
