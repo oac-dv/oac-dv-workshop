@@ -61,7 +61,14 @@
     .hero-brand strong{display:block;font-size:24px;line-height:1.12;}
     h1{margin:0;font-size:clamp(34px,3.25vw,52px);line-height:1.08;overflow-wrap:break-word;letter-spacing:0;text-shadow:0 4px 18px rgba(0,0,0,.25);}
     .oac-title-nowrap{white-space:nowrap;color:#ffe08a;}
-    .hero-sub{margin:16px 0 0;font-size:clamp(15px,1.02vw,18px);color:rgba(255,255,255,.94);max-width:1120px;line-height:1.42;text-shadow:0 2px 10px rgba(0,0,0,.18);}
+    .hero-story{margin:18px 0 0;max-width:1160px;display:grid;gap:12px;text-shadow:0 2px 10px rgba(0,0,0,.18);}
+    .hero-scenario{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;border:1px solid rgba(255,255,255,.28);border-radius:8px;background:rgba(255,255,255,.12);padding:13px 15px;}
+    .hero-scenario span,.hero-point span{display:block;text-transform:uppercase;letter-spacing:.12em;font-size:11px;font-weight:900;color:#d8fff2;margin-bottom:4px;}
+    .hero-scenario strong{display:block;font-size:18px;line-height:1.25;color:#fff;}
+    .hero-story-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+    .hero-point{border:1px solid rgba(255,255,255,.24);border-left:5px solid #ffe08a;border-radius:8px;background:rgba(3,42,49,.3);padding:12px 13px;}
+    .hero-point strong{display:block;font-size:15px;line-height:1.22;color:#fff;margin-bottom:4px;}
+    .hero-point p{font-size:13px;line-height:1.35;color:rgba(255,255,255,.91);margin:0;}
 
     /* ── LAYOUT ── */
     .layout{display:grid;grid-template-columns:260px minmax(0,1fr);max-width:1240px;margin:0 auto;gap:24px;padding:26px 28px;}
@@ -242,11 +249,12 @@
       .hero-brand{min-width:0;text-align:left;margin-top:20px;padding:16px 17px;}
       .hero-brand strong{font-size:22px;}
       .eyebrow{font-size:13px;letter-spacing:.16em;}
+      .hero-scenario{grid-template-columns:1fr;}
+      .hero-story-grid{grid-template-columns:1fr;}
       .layout{grid-template-columns:1fr;padding:14px;}
       aside.nav{position:relative;top:auto;}
       .story-strip,.canvas-check,.scatter-grid,.mission-grid,.success-grid,.persona-grid,.checkpoint-strip,.screenshot-grid,.download-grid{grid-template-columns:1fr;}
       h1{font-size:31px;}
-      .hero-sub{font-size:15px;line-height:1.5;}
     }
     @media print{
       #overall-bar,#overall-fill,#overall-pct,.topbar,.complete-btn{display:none;}
@@ -278,7 +286,29 @@
       <div class="hero-title-block">
         <p class="eyebrow">Day 1 Hands-On Workshop</p>
         <h1>From Data to Decisions using <span class="oac-title-nowrap">Oracle Analytics Cloud</span></h1>
-        <p class="hero-sub">In this hands-on workshop, you are part of the analytics team for an auto insurance company. The business needs a clearer way to identify policyholders who may churn, understand the premium, claims, renewal, and driver signals behind that risk, and decide which customers should receive retention attention first. Using Oracle Analytics Cloud DV, you will upload and join the insurance datasets, create decision metrics such as churn rate and loss ratio, build interactive canvases, apply filters, interpret customer risk patterns, and turn dashboard insights into an actionable retention-priority view.</p>
+        <div class="hero-story" aria-label="Workshop scenario and outcome">
+          <div class="hero-scenario">
+            <span>Scenario</span>
+            <strong>You are the analytics team for an auto insurance company. The business needs to decide which at-risk policyholders should receive retention attention first.</strong>
+          </div>
+          <div class="hero-story-grid">
+            <div class="hero-point">
+              <span>Business Need</span>
+              <strong>Find customers likely to churn</strong>
+              <p>Use renewal, premium, claims, and driver signals to explain customer risk.</p>
+            </div>
+            <div class="hero-point">
+              <span>Build In OAC</span>
+              <strong>Create the analytics workbook</strong>
+              <p>Upload data, join datasets, calculate churn rate and loss ratio, and build canvases.</p>
+            </div>
+            <div class="hero-point">
+              <span>Outcome</span>
+              <strong>Prioritize retention action</strong>
+              <p>Turn dashboard insights into a clear retention-priority view for the business.</p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="hero-brand" aria-label="Oracle Analytics Cloud Data to Decisions workshop">
         <span>Oracle Analytics Cloud</span>
