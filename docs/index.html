@@ -1,0 +1,1080 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OAC Customer Hands-On Exercise — From Data to Decisions</title>
+  <style>
+    :root {
+      --green:#175c32; --teal:#0a7b6f; --blue:#234f7d;
+      --red:#b83a34; --gold:#d69b2d; --ink:#17202a;
+      --muted:#5e6a75; --bg:#f0f4f2; --panel:#fff;
+      --line:#d9e1dc; --soft:#eef4f1;
+    }
+    *{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;font-size:15px;}
+
+    /* ── TOP BAR ── */
+    .topbar{
+      background:#0d3320;padding:10px 24px;
+      display:flex;align-items:center;justify-content:space-between;
+      position:sticky;top:0;z-index:100;
+      box-shadow:0 3px 12px rgba(0,0,0,.25);
+    }
+    .topbar-left{display:flex;align-items:center;gap:14px;}
+    .topbar-badge{background:var(--teal);color:white;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;}
+    .topbar-title{color:white;font-size:14px;font-weight:800;}
+    .progress-wrap{display:flex;align-items:center;gap:10px;}
+    .progress-label{color:#8ee8b9;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
+    #overall-bar{width:160px;height:8px;background:rgba(255,255,255,.18);border-radius:999px;overflow:hidden;}
+    #overall-fill{height:100%;background:var(--teal);border-radius:999px;width:0%;transition:width .4s;}
+    #overall-pct{color:#ffe08a;font-size:12px;font-weight:900;min-width:32px;text-align:right;}
+
+    /* ── HERO ── */
+    .hero{
+      background:linear-gradient(118deg,rgba(11,44,26,.97),rgba(10,100,88,.88));
+      color:white;padding:44px 28px 36px;
+    }
+    .hero-inner{max-width:860px;margin:0 auto;}
+    .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:900;color:#c7efe6;margin:0 0 8px;}
+    h1{margin:0;font-size:36px;line-height:1.1;}
+    .hero-sub{margin:12px 0 0;font-size:16px;color:rgba(255,255,255,.86);max-width:720px;}
+    .hero-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px;}
+    .hero-card{border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:14px 16px;background:rgba(255,255,255,.09);}
+    .hero-card span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#d8f5ee;font-weight:900;margin-bottom:5px;}
+    .hero-card strong{font-size:16px;line-height:1.25;}
+
+    /* ── LAYOUT ── */
+    .layout{display:grid;grid-template-columns:240px minmax(0,1fr);max-width:1100px;margin:0 auto;gap:22px;padding:22px 24px;}
+    aside.nav{position:sticky;top:52px;align-self:start;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(20,34,28,.08);}
+    aside.nav h2{margin:0;padding:13px 16px 10px;font-size:13px;font-weight:900;color:var(--green);border-bottom:1px solid var(--line);}
+    aside.nav a{display:flex;align-items:center;gap:8px;padding:9px 16px;color:var(--ink);text-decoration:none;border-left:4px solid transparent;font-size:13px;font-weight:700;transition:all .15s;}
+    aside.nav a:hover,aside.nav a.active{background:var(--soft);border-left-color:var(--teal);color:var(--teal);}
+    .nav-check{width:16px;height:16px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;transition:all .2s;background:#fff;}
+    .nav-check.done{background:var(--teal);border-color:var(--teal);}
+    main.content{min-width:0;}
+
+    /* ── SECTIONS ── */
+    .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:20px;overflow:hidden;box-shadow:0 5px 16px rgba(20,34,28,.07);}
+    .card-head{padding:20px 22px 14px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,#f8fbf9);}
+    .kicker{display:block;color:var(--teal);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px;}
+    h2{margin:0;font-size:24px;line-height:1.2;}
+    h3{margin:20px 0 8px;font-size:17px;}
+    .card-body{padding:20px 22px 24px;}
+    p{margin:0 0 12px;}
+    .lead{color:var(--muted);font-size:15px;}
+
+    /* ── STORY STRIP ── */
+    .story-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+    .story-block{border-radius:8px;padding:14px 15px;border:1px solid var(--line);}
+    .story-block.problem{background:#fdf2f1;border-top:4px solid var(--red);}
+    .story-block.journey{background:#f0f8f5;border-top:4px solid var(--teal);}
+    .story-block.outcome{background:#edf6ef;border-top:4px solid var(--green);}
+    .story-block span{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:5px;}
+    .story-block strong{display:block;font-size:14px;margin-bottom:5px;}
+    .story-block p{font-size:13px;color:var(--muted);margin:0;}
+
+    /* ── CALLOUT / TIP / WARN ── */
+    .tip{border-left:5px solid var(--teal);background:#edf8f5;padding:12px 14px;border-radius:0 8px 8px 0;margin:14px 0;font-size:14px;}
+    .tip strong{color:var(--teal);}
+    .warn{border-left:5px solid var(--gold);background:#fff8e8;padding:12px 14px;border-radius:0 8px 8px 0;margin:14px 0;font-size:14px;}
+    .warn strong{color:#735212;}
+    .concept{border-left:5px solid var(--blue);background:#eef3fb;padding:12px 14px;border-radius:0 8px 8px 0;margin:14px 0;font-size:14px;}
+    .concept strong{color:var(--blue);}
+
+    /* CUSTOMER MISSION / DECISION PRACTICE */
+    .mission-brief{border:1px solid var(--line);border-radius:10px;background:#f8fbf9;padding:16px 18px;margin:16px 0;}
+    .mission-brief h3{margin-top:0;}
+    .mission-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0 0;}
+    .mission-item{border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px 13px;}
+    .mission-item span{display:block;color:var(--muted);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+    .mission-item strong{display:block;font-size:14px;line-height:1.25;}
+    .success-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0;}
+    .success-card{border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px 13px;}
+    .success-card strong{display:block;color:var(--green);margin-bottom:4px;}
+    .success-card p{font-size:13px;color:var(--muted);margin:0;}
+    .decision-lab{border:1px solid var(--line);border-radius:10px;background:#f8fbf9;padding:16px;margin:16px 0;}
+    .persona-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0;}
+    .persona-card{display:grid;grid-template-rows:auto 1fr auto;gap:10px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:13px;min-height:235px;}
+    .persona-card.selected{border-color:var(--green);box-shadow:0 7px 16px rgba(20,34,28,.1);}
+    .persona-card h3{margin:0;font-size:16px;}
+    .persona-card p{font-size:13px;color:var(--muted);margin:0;}
+    .metric-row{display:flex;justify-content:space-between;gap:8px;border-top:1px solid var(--line);padding-top:7px;font-size:12px;}
+    .metric-row strong{text-align:right;}
+    .persona-choice{width:100%;border:0;border-radius:8px;background:var(--green);color:white;min-height:38px;font:inherit;font-weight:800;cursor:pointer;}
+    .persona-choice:hover,.persona-choice:focus{background:var(--teal);outline:2px solid rgba(10,123,111,.25);outline-offset:2px;}
+    .decision-result{border-left:5px solid var(--green);border-radius:0 8px 8px 0;background:#edf6ef;padding:12px 14px;min-height:76px;}
+    .decision-result strong{display:block;color:var(--green);margin-bottom:4px;}
+    .checkpoint-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0;}
+    .checkpoint{border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px 13px;}
+    .checkpoint span{display:block;color:var(--teal);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+    .checkpoint p{font-size:13px;color:var(--muted);margin:0;}
+
+    /* ── EXERCISE BLOCK ── */
+    .exercise{border:2px solid var(--teal);border-radius:10px;overflow:hidden;margin:16px 0;}
+    .exercise-head{background:var(--teal);color:white;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;}
+    .exercise-head span{font-size:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;}
+    .exercise-head .ex-time{background:rgba(255,255,255,.22);border-radius:999px;padding:2px 9px;font-size:11px;font-weight:900;}
+    .exercise-body{padding:16px 18px;background:#fafcfb;}
+    .step-list{list-style:none;margin:10px 0;padding:0;}
+    .step-list li{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;border-radius:8px;margin-bottom:6px;background:#fff;border:1px solid var(--line);cursor:pointer;transition:background .15s;}
+    .step-list li:hover{background:#f0f8f4;}
+    .step-list li.done{background:#e8f6ee;border-color:#a8d8b8;}
+    .step-list li.done .step-text{text-decoration:line-through;color:var(--muted);}
+    .step-cb{width:22px;height:22px;border-radius:5px;border:2px solid var(--line);flex-shrink:0;display:grid;place-items:center;font-size:13px;background:#fff;margin-top:1px;transition:all .2s;}
+    .step-list li.done .step-cb{background:var(--green);border-color:var(--green);color:white;}
+    .step-num{width:22px;height:22px;border-radius:50%;background:#e7f3eb;color:var(--green);font-weight:900;font-size:12px;display:grid;place-items:center;flex-shrink:0;margin-top:1px;}
+    .step-text{flex:1;font-size:14px;line-height:1.5;}
+    .step-text code{background:#eef3f7;border:1px solid #d8e3eb;padding:1px 5px;border-radius:4px;font-family:Consolas,"Courier New",monospace;font-size:.92em;color:#102a43;}
+
+    /* ── FORMULA BOX ── */
+    .formula-box{background:#102a43;color:#e6f1ff;border-radius:8px;padding:13px 15px;font-family:Consolas,"Courier New",monospace;font-size:14px;line-height:1.5;margin:10px 0;white-space:pre-wrap;}
+    .formula-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+    .formula-label span{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);}
+    .formula-label .badge{background:#e7f3eb;color:var(--green);border-radius:999px;padding:2px 9px;font-size:11px;font-weight:900;font-family:Arial,sans-serif;}
+
+    /* ── MY NOTES ── */
+    .notes-area{width:100%;border:1px solid var(--line);border-radius:8px;padding:12px;font-family:inherit;font-size:14px;color:var(--ink);background:#fafcfb;resize:vertical;min-height:72px;margin-top:8px;}
+    .notes-area:focus{outline:2px solid var(--teal);border-color:var(--teal);}
+    .notes-label{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:14px;display:block;}
+
+    /* ── TABLES ── */
+    table{width:100%;border-collapse:collapse;margin:12px 0 16px;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:14px;}
+    th{background:var(--green);color:white;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:9px 12px;}
+    td{border-top:1px solid var(--line);padding:10px 12px;vertical-align:top;}
+    tr:hover td{background:#f8faf9;}
+
+    /* ── CANVAS CHECKLIST ── */
+    .screenshot-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:14px 0;}
+    .reference-shot{margin:14px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;}
+    .screenshot-grid .reference-shot{margin:0;}
+    .reference-shot img{display:block;width:100%;max-height:420px;object-fit:contain;background:#f5f7f8;}
+    .reference-shot figcaption{border-top:1px solid var(--line);background:#f4f8f6;padding:9px 11px;color:var(--muted);font-size:12px;font-weight:700;}
+
+    .canvas-check{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
+    .cc-item{border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:#fff;display:flex;align-items:flex-start;gap:10px;cursor:pointer;transition:all .18s;}
+    .cc-item:hover{border-color:var(--teal);}
+    .cc-item.done{background:#e8f6ee;border-color:#a8d8b8;}
+    .cc-item .cc-box{width:20px;height:20px;border-radius:4px;border:2px solid var(--line);flex-shrink:0;display:grid;place-items:center;font-size:12px;background:#fff;margin-top:2px;transition:all .2s;}
+    .cc-item.done .cc-box{background:var(--green);border-color:var(--green);color:white;}
+    .cc-item .cc-text strong{display:block;font-size:13px;margin-bottom:2px;}
+    .cc-item .cc-text small{font-size:12px;color:var(--muted);line-height:1.4;}
+
+    /* ── SCATTERPLOT GUIDE ── */
+    .scatter-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
+    .sg-cell{border-radius:8px;padding:13px 14px;font-size:13px;}
+    .sg-cell strong{display:block;font-size:14px;margin-bottom:4px;}
+    .sg-cell p{margin:0;color:var(--muted);}
+    .sg-1{background:#e7f3eb;border:1px solid #b5d8c2;}.sg-1 strong{color:var(--green);}
+    .sg-2{background:#fff3d8;border:1px solid #e6c66b;}.sg-2 strong{color:#8a5b00;}
+    .sg-3{background:#eef3f7;border:1px solid #c0d0de;}.sg-3 strong{color:var(--blue);}
+    .sg-4{background:#fdecea;border:1px solid #e8a8a5;}.sg-4 strong{color:var(--red);}
+
+    /* ── COMPLETE BUTTON ── */
+    .complete-btn{
+      display:flex;align-items:center;gap:8px;margin-top:18px;width:100%;
+      background:#e7f3eb;border:1px solid #b5d8c2;border-radius:8px;
+      padding:11px 16px;cursor:pointer;font:inherit;font-size:14px;font-weight:800;
+      color:var(--green);transition:all .18s;
+    }
+    .complete-btn:hover{background:#d0ecda;}
+    .complete-btn.done{background:var(--green);color:white;border-color:var(--green);}
+
+    /* ── SECTION PROGRESS ── */
+    .section-progress{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+    .sp-bar{flex:1;height:5px;background:var(--line);border-radius:999px;overflow:hidden;}
+    .sp-fill{height:100%;background:var(--teal);border-radius:999px;width:0%;transition:width .4s;}
+    .sp-label{font-size:11px;font-weight:900;color:var(--muted);white-space:nowrap;}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:820px){
+      .layout{grid-template-columns:1fr;padding:14px;}
+      aside.nav{position:relative;top:auto;}
+      .hero-cards,.story-strip,.canvas-check,.scatter-grid,.mission-grid,.success-grid,.persona-grid,.checkpoint-strip,.screenshot-grid{grid-template-columns:1fr;}
+      h1{font-size:28px;}
+    }
+    @media print{
+      #overall-bar,#overall-fill,#overall-pct,.topbar,.complete-btn{display:none;}
+      .layout{display:block;}
+      aside.nav{display:none;}
+      .step-list li{break-inside:avoid;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── TOP BAR ── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-badge">OAC Workshop</span>
+    <span class="topbar-title">From Data to Decisions — Customer Hands-On Exercise</span>
+  </div>
+  <div class="progress-wrap">
+    <span class="progress-label">Your progress</span>
+    <div id="overall-bar"><div id="overall-fill"></div></div>
+    <span id="overall-pct">0%</span>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<header class="hero">
+  <div class="hero-inner">
+    <p class="eyebrow">Oracle Analytics Cloud · Hands-On Workshop</p>
+    <h1>From Data to Decisions</h1>
+    <p class="hero-sub">You'll build a real analytics workbook today — starting from raw insurance data and ending with a prioritized list of customers worth retaining. Use the screenshots as checkpoints, not as a replacement for the hands-on build.</p>
+    <div class="hero-cards">
+      <div class="hero-card"><span>What You'll Build</span><strong>3 analysis canvases in OAC</strong></div>
+      <div class="hero-card"><span>The Business Question</span><strong>Which at-risk customers do we save first?</strong></div>
+      <div class="hero-card"><span>Time</span><strong>3 hours · Follow along step by step</strong></div>
+    </div>
+  </div>
+</header>
+
+<!-- ── LAYOUT ── -->
+<div class="layout">
+
+  <!-- NAV -->
+  <aside class="nav">
+    <h2>Your Progress</h2>
+    <a href="#context" id="nav-context"><div class="nav-check" id="nc-context"></div>The Story</a>
+    <a href="#setup" id="nav-setup"><div class="nav-check" id="nc-setup"></div>Your OAC Setup</a>
+    <a href="#exercise-dataset" id="nav-ex1"><div class="nav-check" id="nc-ex1"></div>Exercise 1 · Dataset</a>
+    <a href="#exercise-metrics" id="nav-ex2"><div class="nav-check" id="nc-ex2"></div>Exercise 2 · Metrics</a>
+    <a href="#exercise-overview" id="nav-ex3"><div class="nav-check" id="nc-ex3"></div>Exercise 3 · Overview</a>
+    <a href="#exercise-lossratio" id="nav-ex4"><div class="nav-check" id="nc-ex4"></div>Exercise 4 · Loss Ratio</a>
+    <a href="#exercise-retention" id="nav-ex5"><div class="nav-check" id="nc-ex5"></div>Exercise 5 · Retention</a>
+    <a href="#reflection" id="nav-ref"><div class="nav-check" id="nc-ref"></div>Wrap-Up</a>
+  </aside>
+
+  <main class="content">
+
+    <!-- ══════════════════════════════════
+         SECTION: THE STORY
+    ══════════════════════════════════ -->
+    <div class="card" id="context">
+      <div class="card-head">
+        <span class="kicker">Before We Start</span>
+        <h2>The Story You're Walking Into</h2>
+        <p class="lead">2 minutes to read — then we'll open OAC and start building.</p>
+      </div>
+      <div class="card-body">
+
+        <div class="story-strip">
+          <div class="story-block problem">
+            <span>The Problem</span>
+            <strong>An insurance company is losing customers.</strong>
+            <p>Some customers are canceling their policies. Every customer who leaves takes future premium revenue with them — but the retention team can't call everyone.</p>
+          </div>
+          <div class="story-block journey">
+            <span>What You'll Do</span>
+            <strong>Build a data-backed priority list.</strong>
+            <p>You'll connect four data tables, create six business metrics, and build three analysis canvases to find the right customers to call first.</p>
+          </div>
+          <div class="story-block outcome">
+            <span>The Outcome</span>
+            <strong>A decision tool, not just a dashboard.</strong>
+            <p>By the end, your workbook will answer: <em>which at-risk customers are worth saving first, and why?</em></p>
+          </div>
+        </div>
+
+        <div class="mission-brief">
+          <h3>Your mission today</h3>
+          <p>You are the analytics team for an auto insurer. Renewal risk is rising, but the retention team has limited time. Your job is to build enough evidence to recommend who should be reviewed first.</p>
+          <div class="mission-grid">
+            <div class="mission-item"><span>Decision</span><strong>Which at-risk customers should we review first?</strong></div>
+            <div class="mission-item"><span>Evidence</span><strong>Churn risk, customer value, claim cost, and segment context.</strong></div>
+            <div class="mission-item"><span>Output</span><strong>A workbook that explains the recommendation clearly.</strong></div>
+          </div>
+        </div>
+
+        <h3>The four pieces of data you'll work with</h3>
+        <table>
+          <thead><tr><th>Data Table</th><th>What It Contains</th><th>Why It Matters</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Policies</strong></td><td>Customer list — who they are, state, household type</td><td>The "who" in every analysis</td></tr>
+            <tr><td><strong>Customer Premiums</strong></td><td>How much customers paid, and whether they renewed</td><td>Contains the churn signal — Renewal Status</td></tr>
+            <tr><td><strong>Insurance Claims</strong></td><td>Claims filed and money paid out by the company</td><td>Reveals claim cost — used in Loss Ratio</td></tr>
+            <tr><td><strong>Drivers</strong></td><td>Drivers on each policy, including Good Driver Flag</td><td>Adds segment context for comparisons</td></tr>
+          </tbody>
+        </table>
+
+        <h3>The six metrics you'll build</h3>
+        <table>
+          <thead><tr><th>Metric</th><th>What It Answers</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Policy Count</strong></td><td>How many customers do we have?</td></tr>
+            <tr><td><strong>Claims Count</strong></td><td>How many claim events happened?</td></tr>
+            <tr><td><strong>Churned Policy Count</strong></td><td>How many customers have already left?</td></tr>
+            <tr><td><strong>Churn Rate</strong></td><td>What percentage of customers churned?</td></tr>
+            <tr><td><strong>Loss Ratio</strong></td><td>For every $1 of premium, how much was paid in claims?</td></tr>
+            <tr><td><strong>Customer Value Score</strong></td><td>Which customers generated the most net value?</td></tr>
+          </tbody>
+        </table>
+
+        <div class="decision-lab">
+          <h3>Warm-up: who would you review first?</h3>
+          <p>Before you build the workbook, practice the decision logic. All three customers are at risk. Choose one, then compare your reasoning with the feedback.</p>
+          <div class="persona-grid">
+            <div class="persona-card" data-persona-card="alex">
+              <div>
+                <h3>Customer A: Alex</h3>
+                <p>Strong premium revenue and manageable claim cost.</p>
+              </div>
+              <div>
+                <div class="metric-row"><span>Status</span><strong>Value at risk</strong></div>
+                <div class="metric-row"><span>Customer Value Score</span><strong>High</strong></div>
+                <div class="metric-row"><span>Loss Ratio</span><strong>Low</strong></div>
+                <div class="metric-row"><span>Segment</span><strong>Good driver</strong></div>
+              </div>
+              <button class="persona-choice" type="button" data-persona="alex">Choose Alex</button>
+            </div>
+            <div class="persona-card" data-persona-card="blair">
+              <div>
+                <h3>Customer B: Blair</h3>
+                <p>High premium, but claim payouts are also high.</p>
+              </div>
+              <div>
+                <div class="metric-row"><span>Status</span><strong>Value at risk</strong></div>
+                <div class="metric-row"><span>Customer Value Score</span><strong>High</strong></div>
+                <div class="metric-row"><span>Loss Ratio</span><strong>High</strong></div>
+                <div class="metric-row"><span>Segment</span><strong>Multiple claims</strong></div>
+              </div>
+              <button class="persona-choice" type="button" data-persona="blair">Choose Blair</button>
+            </div>
+            <div class="persona-card" data-persona-card="casey">
+              <div>
+                <h3>Customer C: Casey</h3>
+                <p>Low cost profile, but lower value to the business.</p>
+              </div>
+              <div>
+                <div class="metric-row"><span>Status</span><strong>Value at risk</strong></div>
+                <div class="metric-row"><span>Customer Value Score</span><strong>Low</strong></div>
+                <div class="metric-row"><span>Loss Ratio</span><strong>Low</strong></div>
+                <div class="metric-row"><span>Segment</span><strong>Stable claims</strong></div>
+              </div>
+              <button class="persona-choice" type="button" data-persona="casey">Choose Casey</button>
+            </div>
+          </div>
+          <div class="decision-result" aria-live="polite">
+            <strong id="persona-result-title">Make a choice.</strong>
+            <p id="persona-result-copy">The strongest recommendation should combine churn risk, customer value, and loss ratio. You will build those signals in the exercises below.</p>
+          </div>
+        </div>
+
+        <div class="tip">
+          <strong>Key mindset:</strong> A dashboard shows what happened. What we're building today tells the business what to do next. Keep that difference in mind as you work through each step.
+        </div>
+
+        <button class="complete-btn" onclick="completeSection(this,'context','nc-context')">✓ I've read the story — let's build</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         SECTION: OAC SETUP ORIENTATION
+    ══════════════════════════════════ -->
+    <div class="card" id="setup">
+      <div class="card-head">
+        <span class="kicker">OAC Orientation</span>
+        <h2>Your OAC Environment — Quick Tour</h2>
+        <p class="lead">If this is your first time in Oracle Analytics Cloud, spend 3 minutes here. If you've used it before, skim and move on.</p>
+      </div>
+      <div class="card-body">
+
+        <div class="concept">
+          <strong>What is Oracle Analytics Cloud (OAC)?</strong><br>
+          Oracle Analytics Cloud (OAC) is a unified, AI-powered platform for data visualization, reporting, and enterprise governance. Delivered on Oracle Cloud Infrastructure (OCI), it allows business users to prepare data, build dashboards, and apply machine learning using no-code, drag-and-drop interfaces.
+        </div>
+
+        <h3>The three things you'll use today</h3>
+        <table>
+          <thead><tr><th>OAC Feature</th><th>What It Does</th><th>When You'll Use It</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Dataset Editor</strong></td><td>Connect and configure your data tables</td><td>Exercise 1</td></tr>
+            <tr><td><strong>Workbook</strong></td><td>The space where you build your analysis — contains multiple canvases</td><td>Exercises 2–5</td></tr>
+            <tr><td><strong>Calculations</strong></td><td>Create custom metrics using simple formulas</td><td>Exercise 2</td></tr>
+          </tbody>
+        </table>
+
+        <h3>OAC vocabulary you'll hear today</h3>
+        <table>
+          <thead><tr><th>Term</th><th>Plain-English Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Dataset</strong></td><td>Your connected data — one or more tables joined together</td></tr>
+            <tr><td><strong>Workbook</strong></td><td>Your analysis file — like a report with multiple pages (canvases)</td></tr>
+            <tr><td><strong>Canvas</strong></td><td>One page inside a workbook — you'll build three canvases today</td></tr>
+            <tr><td><strong>Visualization</strong></td><td>A chart, table, tile, or map that you drag onto a canvas</td></tr>
+            <tr><td><strong>Calculation</strong></td><td>A custom formula you create — like a calculated column in Excel</td></tr>
+            <tr><td><strong>Attribute</strong></td><td>A text/category field — like Customer ID, State, Household Type</td></tr>
+            <tr><td><strong>Measure</strong></td><td>A numeric field you can sum or average — like Premium Amount, Claim Amount</td></tr>
+          </tbody>
+        </table>
+
+        <div class="warn">
+          <strong>Important — IDs are attributes, not measures:</strong> Customer ID, Claim ID, and other ID fields look like numbers, but they are <em>labels</em>. In Exercise 1, you'll change these from Measure to Attribute so OAC doesn't try to add them together.
+        </div>
+
+        <h3>How you will know you are on track</h3>
+        <div class="success-grid">
+          <div class="success-card"><strong>After Exercise 1</strong><p>Your workbook has one dataset with all four tables connected.</p></div>
+          <div class="success-card"><strong>After Exercise 2</strong><p>Your Data panel shows six saved calculations with no formula errors.</p></div>
+          <div class="success-card"><strong>After Exercise 3</strong><p>You can explain the overall business picture in 30 seconds.</p></div>
+          <div class="success-card"><strong>After Exercise 5</strong><p>You can name the first customers to review and defend why.</p></div>
+        </div>
+
+        <button class="complete-btn" onclick="completeSection(this,'setup','nc-setup')">✓ Got it — I'm oriented</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         EXERCISE 1: DATASET
+    ══════════════════════════════════ -->
+    <div class="card" id="exercise-dataset">
+      <div class="card-head">
+        <span class="kicker">Exercise 1 of 5</span>
+        <h2>Build the Dataset Foundation</h2>
+        <p class="lead">Connect your four data tables and create one trusted dataset. Everything else depends on getting this right.</p>
+      </div>
+      <div class="card-body">
+
+        <div class="tip">
+          <strong>What you're building:</strong> A single dataset called <em>Customer Insurance</em> that joins Policies, Premiums, Claims, and Drivers together via Customer ID. This is the data layer that all three canvases share.
+        </div>
+
+        <div class="section-progress">
+          <span class="sp-label" id="ex1-label">0 / 8 steps done</span>
+          <div class="sp-bar"><div class="sp-fill" id="ex1-fill"></div></div>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-head">
+            <span>Part A — Upload the data file</span>
+            <span class="ex-time">~8 min</span>
+          </div>
+          <div class="exercise-body">
+            <ul class="step-list" id="ex1a">
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">1</div><div class="step-text">From the OAC Home page, click the <strong>Create</strong> button in the top right corner</div></li>
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">2</div><div class="step-text">Click <strong>Dataset</strong> from the dropdown menu</div></li>
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">3</div><div class="step-text">Click <strong>Drop data file here or click to browse</strong> and select the file: <code>Car Insurance - Only Required Data.xlsx</code></div></li>
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">4</div><div class="step-text">When OAC shows the sheet list, <strong>select all sheets</strong> (Policies, Customer Premiums, Insurance Claims, Drivers) — each sheet becomes a separate table in your dataset</div></li>
+            </ul>
+            <div class="tip">
+              <strong>Why select all sheets?</strong> Each Excel tab holds a different part of the customer story. Selecting all of them lets OAC connect them together, which is what makes the analysis powerful.
+            </div>
+            <figure class="reference-shot">
+              <a href="from-data-to-decisions-3hour-assets/screenshot-002.png" target="_blank" rel="noopener">
+                <img src="from-data-to-decisions-3hour-assets/screenshot-002.png" alt="OAC upload screen with all insurance workbook sheets selected">
+              </a>
+              <figcaption>Checkpoint: after upload, all required workbook sheets should be selected before you continue.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-head">
+            <span>Part B — Set ID fields as Attributes</span>
+            <span class="ex-time">~5 min</span>
+          </div>
+          <div class="exercise-body">
+            <div class="warn">
+              <strong>Do this before saving.</strong> ID fields (Customer ID, Claim ID, Driver ID) look like numbers, but they are labels — not values to add up. If you skip this step, your counts will be wrong.
+            </div>
+            <ul class="step-list" id="ex1b">
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">5</div><div class="step-text">For each ID column (Customer ID, Claim ID, Driver ID, etc.), click the column header and look for the data type icon — change it from <strong>Measure (#)</strong> to <strong>Attribute (A)</strong></div></li>
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">6</div><div class="step-text">Confirm the change for all ID-style columns before moving on</div></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-head">
+            <span>Part C — Configure the joins</span>
+            <span class="ex-time">~7 min</span>
+          </div>
+          <div class="exercise-body">
+            <div class="concept">
+              <strong>What is a join?</strong> A join tells OAC how to connect two tables — "when the Customer ID in Table A matches the Customer ID in Table B, treat those as the same customer." Without joins, the tables are just separate lists.
+            </div>
+            <ul class="step-list" id="ex1c">
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">7</div><div class="step-text">Click the <strong>Diagram</strong> tab to see the join view. Connect all four tables using <strong>Customer ID</strong> as the join key. Draw a line from Policies → Customer Premiums → Insurance Claims → Drivers using Customer ID.</div></li>
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">8</div><div class="step-text">For the Customer Premiums ↔ Insurance Claims join: verify the join includes both Customer ID and that the claim date falls within the premium renewal period. Then click <strong>Save</strong> and name the dataset <code>Customer Insurance</code>. Click <strong>Create Workbook</strong>.</div></li>
+            </ul>
+            <div class="tip">
+              <strong>Quick check:</strong> After saving, your dataset should show all four table names in the Data panel inside the workbook. If any table is missing, go back to the dataset editor.
+            </div>
+            <div class="screenshot-grid">
+              <figure class="reference-shot">
+                <a href="from-data-to-decisions-3hour-assets/screenshot-003.png" target="_blank" rel="noopener">
+                  <img src="from-data-to-decisions-3hour-assets/screenshot-003.png" alt="OAC dataset join diagram connecting insurance tables">
+                </a>
+                <figcaption>Checkpoint: the join diagram should connect the insurance tables around Customer ID.</figcaption>
+              </figure>
+              <figure class="reference-shot">
+                <a href="from-data-to-decisions-3hour-assets/screenshot-007.png" target="_blank" rel="noopener">
+                  <img src="from-data-to-decisions-3hour-assets/screenshot-007.png" alt="Join conditions between customer premiums and insurance claims">
+                </a>
+                <figcaption>Checkpoint: premium-to-claim logic should match Customer ID and the claim date inside the renewal period.</figcaption>
+              </figure>
+              <figure class="reference-shot">
+                <a href="from-data-to-decisions-3hour-assets/screenshot-010.png" target="_blank" rel="noopener">
+                  <img src="from-data-to-decisions-3hour-assets/screenshot-010.png" alt="Create workbook button after saving the OAC dataset">
+                </a>
+                <figcaption>Checkpoint: after saving the dataset, create the workbook that will hold the canvases.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+
+        <span class="notes-label">📝 My notes for Exercise 1</span>
+        <textarea class="notes-area" placeholder="Write anything here — questions, observations, things to remember..."></textarea>
+
+        <button class="complete-btn" onclick="completeSection(this,'exercise-dataset','nc-ex1')">✓ Dataset built — ready for Exercise 2</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         EXERCISE 2: METRICS
+    ══════════════════════════════════ -->
+    <div class="card" id="exercise-metrics">
+      <div class="card-head">
+        <span class="kicker">Exercise 2 of 5</span>
+        <h2>Create the Six Decision Metrics</h2>
+        <p class="lead">Translate raw data into business language. Each formula answers a specific business question — understand the "why" before typing the expression.</p>
+      </div>
+      <div class="card-body">
+
+        <div class="tip">
+          <strong>Where to create calculations:</strong> In your workbook, right-click on the <strong>My Calculations</strong> section in the Data panel (left side), then click <strong>Add Calculation</strong>. Type the formula, name it, and save. You'll do this six times.
+        </div>
+
+        <div class="section-progress">
+          <span class="sp-label" id="ex2-label">0 / 6 steps done</span>
+          <div class="sp-bar"><div class="sp-fill" id="ex2-fill"></div></div>
+        </div>
+
+        <!-- Calc 1 -->
+        <h3>Calculation 1 — Policy Count</h3>
+        <div class="concept"><strong>Business question it answers:</strong> How many unique customers do we have in total?</div>
+        <div class="formula-label"><span>Formula</span><span class="badge">Customer base</span></div>
+        <div class="formula-box">COUNT(DISTINCT "Customer ID")</div>
+        <div class="tip"><strong>Why DISTINCT?</strong> After joining tables, one customer can appear on many rows (one per claim, one per premium period). COUNT DISTINCT collapses them back to one count per customer.</div>
+        <ul class="step-list" id="ex2">
+          <li onclick="toggleStep(this,'ex2')"><div class="step-cb"></div><div class="step-num">1</div><div class="step-text">Create calculation named <strong>Policy Count</strong> with the formula above. Save it.</div></li>
+        </ul>
+
+        <!-- Calc 2 -->
+        <h3>Calculation 2 — Claims Count</h3>
+        <div class="concept"><strong>Business question it answers:</strong> How many claim events happened? (Not dollar value — number of incidents.)</div>
+        <div class="formula-label"><span>Formula</span><span class="badge">Claim volume</span></div>
+        <div class="formula-box">COUNT(DISTINCT "Claim ID")</div>
+        <ul class="step-list">
+          <li onclick="toggleStep(this,'ex2')"><div class="step-cb"></div><div class="step-num">2</div><div class="step-text">Create calculation named <strong>Claims Count</strong> with the formula above. Save it.</div></li>
+        </ul>
+
+        <!-- Calc 3 -->
+        <h3>Calculation 3 — Churned Policy Count</h3>
+        <div class="concept"><strong>Business question it answers:</strong> How many customers have already left?</div>
+        <div class="formula-label"><span>Formula</span><span class="badge">Churn count</span></div>
+        <div class="formula-box">FILTER(COUNT("End of Policy Renewal")
+  USING "Renewal Status" = 'churned')</div>
+        <div class="tip"><strong>What FILTER does:</strong> It counts renewal records only where the customer churned — it ignores all other rows. This gives you a clean count regardless of how many rows the join created.</div>
+        <ul class="step-list">
+          <li onclick="toggleStep(this,'ex2')"><div class="step-cb"></div><div class="step-num">3</div><div class="step-text">Create calculation named <strong>Churned Policy Count</strong> with the formula above. Save it.</div></li>
+        </ul>
+
+        <!-- Calc 4 -->
+        <h3>Calculation 4 — Churn Rate</h3>
+        <div class="concept"><strong>Business question it answers:</strong> What percentage of our customers churned? A count of 50 churned policies means very different things in a base of 200 versus 2,000.</div>
+        <div class="formula-label"><span>Formula</span><span class="badge">Retention risk</span></div>
+        <div class="formula-box">"Churned Policy Count" / "Policy Count"</div>
+        <div class="tip"><strong>Format tip:</strong> After creating this calculation, right-click it and set the number format to <strong>Percentage</strong> with 1 decimal place.</div>
+        <ul class="step-list">
+          <li onclick="toggleStep(this,'ex2')"><div class="step-cb"></div><div class="step-num">4</div><div class="step-text">Create calculation named <strong>Churn Rate</strong> with the formula above. Format as percentage. Save it.</div></li>
+        </ul>
+
+        <!-- Calc 5 -->
+        <h3>Calculation 5 — Loss Ratio</h3>
+        <div class="concept"><strong>Business question it answers:</strong> For every $1 of premium collected, how much did the company pay back in claims? A loss ratio of 0.60 means the company paid out 60 cents of every dollar it earned.</div>
+        <div class="formula-label"><span>Formula</span><span class="badge">Profitability signal</span></div>
+        <div class="formula-box">"Insurance Paid" / "Premium Amount"</div>
+        <div class="warn">
+          <strong>Why this matters for retention:</strong> A customer with high premium but also high claims may not be as valuable as they look. Loss Ratio prevents us from prioritizing costly customers by mistake.
+        </div>
+        <ul class="step-list">
+          <li onclick="toggleStep(this,'ex2')"><div class="step-cb"></div><div class="step-num">5</div><div class="step-text">Create calculation named <strong>Loss Ratio</strong> with the formula above. Format as percentage. Save it.</div></li>
+        </ul>
+
+        <!-- Calc 6 -->
+        <h3>Calculation 6 — Customer Value Score</h3>
+        <div class="concept"><strong>Business question it answers:</strong> How much net value has this customer generated? Simple signal: premium collected minus claims paid.</div>
+        <div class="formula-label"><span>Formula</span><span class="badge">Priority signal</span></div>
+        <div class="formula-box">"Premium Amount" - "Insurance Paid"</div>
+        <div class="tip"><strong>How you'll use it:</strong> This score goes on the X-axis of your retention scatterplot in Exercise 5. Higher score = more net value to the business = stronger case for prioritized retention effort.</div>
+        <ul class="step-list">
+          <li onclick="toggleStep(this,'ex2')"><div class="step-cb"></div><div class="step-num">6</div><div class="step-text">Create calculation named <strong>Customer Value Score</strong> with the formula above. Save it.</div></li>
+        </ul>
+
+        <div class="tip">
+          <strong>Quick check — all 6 saved?</strong> In the Data panel under My Calculations, you should see: Policy Count, Claims Count, Churned Policy Count, Churn Rate, Loss Ratio, Customer Value Score. If any show a zero or error, check that your ID fields are set to Attribute.
+        </div>
+
+        <h3>Calculation reference screenshots</h3>
+        <div class="screenshot-grid">
+          <figure class="reference-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-027.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-027.png" alt="Policy Count calculation in OAC">
+            </a>
+            <figcaption>Policy Count: use COUNT DISTINCT so joined claim rows do not over-count customers.</figcaption>
+          </figure>
+          <figure class="reference-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-028.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-028.png" alt="Claims Count calculation in OAC">
+            </a>
+            <figcaption>Claims Count: count unique Claim ID values to measure claim event volume.</figcaption>
+          </figure>
+          <figure class="reference-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-030.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-030.png" alt="Churned Policy Count calculation in OAC">
+            </a>
+            <figcaption>Churned Policy Count: filter the count to rows where Renewal Status is churned.</figcaption>
+          </figure>
+          <figure class="reference-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-035.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-035.png" alt="Churn Rate calculation in OAC">
+            </a>
+            <figcaption>Churn Rate: reuse saved calculations so the metric logic stays consistent.</figcaption>
+          </figure>
+          <figure class="reference-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-034.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-034.png" alt="Loss Ratio calculation in OAC">
+            </a>
+            <figcaption>Loss Ratio: compare insurance paid against premium amount and format as a percentage.</figcaption>
+          </figure>
+        </div>
+
+        <span class="notes-label">📝 My notes for Exercise 2</span>
+        <textarea class="notes-area" placeholder="Any formulas you want to remember, errors you solved, questions for the presenter..."></textarea>
+
+        <button class="complete-btn" onclick="completeSection(this,'exercise-metrics','nc-ex2')">✓ All 6 metrics created — on to Canvas 1</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         EXERCISE 3: BUSINESS OVERVIEW
+    ══════════════════════════════════ -->
+    <div class="card" id="exercise-overview">
+      <div class="card-head">
+        <span class="kicker">Exercise 3 of 5 · Canvas 1</span>
+        <h2>Business Overview Canvas</h2>
+        <p class="lead">This canvas answers: <em>What is the current state of the business?</em> Build the big picture before zooming into retention.</p>
+      </div>
+      <div class="card-body">
+
+        <div class="tip">
+          <strong>How to add a new canvas:</strong> At the bottom of your workbook, click the <strong>+</strong> button next to the canvas tabs. Rename it <em>Business Overview</em> by double-clicking the tab name.
+        </div>
+
+        <div class="section-progress">
+          <span class="sp-label" id="ex3-label">0 / 7 steps done</span>
+          <div class="sp-bar"><div class="sp-fill" id="ex3-fill"></div></div>
+        </div>
+
+        <div class="concept">
+          <strong>How to create a visualization:</strong> Double-click a field in the Data panel to add it to the canvas. Or drag a field from the Data panel and drop it on the canvas. OAC will suggest a chart type — you can change it using the chart-type picker in the top-left of the visualization.
+        </div>
+
+        <h3>Build these 7 visuals in order</h3>
+        <div class="canvas-check" id="ex3-canvas">
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Policy Count</strong><small>Shows total number of customers. Drag Policy Count → change to Tile type.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Claims Count</strong><small>Shows total claim events. Same approach as above.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Churned Policy Count</strong><small>The raw churn number.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Churn Rate</strong><small>Formatted as %. This is your key business health signal.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Bar/Line: Claim Amount by Date of Incident</strong><small>Shows claim activity trend over time. Are claims going up or down?</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Map: Claim Amount by State</strong><small>Geographic view. Drag State → Map, then add Claim Amount as the color measure.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>(Optional) Line: Churn Rate by Renewal Month</strong><small>Only if you have time — shows churn trend over renewal periods.</small></div></div>
+        </div>
+
+        <div class="screenshot-grid">
+          <figure class="reference-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-042.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-042.png" alt="Business Overview canvas reference">
+            </a>
+            <figcaption>Target state: the Business Overview canvas gives the baseline across customers, claims, churn, time, and geography.</figcaption>
+          </figure>
+          <figure class="reference-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-047.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-047.png" alt="Churn rate reference line in OAC">
+            </a>
+            <figcaption>Optional checkpoint: a churn reference line helps compare actual churn against a target.</figcaption>
+          </figure>
+        </div>
+
+        <div class="warn">
+          <strong>Stuck on the map?</strong> If OAC doesn't recognize your State field as a geographic type, right-click the State column in the Data panel → select <strong>Location Details</strong> → choose <strong>State/Province</strong> and set the country to USA.
+        </div>
+
+        <h3>✍ Story check — can you answer these from Canvas 1?</h3>
+        <ul class="step-list" id="ex3-check">
+          <li onclick="toggleStep(this,'ex3')"><div class="step-cb"></div><div class="step-num">?</div><div class="step-text">How many customers are in the dataset?</div></li>
+          <li onclick="toggleStep(this,'ex3')"><div class="step-cb"></div><div class="step-num">?</div><div class="step-text">What is the overall churn rate?</div></li>
+          <li onclick="toggleStep(this,'ex3')"><div class="step-cb"></div><div class="step-num">?</div><div class="step-text">Which state has the highest claim activity?</div></li>
+          <li onclick="toggleStep(this,'ex3')"><div class="step-cb"></div><div class="step-num">?</div><div class="step-text">Is claim activity trending up or down over time?</div></li>
+        </ul>
+        <div class="tip">If you can answer all four in 30 seconds, Canvas 1 is telling a clear story.</div>
+
+        <span class="notes-label">📝 My observations from Canvas 1</span>
+        <textarea class="notes-area" placeholder="What does the data show? Any surprising numbers? Patterns you noticed?"></textarea>
+
+        <button class="complete-btn" onclick="completeSection(this,'exercise-overview','nc-ex3')">✓ Canvas 1 complete — on to Loss Ratio</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         EXERCISE 4: LOSS RATIO
+    ══════════════════════════════════ -->
+    <div class="card" id="exercise-lossratio">
+      <div class="card-head">
+        <span class="kicker">Exercise 4 of 5 · Canvas 2</span>
+        <h2>Loss Ratio Canvas</h2>
+        <p class="lead">This canvas answers: <em>Where are claim costs high relative to premium collected?</em> Some customers look valuable — until you see their claims.</p>
+      </div>
+      <div class="card-body">
+
+        <div class="tip">
+          <strong>Add a new canvas</strong> called <em>Loss Ratio</em> using the + tab at the bottom of your workbook.
+        </div>
+
+        <div class="section-progress">
+          <span class="sp-label" id="ex4-label">0 / 5 steps done</span>
+          <div class="sp-bar"><div class="sp-fill" id="ex4-fill"></div></div>
+        </div>
+
+        <h3>Build these 5 visuals</h3>
+        <div class="canvas-check" id="ex4-canvas">
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Loss Ratio</strong><small>The overall company-wide loss ratio. Your benchmark for the rest of the canvas.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Bar: Loss Ratio by Good Driver Flag</strong><small>Does safe driving behavior correlate with lower claim costs? Drag Good Driver Flag (category), Loss Ratio (value).</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Bar: Loss Ratio by Household Type</strong><small>Do different household types (single, family, etc.) have different cost profiles?</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Map: States colored by Loss Ratio</strong><small>Which states have the highest ratio of claims paid to premium earned?</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Table: State · Policy Count · Claims Count · Premium Amount · Insurance Paid · Loss Ratio</strong><small>The detail view — click any row to filter the whole canvas to that state.</small></div></div>
+        </div>
+
+        <div class="screenshot-grid">
+          <figure class="reference-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-063.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-063.png" alt="Loss Ratio by Good Driver Flag visual">
+            </a>
+            <figcaption>Target visual: Loss Ratio by Good Driver Flag should make segment cost differences easy to see.</figcaption>
+          </figure>
+          <figure class="reference-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-067.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-067.png" alt="Loss ratio color assignment in OAC">
+            </a>
+            <figcaption>Design checkpoint: use color so high loss ratio stands out without reading every number.</figcaption>
+          </figure>
+          <figure class="reference-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-069.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-069.png" alt="Completed Loss Ratio canvas reference">
+            </a>
+            <figcaption>Target state: the Loss Ratio canvas separates high-value opportunity from high-cost risk.</figcaption>
+          </figure>
+        </div>
+
+        <h3>How to interpret Loss Ratio</h3>
+        <table>
+          <thead><tr><th>Loss Ratio Range</th><th>What It Means</th><th>Retention Implication</th></tr></thead>
+          <tbody>
+            <tr><td><strong>&lt; 60%</strong></td><td>Company keeps over 40 cents per dollar of premium</td><td>Strong margin — these segments are worth retaining</td></tr>
+            <tr><td><strong>60% – 80%</strong></td><td>Manageable but worth watching</td><td>Consider before committing retention resources</td></tr>
+            <tr><td><strong>&gt; 80%</strong></td><td>High claim cost pressure</td><td>Understand why before prioritizing for retention</td></tr>
+          </tbody>
+        </table>
+
+        <h3>✍ Story check — can you answer these from Canvas 2?</h3>
+        <ul class="step-list" id="ex4-check">
+          <li onclick="toggleStep(this,'ex4')"><div class="step-cb"></div><div class="step-num">?</div><div class="step-text">Which segment (good driver vs. not) has the higher loss ratio?</div></li>
+          <li onclick="toggleStep(this,'ex4')"><div class="step-cb"></div><div class="step-num">?</div><div class="step-text">Which household type has the highest claim cost relative to premium?</div></li>
+          <li onclick="toggleStep(this,'ex4')"><div class="step-cb"></div><div class="step-num">?</div><div class="step-text">Is there a state with both high churn AND high loss ratio? (Cross-reference Canvas 1.)</div></li>
+        </ul>
+
+        <span class="notes-label">📝 My observations from Canvas 2</span>
+        <textarea class="notes-area" placeholder="Which segments surprised you? What does this tell you about which customers to prioritize?"></textarea>
+
+        <button class="complete-btn" onclick="completeSection(this,'exercise-lossratio','nc-ex4')">✓ Canvas 2 complete — on to the final canvas</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         EXERCISE 5: RETENTION PRIORITY
+    ══════════════════════════════════ -->
+    <div class="card" id="exercise-retention">
+      <div class="card-head">
+        <span class="kicker">Exercise 5 of 5 · Canvas 3 · The Payoff</span>
+        <h2>Retention Priority Canvas</h2>
+        <p class="lead">This is why we built everything else. Filter to at-risk customers, score them, and create the list the retention team actually uses.</p>
+      </div>
+      <div class="card-body">
+
+        <div class="tip">
+          <strong>Add a new canvas</strong> called <em>Retention Priority</em>. This canvas will only show customers marked as "value at risk" — everything is filtered to that group.
+        </div>
+
+        <div class="section-progress">
+          <span class="sp-label" id="ex5-label">0 / 5 steps done</span>
+          <div class="sp-bar"><div class="sp-fill" id="ex5-fill"></div></div>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-head">
+            <span>Part A — Filter to at-risk customers</span>
+            <span class="ex-time">~3 min</span>
+          </div>
+          <div class="exercise-body">
+            <ul class="step-list" id="ex5a">
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">1</div><div class="step-text">Click the <strong>Filter</strong> icon at the top of the canvas. Add a filter on <strong>Renewal Status</strong> (or equivalent churn/status field). Set it to show only <code>value at risk</code>. Apply the filter.</div></li>
+            </ul>
+            <div class="concept">
+              <strong>Why filter at the canvas level?</strong> This canvas is only about the customers the business needs to act on. The filter ensures every visualization on this canvas shows that group only — without you needing to repeat the filter on each chart.
+            </div>
+            <figure class="reference-shot">
+              <a href="from-data-to-decisions-3hour-assets/screenshot-073.png" target="_blank" rel="noopener">
+                <img src="from-data-to-decisions-3hour-assets/screenshot-073.png" alt="OAC filter bar for at-risk customers">
+              </a>
+              <figcaption>Checkpoint: use a canvas-level filter so every visual focuses on the at-risk customer group.</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-head">
+            <span>Part B — Build the customer table</span>
+            <span class="ex-time">~5 min</span>
+          </div>
+          <div class="exercise-body">
+            <ul class="step-list" id="ex5b">
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">2</div><div class="step-text">Create a <strong>table visualization</strong> with these columns: Customer ID, State, Household Type, Premium Amount, Insurance Paid, Loss Ratio, Customer Value Score</div></li>
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">3</div><div class="step-text"><strong>Sort the table</strong> by Customer Value Score — highest first. This creates your initial review list.</div></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-head">
+            <span>Part C — Build the scatterplot</span>
+            <span class="ex-time">~7 min</span>
+          </div>
+          <div class="exercise-body">
+            <ul class="step-list" id="ex5c">
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">4</div><div class="step-text">Create a <strong>Scatter visualization</strong>. Set: <strong>X-axis = Customer Value Score</strong>, <strong>Y-axis = Loss Ratio</strong>, <strong>Category = Customer ID</strong>. Optional: color by Household Type or Good Driver Flag.</div></li>
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">5</div><div class="step-text">Use the four-quadrant guide below to interpret which customers are in which zone. Click on dots in the top-right area (high value, low loss ratio) to see those customers highlighted in the table above.</div></li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Reading the scatterplot — the four zones</h3>
+        <div class="scatter-grid">
+          <div class="sg-cell sg-1">
+            <strong>✓ Call First</strong>
+            <p>High Customer Value Score + Low Loss Ratio. Good net value and manageable claim cost. Strongest retention ROI.</p>
+          </div>
+          <div class="sg-cell sg-2">
+            <strong>⚠ Review Before Acting</strong>
+            <p>High Value Score + High Loss Ratio. Potentially valuable but costly. Understand claim history before making an offer.</p>
+          </div>
+          <div class="sg-cell sg-3">
+            <strong>→ Consider Later</strong>
+            <p>Low Value Score + Low Loss Ratio. Stable but low return. Not urgent for outreach.</p>
+          </div>
+          <div class="sg-cell sg-4">
+            <strong>✗ Lowest Priority</strong>
+            <p>Low Value Score + High Loss Ratio. Low value and high cost. Not where to focus retention effort.</p>
+          </div>
+        </div>
+
+        <figure class="reference-shot">
+          <a href="from-data-to-decisions-3hour-assets/screenshot-075.png" target="_blank" rel="noopener">
+            <img src="from-data-to-decisions-3hour-assets/screenshot-075.png" alt="Retention Priority customer table reference">
+          </a>
+          <figcaption>Target output: the table is the practical business artifact: a customer review list sorted by value and interpreted with loss ratio.</figcaption>
+        </figure>
+
+        <h3>✍ The final question — write your answer here</h3>
+        <div class="warn">
+          <strong>This is the whole point of the workshop.</strong> Look at your scatterplot and table. Based on what you've built today — who are your top 5 customers to contact for retention, and why?
+        </div>
+        <textarea class="notes-area" style="min-height:110px;" placeholder="My top 5 at-risk customers to prioritize, and my reasoning...&#10;&#10;1.&#10;2.&#10;3.&#10;4.&#10;5."></textarea>
+
+        <button class="complete-btn" onclick="completeSection(this,'exercise-retention','nc-ex5')">✓ Canvas 3 complete — all exercises done!</button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         WRAP-UP
+    ══════════════════════════════════ -->
+    <div class="card" id="reflection">
+      <div class="card-head">
+        <span class="kicker">Wrap-Up</span>
+        <h2>What You Built — and What Comes Next</h2>
+        <p class="lead">Take a moment to look at the full workbook you've created. This is not a demo — it's a real analytical process you can repeat with your own data.</p>
+      </div>
+      <div class="card-body">
+
+        <h3>The pattern you just practiced</h3>
+        <table>
+          <thead><tr><th>Step</th><th>What You Did</th><th>Why It Matters</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1. Frame the question</strong></td><td>Defined the business problem before opening OAC</td><td>Keeps every build decision tied to a real decision</td></tr>
+            <tr><td><strong>2. Connect the data</strong></td><td>Joined four tables into one trusted dataset</td><td>All metrics are consistent and draw from the same source</td></tr>
+            <tr><td><strong>3. Build the metrics</strong></td><td>Translated raw fields into six business calculations</td><td>Common language — everyone uses the same numbers</td></tr>
+            <tr><td><strong>4. Tell the full story</strong></td><td>Canvas 1 showed the overall picture</td><td>Context before action — you always need the baseline</td></tr>
+            <tr><td><strong>5. Understand cost</strong></td><td>Canvas 2 revealed where claim costs were high</td><td>Prevents prioritizing costly customers by mistake</td></tr>
+            <tr><td><strong>6. Make the decision</strong></td><td>Canvas 3 ranked at-risk customers by value and cost</td><td>The workbook became a decision tool, not a report</td></tr>
+          </tbody>
+        </table>
+
+        <div class="tip">
+          <strong>This pattern works beyond insurance.</strong> Replace "premium" with contract value, "churn" with non-renewal, and "claim" with support cost — and this exact process applies to SaaS, retail, banking, or any customer revenue scenario.
+        </div>
+
+        <h3>What's coming in Day 2</h3>
+        <div class="concept">
+          <strong>AI Assistant + OAC Agents:</strong> The workbook you built today becomes the <em>answer key</em> for the next session. You'll ask OAC's AI Assistant to answer the same retention questions — and evaluate whether the AI reaches the same insight you reached manually, or finds something new.
+        </div>
+
+        <h3>Questions to bring to the discussion</h3>
+        <span class="notes-label">📝 Questions I want to ask</span>
+        <textarea class="notes-area" style="min-height:90px;" placeholder="Write any questions that came up during the exercises..."></textarea>
+
+        <span class="notes-label">📝 One thing I'd apply to my own work</span>
+        <textarea class="notes-area" style="min-height:72px;" placeholder="What's one pattern or technique from today you'd use with your actual data?"></textarea>
+
+        <button class="complete-btn" onclick="completeSection(this,'reflection','nc-ref')">✓ Workshop complete 🎉</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  /* ── STEP TOGGLE ── */
+  const personaContent = {
+    alex: {
+      title: "Best first choice: Alex",
+      copy: "Alex combines value at risk, high customer value, and low loss ratio. This is the cleanest first review candidate because the business has revenue to protect without an obvious claim-cost warning."
+    },
+    blair: {
+      title: "Good debate, but review before action",
+      copy: "Blair has high value, but the high loss ratio means claim cost may be eroding profitability. This customer might still matter, but the business should understand the claim history before making a retention offer."
+    },
+    casey: {
+      title: "Lower first priority",
+      copy: "Casey has a manageable loss ratio, but lower customer value. This may be a later outreach candidate, but the strongest first priority is high value plus manageable cost."
+    }
+  };
+
+  document.querySelectorAll('.persona-choice').forEach(button => {
+    button.addEventListener('click', () => {
+      const key = button.dataset.persona;
+      const content = personaContent[key];
+      if (!content) return;
+      document.querySelectorAll('[data-persona-card]').forEach(card => {
+        card.classList.toggle('selected', card.dataset.personaCard === key);
+      });
+      document.getElementById('persona-result-title').textContent = content.title;
+      document.getElementById('persona-result-copy').textContent = content.copy;
+    });
+  });
+
+  const sectionCounts = { ex1:8, ex2:6, ex3:7, ex4:5, ex5:5 };
+  const sectionProgress = {};
+  Object.keys(sectionCounts).forEach(k => sectionProgress[k] = 0);
+
+  function toggleStep(li, sectionKey) {
+    li.classList.toggle('done');
+    if (sectionKey) recalcSection(sectionKey);
+    updateOverall();
+  }
+
+  function recalcSection(key) {
+    const total = sectionCounts[key];
+    if (!total) return;
+    const done = document.querySelectorAll(`#ex${key.replace('ex','')}a .step-list li.done, #ex${key.replace('ex','')}b .step-list li.done, #ex${key.replace('ex','')}c .step-list li.done`).length ||
+                 document.querySelectorAll(`[id^="${key}"] li.done`).length ||
+                 countStepsInSection(key);
+    const fill = document.getElementById(`${key}-fill`);
+    const label = document.getElementById(`${key}-label`);
+    if (fill) fill.style.width = Math.min(100,(done/total)*100)+'%';
+    if (label) label.textContent = `${Math.min(done,total)} / ${total} steps done`;
+  }
+
+  function countStepsInSection(key) {
+    let count = 0;
+    document.querySelectorAll(`.step-list li.done`).forEach(li => {
+      const card = li.closest('.card');
+      if (card && card.id.includes(key.replace('ex','exercise-').replace('exercise-1','exercise-dataset').replace('exercise-2','exercise-metrics').replace('exercise-3','exercise-overview').replace('exercise-4','exercise-lossratio').replace('exercise-5','exercise-retention'))) count++;
+    });
+    return count;
+  }
+
+  /* ── CANVAS CHECKBOX ── */
+  function toggleCanvas(item, sectionKey) {
+    item.classList.toggle('done');
+    item.querySelector('.cc-box').textContent = item.classList.contains('done') ? '✓' : '';
+    if (sectionKey) {
+      const parent = item.closest('.canvas-check');
+      const total  = parent ? parent.querySelectorAll('.cc-item').length : 0;
+      const done   = parent ? parent.querySelectorAll('.cc-item.done').length : 0;
+      const fill  = document.getElementById(`${sectionKey}-fill`);
+      const label = document.getElementById(`${sectionKey}-label`);
+      if (fill && total) fill.style.width = (done/total)*100+'%';
+      if (label && total) label.textContent = `${done} / ${total} steps done`;
+    }
+    updateOverall();
+  }
+
+  /* ── SECTION COMPLETE ── */
+  const sectionDone = {};
+  function completeSection(btn, sectionId, navCheckId) {
+    const isDone = !sectionDone[sectionId];
+    sectionDone[sectionId] = isDone;
+    btn.classList.toggle('done', isDone);
+    btn.textContent = isDone ? '✓ Section complete!' : '✓ Mark complete';
+    const nc = document.getElementById(navCheckId);
+    if (nc) nc.classList.toggle('done', isDone);
+    updateOverall();
+  }
+
+  /* ── OVERALL PROGRESS ── */
+  const totalSections = 8;
+  function updateOverall() {
+    const done = Object.values(sectionDone).filter(Boolean).length;
+    const pct  = Math.round((done / totalSections) * 100);
+    document.getElementById('overall-fill').style.width = pct + '%';
+    document.getElementById('overall-pct').textContent  = pct + '%';
+  }
+
+  /* ── NAV ACTIVE ── */
+  const cards    = document.querySelectorAll('.card[id]');
+  const navLinks = document.querySelectorAll('aside.nav a');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const match = document.querySelector(`aside.nav a[href="#${e.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin:'-20% 0px -70% 0px' });
+  cards.forEach(c => io.observe(c));
+
+  /* ── STEP LIST DELEGATION ── */
+  // Wire step-lists that don't have explicit onclick section keys
+  document.querySelectorAll('.step-list').forEach(list => {
+    list.querySelectorAll('li').forEach(li => {
+      if (!li.getAttribute('onclick')) {
+        li.addEventListener('click', () => { li.classList.toggle('done'); updateOverall(); });
+      }
+    });
+  });
+</script>
+</body>
+</html>
