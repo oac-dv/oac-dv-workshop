@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>oac-dv-workshop</title>
+  <title>From Data to Decisions using Oracle Analytics Cloud</title>
   <style>
     :root {
       --green:#175c32; --teal:#0a7b6f; --blue:#234f7d;
@@ -22,7 +22,7 @@
       position:sticky;top:0;z-index:100;
       box-shadow:0 3px 12px rgba(0,0,0,.25);
     }
-    .topbar-left{display:flex;align-items:center;gap:14px;}
+    .topbar-left{display:flex;align-items:center;gap:14px;min-width:0;}
     .topbar-badge{background:var(--teal);color:white;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;}
     .topbar-title{color:white;font-size:14px;font-weight:800;}
     .progress-wrap{display:flex;align-items:center;gap:10px;}
@@ -38,8 +38,8 @@
     }
     .hero-inner{max-width:860px;margin:0 auto;}
     .eyebrow{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:900;color:#c7efe6;margin:0 0 8px;}
-    h1{margin:0;font-size:36px;line-height:1.1;}
-    .hero-sub{margin:12px 0 0;font-size:16px;color:rgba(255,255,255,.86);max-width:720px;}
+    h1{margin:0;font-size:36px;line-height:1.1;overflow-wrap:break-word;}
+    .hero-sub{margin:12px 0 0;font-size:16px;color:rgba(255,255,255,.86);max-width:860px;line-height:1.55;}
     .hero-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px;}
     .hero-card{border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:14px 16px;background:rgba(255,255,255,.09);}
     .hero-card span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#d8f5ee;font-weight:900;margin-bottom:5px;}
@@ -199,6 +199,11 @@
 
     /* ── RESPONSIVE ── */
     @media(max-width:820px){
+      .topbar{align-items:flex-start;gap:8px;flex-direction:column;}
+      .topbar-left{width:100%;align-items:flex-start;}
+      .topbar-title{white-space:normal;line-height:1.25;}
+      .progress-wrap{width:100%;justify-content:flex-start;}
+      #overall-bar{flex:1;min-width:120px;}
       .layout{grid-template-columns:1fr;padding:14px;}
       aside.nav{position:relative;top:auto;}
       .hero-cards,.story-strip,.canvas-check,.scatter-grid,.mission-grid,.success-grid,.persona-grid,.checkpoint-strip,.screenshot-grid,.download-grid{grid-template-columns:1fr;}
@@ -217,8 +222,8 @@
 <!-- ── TOP BAR ── -->
 <div class="topbar">
   <div class="topbar-left">
-    <span class="topbar-badge">oac-dv-workshop</span>
-    <span class="topbar-title">Oracle Analytics Cloud DV Workshop</span>
+    <span class="topbar-badge">OAC DV Workshop</span>
+    <span class="topbar-title">From Data to Decisions using Oracle Analytics Cloud</span>
   </div>
   <div class="progress-wrap">
     <span class="progress-label">Your progress</span>
@@ -231,8 +236,8 @@
 <header class="hero">
   <div class="hero-inner">
     <p class="eyebrow">Oracle Analytics Cloud · Hands-On Workshop</p>
-    <h1>oac-dv-workshop</h1>
-    <p class="hero-sub">You'll build a real analytics workbook today — starting from raw insurance data and ending with a prioritized list of customers worth retaining. Use the screenshots as checkpoints, not as a replacement for the hands-on build.</p>
+    <h1>From Data to Decisions using Oracle Analytics Cloud</h1>
+    <p class="hero-sub">This hands-on Oracle Analytics Cloud DV workshop guides participants through building an end-to-end analytics workbook, starting with raw insurance data and ending with an actionable retention-priority view. Attendees learn how to upload and join datasets, create business metrics such as churn rate and loss ratio, build interactive visual canvases, apply filters, interpret customer risk patterns, and turn dashboard insights into business decisions about which at-risk customers to retain first.</p>
     <div class="hero-cards">
       <div class="hero-card"><span>What You'll Build</span><strong>3 analysis canvases in OAC</strong></div>
       <div class="hero-card"><span>The Business Question</span><strong>Which at-risk customers do we save first?</strong></div>
