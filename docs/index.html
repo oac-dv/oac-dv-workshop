@@ -579,12 +579,20 @@
             <div class="tip">
               <strong>Why select all sheets?</strong> Each Excel tab holds a different part of the customer story. Selecting all of them lets OAC connect them together, which is what makes the analysis powerful.
             </div>
-            <figure class="reference-shot">
-              <a href="from-data-to-decisions-3hour-assets/screenshot-002.png" target="_blank" rel="noopener">
-                <img src="from-data-to-decisions-3hour-assets/screenshot-002.png" alt="OAC upload screen with all insurance workbook sheets selected">
-              </a>
-              <figcaption>Checkpoint: after upload, all required workbook sheets should be selected before you continue.</figcaption>
-            </figure>
+            <div class="screenshot-grid">
+              <figure class="reference-shot">
+                <a href="from-data-to-decisions-3hour-assets/screenshot-001.png" target="_blank" rel="noopener">
+                  <img src="from-data-to-decisions-3hour-assets/screenshot-001.png" alt="OAC Create menu with Dataset selected">
+                </a>
+                <figcaption>Starting point: from the OAC Home page, choose Create, then Dataset.</figcaption>
+              </figure>
+              <figure class="reference-shot">
+                <a href="from-data-to-decisions-3hour-assets/screenshot-002.png" target="_blank" rel="noopener">
+                  <img src="from-data-to-decisions-3hour-assets/screenshot-002.png" alt="OAC upload screen with all insurance workbook sheets selected">
+                </a>
+                <figcaption>Checkpoint: after upload, all required workbook sheets should be selected before you continue.</figcaption>
+              </figure>
+            </div>
           </div>
         </div>
 
@@ -628,10 +636,22 @@
                 <figcaption>Checkpoint: the join diagram should connect the insurance tables around Customer ID.</figcaption>
               </figure>
               <figure class="reference-shot">
+                <a href="from-data-to-decisions-3hour-assets/screenshot-006.png" target="_blank" rel="noopener">
+                  <img src="from-data-to-decisions-3hour-assets/screenshot-006.png" alt="Join inspection panel showing Customer ID as the join key">
+                </a>
+                <figcaption>Checkpoint: inspect each connection and confirm Customer ID is the join key before saving.</figcaption>
+              </figure>
+              <figure class="reference-shot">
                 <a href="from-data-to-decisions-3hour-assets/screenshot-007.png" target="_blank" rel="noopener">
                   <img src="from-data-to-decisions-3hour-assets/screenshot-007.png" alt="Join conditions between customer premiums and insurance claims">
                 </a>
                 <figcaption>Checkpoint: premium-to-claim logic should match Customer ID and the claim date inside the renewal period.</figcaption>
+              </figure>
+              <figure class="reference-shot">
+                <a href="from-data-to-decisions-3hour-assets/screenshot-009.png" target="_blank" rel="noopener">
+                  <img src="from-data-to-decisions-3hour-assets/screenshot-009.png" alt="Save Dataset As dialog naming the dataset Customer Insurance">
+                </a>
+                <figcaption>Checkpoint: save the dataset as Customer Insurance before opening the workbook.</figcaption>
               </figure>
               <figure class="reference-shot">
                 <a href="from-data-to-decisions-3hour-assets/screenshot-010.png" target="_blank" rel="noopener">
@@ -728,7 +748,7 @@
         <div class="concept"><strong>Business question it answers:</strong> How much net value has this customer generated? Simple signal: premium collected minus claims paid.</div>
         <div class="formula-label"><span>Formula</span><span class="badge">Priority signal</span></div>
         <div class="formula-box">"Premium Amount" - "Insurance Paid"</div>
-        <div class="tip"><strong>How you'll use it:</strong> This score goes on the X-axis of your retention scatterplot in Exercise 5. Higher score = more net value to the business = stronger case for prioritized retention effort.</div>
+        <div class="tip"><strong>How you'll use it:</strong> This score goes on the X-axis of your retention scatterplot in Exercise 5. Higher score = more net value to the business = stronger case for prioritized retention effort. Some source screenshots label this same priority idea as <strong>Customer LTV</strong>; in this 3-hour handout, use the simplified <strong>Customer Value Score</strong> formula above.</div>
         <ul class="step-list">
           <li onclick="toggleStep(this,'ex2')"><div class="step-cb"></div><div class="step-num">6</div><div class="step-text">Create calculation named <strong>Customer Value Score</strong> with the formula above. Save it.</div></li>
         </ul>
@@ -893,10 +913,10 @@
             <figcaption>Design checkpoint: use color so high loss ratio stands out without reading every number.</figcaption>
           </figure>
           <figure class="reference-shot">
-            <a href="from-data-to-decisions-3hour-assets/screenshot-069.png" target="_blank" rel="noopener">
-              <img src="from-data-to-decisions-3hour-assets/screenshot-069.png" alt="Completed Loss Ratio canvas reference">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-070.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-070.png" alt="Completed Loss Ratio canvas reference">
             </a>
-            <figcaption>Target state: the Loss Ratio canvas separates high-value opportunity from high-cost risk.</figcaption>
+            <figcaption>Target state: the completed Loss Ratio canvas separates high-value opportunity from high-cost risk.</figcaption>
           </figure>
         </div>
 
@@ -952,17 +972,25 @@
           </div>
           <div class="exercise-body">
             <ul class="step-list" id="ex5a">
-              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">1</div><div class="step-text">Click the <strong>Filter</strong> icon at the top of the canvas. Add a filter on <strong>Renewal Status</strong> (or equivalent churn/status field). Set it to show only <code>value at risk</code>. Apply the filter.</div></li>
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">1</div><div class="step-text">Create a <strong>Filter Bar</strong>. Add <strong>Status</strong> or <strong>Renewal Status</strong>, plus <strong>Household Type</strong> and <strong>State</strong>. Set the status filter to show only <code>value at risk</code> customers.</div></li>
             </ul>
             <div class="concept">
               <strong>Why filter at the canvas level?</strong> This canvas is only about the customers the business needs to act on. The filter ensures every visualization on this canvas shows that group only — without you needing to repeat the filter on each chart.
             </div>
-            <figure class="reference-shot">
-              <a href="from-data-to-decisions-3hour-assets/screenshot-073.png" target="_blank" rel="noopener">
-                <img src="from-data-to-decisions-3hour-assets/screenshot-073.png" alt="OAC filter bar for at-risk customers">
-              </a>
-              <figcaption>Checkpoint: use a canvas-level filter so every visual focuses on the at-risk customer group.</figcaption>
-            </figure>
+            <div class="screenshot-grid">
+              <figure class="reference-shot">
+                <a href="from-data-to-decisions-3hour-assets/screenshot-073.png" target="_blank" rel="noopener">
+                  <img src="from-data-to-decisions-3hour-assets/screenshot-073.png" alt="OAC visualization type menu with Filter Bar selected">
+                </a>
+                <figcaption>Checkpoint: use the Filter Bar visualization type to create segment controls on the canvas.</figcaption>
+              </figure>
+              <figure class="reference-shot">
+                <a href="from-data-to-decisions-3hour-assets/screenshot-074.png" target="_blank" rel="noopener">
+                  <img src="from-data-to-decisions-3hour-assets/screenshot-074.png" alt="Filter Bar properties showing status, household type, and state controls">
+                </a>
+                <figcaption>Checkpoint: add status, household type, and state as filter controls so the review list can be narrowed quickly.</figcaption>
+              </figure>
+            </div>
           </div>
         </div>
 
@@ -987,7 +1015,7 @@
           <div class="exercise-body">
             <ul class="step-list" id="ex5c">
               <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">4</div><div class="step-text">Create a <strong>Scatter visualization</strong>. Set: <strong>X-axis = Customer Value Score</strong>, <strong>Y-axis = Loss Ratio</strong>, <strong>Category = Customer ID</strong>. Optional: color by Household Type or Good Driver Flag.</div></li>
-              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">5</div><div class="step-text">Use the four-quadrant guide below to interpret which customers are in which zone. Click on dots in the top-right area (high value, low loss ratio) to see those customers highlighted in the table above.</div></li>
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">5</div><div class="step-text">Use the four-quadrant guide below to interpret which customers are in which zone. Click on dots in the lower-right area (high value, low loss ratio) to see those customers highlighted in the table above.</div></li>
             </ul>
           </div>
         </div>
@@ -1016,7 +1044,7 @@
           <a href="from-data-to-decisions-3hour-assets/screenshot-075.png" target="_blank" rel="noopener">
             <img src="from-data-to-decisions-3hour-assets/screenshot-075.png" alt="Retention Priority customer table reference">
           </a>
-          <figcaption>Target output: the table is the practical business artifact: a customer review list sorted by value and interpreted with loss ratio.</figcaption>
+          <figcaption>Target output: the table is the practical business artifact. If the screenshot shows Customer LTV, use your Customer Value Score field for the same retention-priority role.</figcaption>
         </figure>
 
         <h3>✍ The final question — write your answer here</h3>
