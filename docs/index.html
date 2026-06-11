@@ -140,6 +140,23 @@
     .download-action{display:inline-flex;align-items:center;justify-content:center;border-radius:8px;background:var(--green);color:#fff;text-decoration:none;min-height:36px;padding:7px 10px;font-size:13px;font-weight:800;}
     .download-action:hover,.download-action:focus{background:var(--teal);outline:2px solid rgba(10,123,111,.25);outline-offset:2px;}
     .download-action.disabled{background:#dfe6e2;color:#6a756f;cursor:not-allowed;}
+    .day-brief{border:1px solid rgba(255,255,255,.12);border-radius:10px;background:linear-gradient(115deg,#111c2d,#163532 72%,#1d3b35);color:#fff;padding:22px 24px;margin:2px 0 22px;box-shadow:0 16px 32px rgba(20,34,28,.12);}
+    .day-brief.day-two{background:linear-gradient(115deg,#181b34,#242039 68%,#312448);}
+    .day-kicker{display:block;color:#ffc226;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.13em;margin-bottom:7px;}
+    .day-brief h3{color:#fff;font-size:24px;line-height:1.18;margin:0 0 8px;}
+    .day-brief p{max-width:800px;color:#eff6ff;margin:0;}
+    .day-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;}
+    .day-link{display:inline-flex;align-items:center;justify-content:center;min-height:38px;border-radius:8px;background:#5b8dee;color:#fff;text-decoration:none;font-weight:900;font-size:13px;padding:8px 13px;border:1px solid rgba(255,255,255,.18);}
+    .day-link.secondary{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.16);}
+    .day-link:hover,.day-link:focus{outline:2px solid rgba(91,141,238,.35);outline-offset:2px;filter:brightness(1.05);}
+    .overview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:14px 0 24px;}
+    .overview-card{border:1px solid var(--line);border-radius:8px;background:#fff;padding:15px 16px;min-height:160px;box-shadow:0 6px 16px rgba(20,34,28,.05);}
+    .overview-card.outcome{border-color:#e4b52e;box-shadow:0 0 0 1px rgba(214,155,45,.28),0 6px 16px rgba(20,34,28,.05);}
+    .overview-badge{width:24px;height:24px;border-radius:7px;background:#ffc226;color:#17202a;display:grid;place-items:center;font-size:12px;font-weight:900;margin-bottom:10px;}
+    .overview-card h4{margin:0 0 7px;font-size:14px;line-height:1.25;}
+    .overview-card p{font-size:13px;line-height:1.45;margin:0 0 8px;color:var(--ink);}
+    .overview-card ul{margin:8px 0 0;padding-left:18px;color:#314051;font-size:13px;line-height:1.42;}
+    .overview-card li{margin:3px 0;}
     .decision-lab{border:1px solid var(--line);border-radius:10px;background:#f8fbf9;padding:16px;margin:16px 0;}
     .persona-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0;}
     .persona-card{display:grid;grid-template-rows:auto 1fr auto;gap:10px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:13px;min-height:235px;}
@@ -190,6 +207,8 @@
     th{background:var(--green);color:white;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:9px 12px;}
     td{border-top:1px solid var(--line);padding:10px 12px;vertical-align:top;}
     tr:hover td{background:#f8faf9;}
+    .join-map{table-layout:fixed;}
+    .join-map code{white-space:normal;overflow-wrap:anywhere;word-break:break-word;}
 
     /* ── CANVAS CHECKLIST ── */
     .screenshot-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:14px 0;}
@@ -253,7 +272,14 @@
       .hero-story-grid{grid-template-columns:1fr;}
       .layout{grid-template-columns:1fr;padding:14px;}
       aside.nav{position:relative;top:auto;}
-      .story-strip,.canvas-check,.scatter-grid,.mission-grid,.success-grid,.persona-grid,.checkpoint-strip,.screenshot-grid,.download-grid{grid-template-columns:1fr;}
+      .story-strip,.canvas-check,.scatter-grid,.mission-grid,.success-grid,.persona-grid,.checkpoint-strip,.screenshot-grid,.download-grid,.overview-grid{grid-template-columns:1fr;}
+      .join-map{display:block;border:0;background:transparent;}
+      .join-map thead{display:none;}
+      .join-map tbody,.join-map tr,.join-map td{display:block;width:100%;}
+      .join-map tr{border:1px solid var(--line);border-radius:8px;background:#fff;margin:0 0 10px;padding:10px 12px;}
+      .join-map td{border:0;padding:5px 0;}
+      .join-map tr:hover td{background:transparent;}
+      .join-map td::before{content:attr(data-label);display:block;color:var(--green);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
       h1{font-size:31px;}
     }
     @media(min-width:821px) and (max-width:1080px){
@@ -300,7 +326,7 @@
             <div class="hero-point">
               <span>Business Need</span>
               <strong>Find customers likely to churn</strong>
-              <p>Use renewal, premium, claims, and driver signals to explain customer risk.</p>
+              <p>Use renewal, premium, claims, driver, and vehicle signals to explain customer risk.</p>
             </div>
             <div class="hero-point">
               <span>Build In OAC</span>
@@ -356,17 +382,89 @@
           <div class="story-block problem">
             <span>The Problem</span>
             <strong>An insurance company is losing customers.</strong>
-            <p>Some customers are canceling their policies. Every customer who leaves takes future premium revenue with them — but the retention team can't call everyone.</p>
+            <p>Some customers are canceling their policies. Every customer who leaves takes future premium revenue with them, so the retention team needs to figure out who to prioritize and act quickly.</p>
           </div>
           <div class="story-block journey">
             <span>What You'll Do</span>
             <strong>Build a data-backed priority list.</strong>
-            <p>You'll connect four data tables, create six business metrics, and build three analysis canvases to find the right customers to call first.</p>
+            <p>You'll connect five data tables, create six business metrics, and build three analysis canvases to find the right customers to call first.</p>
           </div>
           <div class="story-block outcome">
             <span>The Outcome</span>
             <strong>A decision tool, not just a dashboard.</strong>
             <p>By the end, your workbook will answer: <em>which at-risk customers are worth saving first, and why?</em></p>
+          </div>
+        </div>
+
+        <div class="day-brief" id="day-1-overview">
+          <span class="day-kicker">Day 1 &middot; Hands-On &middot; ~3 Hours</span>
+          <h3>From Data to Decisions using Oracle Analytics Cloud</h3>
+          <p>You're a data analyst at an auto-insurance company. The retention team can't call everyone, so you'll build a data-backed priority list: connect five tables, create six business metrics, and build three canvases to find which at-risk customers to contact first.</p>
+          <div class="day-actions">
+            <a class="day-link" href="#exercise-dataset">Open the live Day 1 workshop</a>
+            <a class="day-link secondary" href="downloads/Car%20Insurance%20-%20Only%20Required%20Data.xlsx" download>Download dataset (XLSX)</a>
+          </div>
+        </div>
+
+        <h3>The decision you're building toward</h3>
+        <p class="lead">A dashboard shows what happened. This workbook tells the business what to do next: <strong>which at-risk customers are worth saving first, and why</strong> using churn risk, customer value, and claim cost.</p>
+
+        <h3>The five exercises</h3>
+        <div class="overview-grid">
+          <div class="overview-card">
+            <div class="overview-badge">1</div>
+            <h4>Build the Dataset Foundation</h4>
+            <p>Connect five tables into one trusted dataset with Policies as the driving table.</p>
+            <ul>
+              <li>Create &rarr; Dataset &rarr; upload the Excel file, select all sheets</li>
+              <li>Set ID fields (Customer ID, Claim ID...) to Attribute</li>
+              <li>Configure left joins in the Diagram and save as Customer Insurance</li>
+            </ul>
+          </div>
+          <div class="overview-card">
+            <div class="overview-badge">2</div>
+            <h4>Create the Six Decision Metrics</h4>
+            <p>Translate raw data into business language with calculations.</p>
+            <ul>
+              <li>Policy Count, Claims Count, Churned Policy Count</li>
+              <li>Churn Rate, Loss Ratio</li>
+              <li>Customer Value Score = Premium - Insurance Paid</li>
+            </ul>
+          </div>
+          <div class="overview-card">
+            <div class="overview-badge">3</div>
+            <h4>Business Overview Canvas</h4>
+            <p>Answer &ldquo;what's the current state of the business?&rdquo;</p>
+            <ul>
+              <li>Tiles: Policy Count, Claims Count, Churn Rate</li>
+              <li>Trend: Claim Amount by date</li>
+              <li>Map: Claim Amount by State</li>
+            </ul>
+          </div>
+          <div class="overview-card">
+            <div class="overview-badge">4</div>
+            <h4>Loss Ratio Canvas</h4>
+            <p>Find where claim costs are high relative to premium.</p>
+            <ul>
+              <li>Loss Ratio by Good Driver Flag and Household Type</li>
+              <li>Map states by Loss Ratio</li>
+              <li>Detail table you can click to filter</li>
+            </ul>
+          </div>
+          <div class="overview-card">
+            <div class="overview-badge">5</div>
+            <h4>Retention Priority Canvas</h4>
+            <p>The payoff: score at-risk customers and make the call list.</p>
+            <ul>
+              <li>Filter bar to value at risk customers</li>
+              <li>Table sorted by Customer Value Score</li>
+              <li>Scatter: Value Score x Loss Ratio in four zones</li>
+            </ul>
+          </div>
+          <div class="overview-card outcome">
+            <div class="overview-badge">&#9733;</div>
+            <h4>Outcome</h4>
+            <p>A decision tool, not just a dashboard: your top customers to contact for retention, with the evidence behind each recommendation.</p>
           </div>
         </div>
 
@@ -380,7 +478,7 @@
           </div>
         </div>
 
-        <h3>The four pieces of data you'll work with</h3>
+        <h3>The five pieces of data you'll work with</h3>
         <table>
           <thead><tr><th>Data Table</th><th>What It Contains</th><th>Why It Matters</th></tr></thead>
           <tbody>
@@ -388,6 +486,7 @@
             <tr><td><strong>Customer Premiums</strong></td><td>How much customers paid, and whether they renewed</td><td>Contains the churn signal — Renewal Status</td></tr>
             <tr><td><strong>Insurance Claims</strong></td><td>Claims filed and money paid out by the company</td><td>Reveals claim cost — used in Loss Ratio</td></tr>
             <tr><td><strong>Drivers</strong></td><td>Drivers on each policy, including Good Driver Flag</td><td>Adds segment context for comparisons</td></tr>
+            <tr><td><strong>Cars Insured</strong></td><td>Vehicles insured on each policy, including driver assignment</td><td>Adds vehicle context and connects cars back to assigned drivers</td></tr>
           </tbody>
         </table>
 
@@ -395,12 +494,12 @@
         <table>
           <thead><tr><th>Metric</th><th>What It Answers</th></tr></thead>
           <tbody>
-            <tr><td><strong>Policy Count</strong></td><td>How many customers do we have?</td></tr>
+            <tr><td><strong>Policy Count</strong></td><td>How many unique customers do we have? (COUNT DISTINCT Customer ID)</td></tr>
             <tr><td><strong>Claims Count</strong></td><td>How many claim events happened?</td></tr>
             <tr><td><strong>Churned Policy Count</strong></td><td>How many customers have already left?</td></tr>
-            <tr><td><strong>Churn Rate</strong></td><td>What percentage of customers churned?</td></tr>
-            <tr><td><strong>Loss Ratio</strong></td><td>For every $1 of premium, how much was paid in claims?</td></tr>
-            <tr><td><strong>Customer Value Score</strong></td><td>Which customers generated the most net value?</td></tr>
+            <tr><td><strong>Churn Rate</strong></td><td>What % of customers churned? (Churned &divide; Policy Count)</td></tr>
+            <tr><td><strong>Loss Ratio</strong></td><td>For every &#36;1 of premium, how much was paid in claims?</td></tr>
+            <tr><td><strong>Customer Value Score</strong></td><td>Net value per customer = Premium - Insurance Paid</td></tr>
           </tbody>
         </table>
 
@@ -533,7 +632,7 @@
 
         <h3>How you will know you are on track</h3>
         <div class="success-grid">
-          <div class="success-card"><strong>After Exercise 1</strong><p>Your workbook has one dataset with all four tables connected.</p></div>
+          <div class="success-card"><strong>After Exercise 1</strong><p>Your workbook has one dataset with all five tables connected.</p></div>
           <div class="success-card"><strong>After Exercise 2</strong><p>Your Data panel shows six saved calculations with no formula errors.</p></div>
           <div class="success-card"><strong>After Exercise 3</strong><p>You can explain the overall business picture in 30 seconds.</p></div>
           <div class="success-card"><strong>After Exercise 5</strong><p>You can name the first customers to review and defend why.</p></div>
@@ -550,16 +649,16 @@
       <div class="card-head">
         <span class="kicker">Exercise 1 of 5</span>
         <h2>Build the Dataset Foundation</h2>
-        <p class="lead">Connect your four data tables and create one trusted dataset. Everything else depends on getting this right.</p>
+        <p class="lead">Connect your five data tables and create one trusted dataset. Everything else depends on getting this right.</p>
       </div>
       <div class="card-body">
 
         <div class="tip">
-          <strong>What you're building:</strong> A single dataset called <em>Customer Insurance</em> that joins Policies, Premiums, Claims, and Drivers together via Customer ID. This is the data layer that all three canvases share.
+          <strong>What you're building:</strong> A single dataset called <em>Customer Insurance</em> that joins Policies, Customer Premiums, Insurance Claims, Drivers, and Cars Insured with Policies as the driving table. This is the data layer that all three canvases share.
         </div>
 
         <div class="section-progress">
-          <span class="sp-label" id="ex1-label">0 / 8 steps done</span>
+          <span class="sp-label" id="ex1-label">0 / 9 steps done</span>
           <span class="sp-percent" id="ex1-percent">0%</span>
           <div class="sp-bar"><div class="sp-fill" id="ex1-fill"></div></div>
         </div>
@@ -574,7 +673,7 @@
               <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">1</div><div class="step-text">From the OAC Home page, click the <strong>Create</strong> button in the top right corner</div></li>
               <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">2</div><div class="step-text">Click <strong>Dataset</strong> from the dropdown menu</div></li>
               <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">3</div><div class="step-text">Click <strong>Drop data file here or click to browse</strong> and select the file: <code>Car Insurance - Only Required Data.xlsx</code></div></li>
-              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">4</div><div class="step-text">When OAC shows the sheet list, <strong>select all sheets</strong> (Policies, Customer Premiums, Insurance Claims, Drivers) — each sheet becomes a separate table in your dataset</div></li>
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">4</div><div class="step-text">When OAC shows the sheet list, <strong>select all sheets</strong> (Policies, Customer Premiums, Insurance Claims, Drivers, Cars Insured) — each sheet becomes a separate table in your dataset</div></li>
             </ul>
             <div class="tip">
               <strong>Why select all sheets?</strong> Each Excel tab holds a different part of the customer story. Selecting all of them lets OAC connect them together, which is what makes the analysis powerful.
@@ -603,10 +702,10 @@
           </div>
           <div class="exercise-body">
             <div class="warn">
-              <strong>Do this before saving.</strong> ID fields (Customer ID, Claim ID, Driver ID) look like numbers, but they are labels — not values to add up. If you skip this step, your counts will be wrong.
+              <strong>Do this before saving.</strong> ID fields (Customer ID, customer_policy_id, Claim ID, Driver ID, Driver Assigned) look like numbers, but they are labels — not values to add up. If you skip this step, your counts will be wrong.
             </div>
             <ul class="step-list" id="ex1b">
-              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">5</div><div class="step-text">For each ID column (Customer ID, Claim ID, Driver ID, etc.), click the column header and look for the data type icon — change it from <strong>Measure (#)</strong> to <strong>Attribute (A)</strong></div></li>
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">5</div><div class="step-text">For each ID column (Customer ID, customer_policy_id, Claim ID, Driver ID, Driver Assigned, etc.), click the column header and look for the data type icon — change it from <strong>Measure (#)</strong> to <strong>Attribute (A)</strong></div></li>
               <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">6</div><div class="step-text">Confirm the change for all ID-style columns before moving on</div></li>
             </ul>
           </div>
@@ -619,33 +718,37 @@
           </div>
           <div class="exercise-body">
             <div class="concept">
-              <strong>What is a join?</strong> A join tells OAC how to connect two tables — "when the Customer ID in Table A matches the Customer ID in Table B, treat those as the same customer." Without joins, the tables are just separate lists.
+              <strong>What is a join?</strong> A join tells OAC how to connect two tables — "when customer_policy_id in Table A matches customer_policy_id in Table B, treat those rows as the same policy/customer." Without joins, the tables are just separate lists.
             </div>
             <ul class="step-list" id="ex1c">
-              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">7</div><div class="step-text">Click the <strong>Diagram</strong> tab to see the join view. Connect all four tables using <strong>Customer ID</strong> as the join key. Draw a line from Policies → Customer Premiums → Insurance Claims → Drivers using Customer ID.</div></li>
-              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">8</div><div class="step-text">For the Customer Premiums ↔ Insurance Claims join: verify the join includes both Customer ID and that the claim date falls within the premium renewal period. Then click <strong>Save</strong> and name the dataset <code>Customer Insurance</code>. Click <strong>Create Workbook</strong>.</div></li>
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">7</div><div class="step-text">Click the <strong>Diagram</strong> tab to see the join view. Make <strong>Policies</strong> the driving table and set <strong>Preserve Grain</strong> to the Policies table.</div></li>
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">8</div><div class="step-text">Configure every connection as a <strong>Left join</strong>. Use the join map below, including both join conditions for <strong>Drivers → Cars Insured</strong>.</div></li>
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">9</div><div class="step-text">Click <strong>Save</strong>, name the dataset <code>Customer Insurance</code>, then click <strong>Create Workbook</strong>.</div></li>
             </ul>
+            <table class="join-map">
+              <thead><tr><th>Join</th><th>Join Type</th><th>Join Conditions</th></tr></thead>
+              <tbody>
+                <tr><td data-label="Join"><strong>Policies to Customer Premiums</strong></td><td data-label="Join Type">Left join</td><td data-label="Join Conditions"><code>Policies.customer_policy_id = Customer Premiums.customer_policy_id</code></td></tr>
+                <tr><td data-label="Join"><strong>Policies to Insurance Claims</strong></td><td data-label="Join Type">Left join</td><td data-label="Join Conditions"><code>Policies.customer_policy_id = Insurance Claims.customer_policy_id</code></td></tr>
+                <tr><td data-label="Join"><strong>Insurance Claims to Drivers</strong></td><td data-label="Join Type">Left join</td><td data-label="Join Conditions"><code>Insurance Claims.customer_policy_id = Drivers.customer_policy_id</code></td></tr>
+                <tr><td data-label="Join"><strong>Drivers to Cars Insured</strong></td><td data-label="Join Type">Left join</td><td data-label="Join Conditions"><code>Drivers.customer_policy_id = Cars Insured.customer_policy_id</code><br><code>Drivers.Driver ID = Cars Insured.Driver Assigned</code></td></tr>
+              </tbody>
+            </table>
             <div class="tip">
-              <strong>Quick check:</strong> After saving, your dataset should show all four table names in the Data panel inside the workbook. If any table is missing, go back to the dataset editor.
+              <strong>Quick check:</strong> After saving, your dataset should show all five table names in the Data panel inside the workbook. If any table is missing, go back to the dataset editor.
             </div>
             <div class="screenshot-grid">
               <figure class="reference-shot">
                 <a href="from-data-to-decisions-3hour-assets/screenshot-003.png" target="_blank" rel="noopener">
                   <img src="from-data-to-decisions-3hour-assets/screenshot-003.png" alt="OAC dataset join diagram connecting insurance tables">
                 </a>
-                <figcaption>Checkpoint: the join diagram should connect the insurance tables around Customer ID.</figcaption>
+                <figcaption>Checkpoint: the join diagram should connect the insurance tables with Policies as the driving table.</figcaption>
               </figure>
               <figure class="reference-shot">
-                <a href="from-data-to-decisions-3hour-assets/screenshot-006.png" target="_blank" rel="noopener">
-                  <img src="from-data-to-decisions-3hour-assets/screenshot-006.png" alt="Join inspection panel showing Customer ID as the join key">
+                <a href="from-data-to-decisions-3hour-assets/screenshot-008.png" target="_blank" rel="noopener">
+                  <img src="from-data-to-decisions-3hour-assets/screenshot-008.png" alt="Drivers to Cars Insured left join with customer policy and driver assignment conditions">
                 </a>
-                <figcaption>Checkpoint: inspect each connection and confirm Customer ID is the join key before saving.</figcaption>
-              </figure>
-              <figure class="reference-shot">
-                <a href="from-data-to-decisions-3hour-assets/screenshot-007.png" target="_blank" rel="noopener">
-                  <img src="from-data-to-decisions-3hour-assets/screenshot-007.png" alt="Join conditions between customer premiums and insurance claims">
-                </a>
-                <figcaption>Checkpoint: premium-to-claim logic should match Customer ID and the claim date inside the renewal period.</figcaption>
+                <figcaption>Checkpoint: Drivers to Cars Insured uses customer_policy_id plus Driver ID = Driver Assigned, with Left (All from Drivers).</figcaption>
               </figure>
               <figure class="reference-shot">
                 <a href="from-data-to-decisions-3hour-assets/screenshot-009.png" target="_blank" rel="noopener">
@@ -1073,7 +1176,7 @@
           <thead><tr><th>Step</th><th>What You Did</th><th>Why It Matters</th></tr></thead>
           <tbody>
             <tr><td><strong>1. Frame the question</strong></td><td>Defined the business problem before opening OAC</td><td>Keeps every build decision tied to a real decision</td></tr>
-            <tr><td><strong>2. Connect the data</strong></td><td>Joined four tables into one trusted dataset</td><td>All metrics are consistent and draw from the same source</td></tr>
+            <tr><td><strong>2. Connect the data</strong></td><td>Joined five tables into one trusted dataset</td><td>All metrics are consistent and draw from the same source</td></tr>
             <tr><td><strong>3. Build the metrics</strong></td><td>Translated raw fields into six business calculations</td><td>Common language — everyone uses the same numbers</td></tr>
             <tr><td><strong>4. Tell the full story</strong></td><td>Canvas 1 showed the overall picture</td><td>Context before action — you always need the baseline</td></tr>
             <tr><td><strong>5. Understand cost</strong></td><td>Canvas 2 revealed where claim costs were high</td><td>Prevents prioritizing costly customers by mistake</td></tr>
@@ -1086,9 +1189,54 @@
         </div>
 
         <h3>What's coming in Day 2</h3>
-        <div class="concept">
-          <strong>AI Assistant + OAC Agents:</strong> The workbook you built today becomes the <em>answer key</em> for the next session. You'll ask OAC's AI Assistant to answer the same retention questions — and evaluate whether the AI reaches the same insight you reached manually, or finds something new.
+        <div class="day-brief day-two" id="day-2-ai-overview">
+          <span class="day-kicker">Day 2 &middot; AI Assistant + OAC Agents</span>
+          <h3>Let the AI answer the same questions</h3>
+          <p>Yesterday you built the retention workbook by hand. Today you'll point OAC's AI Assistant and AI Agents at the same data, ask the retention questions in plain English, and judge whether the AI reaches the same insight you reached manually, or finds something new.</p>
+          <div class="day-actions">
+            <a class="day-link" href="#day-2-steps">Open the live Day 2 workshop</a>
+          </div>
         </div>
+
+        <h3 id="day-2-steps">What you'll do</h3>
+        <div class="overview-grid">
+          <div class="overview-card">
+            <div class="overview-badge">1</div>
+            <h4>Index the dataset</h4>
+            <p>Make your Customer Insurance data searchable so the AI Assistant can answer questions about it.</p>
+          </div>
+          <div class="overview-card">
+            <div class="overview-badge">2</div>
+            <h4>Ask in plain English</h4>
+            <p>&ldquo;Which at-risk customers have the highest value and lowest loss ratio?&rdquo; Compare the AI's chart to your Canvas 3.</p>
+          </div>
+          <div class="overview-card">
+            <div class="overview-badge">3</div>
+            <h4>Use Auto Insights &amp; Explain</h4>
+            <p>Let the AI surface the drivers of churn and explain a suspicious spike on its own.</p>
+          </div>
+          <div class="overview-card">
+            <div class="overview-badge">4</div>
+            <h4>Build an AI Agent</h4>
+            <p>Create a domain agent (RAG) that uses your data and business language so any consumer can ask retention questions conversationally.</p>
+          </div>
+          <div class="overview-card">
+            <div class="overview-badge">5</div>
+            <h4>Evaluate</h4>
+            <p>Did the AI match your manual recommendation? Where did it help, and where does human judgement still matter?</p>
+          </div>
+        </div>
+
+        <h3>Key concepts</h3>
+        <table>
+          <thead><tr><th>Capability</th><th>What It Does</th></tr></thead>
+          <tbody>
+            <tr><td><strong>AI Assistant (Ask)</strong></td><td>Type a question, get a built visualization &mdash; no chart skills needed.</td></tr>
+            <tr><td><strong>Auto Insights / Explain</strong></td><td>Suggests the most interesting charts and explains a column's drivers and anomalies.</td></tr>
+            <tr><td><strong>AI Agents (RAG)</strong></td><td>Domain-specialized chat assistants grounded in your documents and business terms.</td></tr>
+            <tr><td><strong>Generative AI</strong></td><td>Summarize, classify and filter by meaning inside flows, workbooks and datasets.</td></tr>
+          </tbody>
+        </table>
 
         <h3>Questions to bring to the discussion</h3>
         <span class="notes-label">📝 Questions I want to ask</span>
@@ -1134,7 +1282,7 @@
     });
   });
 
-  const sectionCounts = { ex1:8, ex2:6, ex3:7, ex4:5, ex5:5 };
+  const sectionCounts = { ex1:9, ex2:6, ex3:7, ex4:5, ex5:5 };
   const sectionCards = {
     ex1:'exercise-dataset',
     ex2:'exercise-metrics',
