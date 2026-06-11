@@ -134,12 +134,21 @@
     .download-card{border:1px solid var(--line);border-top:4px solid var(--teal);border-radius:8px;background:#fff;padding:14px 15px;display:grid;grid-template-rows:auto auto 1fr auto;gap:8px;min-height:156px;box-shadow:0 6px 16px rgba(20,34,28,.05);}
     .download-card:nth-child(2){border-top-color:var(--ex2);}
     .download-card:nth-child(3){border-top-color:var(--ex5);}
+    .download-card:nth-child(4){border-top-color:var(--blue);}
     .download-card span{display:block;color:var(--muted);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;}
     .download-card strong{font-size:14px;line-height:1.25;}
     .download-card p{font-size:13px;color:var(--muted);margin:0;}
     .download-action{display:inline-flex;align-items:center;justify-content:center;border-radius:8px;background:var(--green);color:#fff;text-decoration:none;min-height:36px;padding:7px 10px;font-size:13px;font-weight:800;}
     .download-action:hover,.download-action:focus{background:var(--teal);outline:2px solid rgba(10,123,111,.25);outline-offset:2px;}
     .download-action.disabled{background:#dfe6e2;color:#6a756f;cursor:not-allowed;}
+    .login-assignment{border:1px solid #dce8ee;border-radius:10px;background:linear-gradient(180deg,#fff,#f4fafc);padding:18px 20px;margin:0 0 20px;box-shadow:0 10px 24px rgba(20,34,28,.08);}
+    .login-assignment-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:start;margin-bottom:13px;}
+    .login-assignment h3{margin:0 0 6px;font-size:20px;}
+    .login-assignment p{font-size:14px;color:var(--ink);margin:0;}
+    .login-assignment-actions{display:flex;flex-wrap:wrap;gap:9px;justify-content:flex-end;}
+    .login-assignment-shot{margin:14px 0 0;border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden;}
+    .login-assignment-shot img{display:block;width:100%;max-height:520px;object-fit:contain;background:#eef3f5;}
+    .login-assignment-shot figcaption{border-top:1px solid var(--line);padding:9px 12px;background:#f8fbf9;color:var(--muted);font-size:12px;font-weight:700;}
     .day-brief{border:1px solid rgba(255,255,255,.12);border-radius:10px;background:linear-gradient(115deg,#111c2d,#163532 72%,#1d3b35);color:#fff;padding:22px 24px;margin:2px 0 22px;box-shadow:0 16px 32px rgba(20,34,28,.12);}
     .day-brief.day-two{background:linear-gradient(115deg,#181b34,#242039 68%,#312448);}
     .day-kicker{display:block;color:#ffc226;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.13em;margin-bottom:7px;}
@@ -273,6 +282,8 @@
       .layout{grid-template-columns:1fr;padding:14px;}
       aside.nav{position:relative;top:auto;}
       .story-strip,.canvas-check,.scatter-grid,.mission-grid,.success-grid,.persona-grid,.checkpoint-strip,.screenshot-grid,.download-grid,.overview-grid{grid-template-columns:1fr;}
+      .login-assignment-head{grid-template-columns:1fr;}
+      .login-assignment-actions{justify-content:flex-start;}
       .join-map{display:block;border:0;background:transparent;}
       .join-map thead{display:none;}
       .join-map tbody,.join-map tr,.join-map td{display:block;width:100%;}
@@ -377,6 +388,25 @@
         <p class="lead">2 minutes to read — then we'll open OAC and start building.</p>
       </div>
       <div class="card-body">
+
+        <div class="login-assignment" id="login-assignments">
+          <div class="login-assignment-head">
+            <div>
+              <h3>Find Your OAC Login Assignment</h3>
+              <p>Each attendee is assigned to one workshop URL and one AD workshop account. Use the assignment guide as a quick group reference, then download the Excel file to confirm the exact username for your email address.</p>
+            </div>
+            <div class="login-assignment-actions">
+              <a class="download-action" href="downloads/oac_user_login_mapping_sorted.xlsx" download>Download assignment XLSX</a>
+              <a class="download-action" href="from-data-to-decisions-3hour-assets/login_assignments.png" target="_blank" rel="noopener">Open assignment guide</a>
+            </div>
+          </div>
+          <figure class="login-assignment-shot">
+            <a href="from-data-to-decisions-3hour-assets/login_assignments.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/login_assignments.png" alt="OAC workshop login assignments guide with instance groups, sign-in steps, and help notes">
+            </a>
+            <figcaption>Checkpoint: find your email in the assignment workbook, open your assigned OAC URL, and sign in with the exact username listed in your row.</figcaption>
+          </figure>
+        </div>
 
         <div class="story-strip">
           <div class="story-block problem">
@@ -592,6 +622,12 @@
               <strong>Car Insurance - Premiums.xlsx</strong>
               <p>Premium data file for workshop reference or facilitator-led variations.</p>
               <a class="download-action" href="downloads/Car%20Insurance%20-%20Premiums.xlsx" download>Download XLSX</a>
+            </div>
+            <div class="download-card">
+              <span>Login Assignments</span>
+              <strong>oac_user_login_mapping_sorted.xlsx</strong>
+              <p>Find the row for your email address, then use the assigned OAC URL and AD workshop account.</p>
+              <a class="download-action" href="downloads/oac_user_login_mapping_sorted.xlsx" download>Download XLSX</a>
             </div>
             <div class="download-card">
               <span>Quickstart</span>
