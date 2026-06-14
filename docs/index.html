@@ -214,7 +214,9 @@
     .screenshot-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:14px 0;}
     .reference-shot{margin:14px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;}
     .screenshot-grid .reference-shot{margin:0;}
+    .screenshot-grid .reference-shot.wide-shot{grid-column:1 / -1;}
     .reference-shot img{display:block;width:100%;max-height:420px;object-fit:contain;background:#f5f7f8;}
+    .reference-shot.wide-shot img{max-height:none;}
     .reference-shot figcaption{border-top:1px solid var(--line);background:#f4f8f6;padding:9px 11px;color:var(--muted);font-size:12px;font-weight:700;}
 
     .canvas-check{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
@@ -940,7 +942,7 @@
         </div>
 
         <div class="section-progress">
-          <span class="sp-label" id="ex3-label">0 / 7 steps done</span>
+          <span class="sp-label" id="ex3-label">0 / 8 steps done</span>
           <span class="sp-percent" id="ex3-percent">0%</span>
           <div class="sp-bar"><div class="sp-fill" id="ex3-fill"></div></div>
         </div>
@@ -961,18 +963,13 @@
           <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Bar: Claim Amount by Date of Incident (Month)</strong><small>Shows claim activity over time. For this bar chart, open Statistics and add Reference, Trend, and Forecast.</small></div></div>
         </div>
 
+        <h3>Final Exercise 3 canvas build</h3>
         <div class="screenshot-grid">
-          <figure class="reference-shot">
-            <a href="from-data-to-decisions-3hour-assets/screenshot-042.png" target="_blank" rel="noopener">
-              <img src="from-data-to-decisions-3hour-assets/screenshot-042.png" alt="Business Overview canvas reference">
+          <figure class="reference-shot wide-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-049.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-049.png" alt="Final Exercise 3 Business Overview canvas build">
             </a>
             <figcaption>This is the final build of Exercise 3: the Business Overview canvas includes the overview text box, four KPI tiles, the state map, household-type donut, and monthly claim amount bar chart.</figcaption>
-          </figure>
-          <figure class="reference-shot">
-            <a href="from-data-to-decisions-3hour-assets/screenshot-048.png" target="_blank" rel="noopener">
-              <img src="from-data-to-decisions-3hour-assets/screenshot-048.png" alt="OAC statistics panel for the Claim Amount by Date of Incident bar chart">
-            </a>
-            <figcaption>For the Claim Amount by Date of Incident (Month) bar chart, open Statistics and add Reference, Trend, and Forecast statistics as shown.</figcaption>
           </figure>
         </div>
 
@@ -1306,7 +1303,7 @@
     });
   });
 
-  const sectionCounts = { ex1:9, ex2:6, ex3:7, ex4:5, ex5:5 };
+  const sectionCounts = { ex1:9, ex2:6, ex3:8, ex4:5, ex5:5 };
   const sectionCards = {
     ex1:'exercise-dataset',
     ex2:'exercise-metrics',
@@ -1340,6 +1337,7 @@
 
   function getSectionItems(key) {
     const card = document.getElementById(sectionCards[key]);
+    if (key === 'ex3') return card ? Array.from(card.querySelectorAll('#ex3-canvas .cc-item')) : [];
     return card ? Array.from(card.querySelectorAll('.step-list li, .cc-item')) : [];
   }
 
