@@ -417,7 +417,7 @@
             <p>Connect five tables into one trusted dataset with Policies as the driving table.</p>
             <ul>
               <li>Create &rarr; Dataset &rarr; upload the Excel file, select all sheets</li>
-              <li>Set ID fields (Customer ID, Claim ID...) to Attribute</li>
+              <li>Set ID fields (customer_policy_id, Claim ID...) to Attribute</li>
               <li>Configure left joins in the Diagram and save as Customer Insurance</li>
             </ul>
           </div>
@@ -494,7 +494,7 @@
         <table>
           <thead><tr><th>Metric</th><th>What It Answers</th></tr></thead>
           <tbody>
-            <tr><td><strong>Policy Count</strong></td><td>How many unique customers do we have? (COUNT DISTINCT Customer ID)</td></tr>
+            <tr><td><strong>Policy Count</strong></td><td>How many unique customers do we have? (COUNT DISTINCT customer_policy_id)</td></tr>
             <tr><td><strong>Claims Count</strong></td><td>How many claim events happened?</td></tr>
             <tr><td><strong>Churned Policy Count</strong></td><td>How many customers have already left?</td></tr>
             <tr><td><strong>Churn Rate</strong></td><td>What % of customers churned? (Churned &divide; Policy Count)</td></tr>
@@ -621,13 +621,13 @@
             <tr><td><strong>Canvas</strong></td><td>One page inside a workbook — you'll build three canvases today</td></tr>
             <tr><td><strong>Visualization</strong></td><td>A chart, table, tile, or map that you drag onto a canvas</td></tr>
             <tr><td><strong>Calculation</strong></td><td>A custom formula you create — like a calculated column in Excel</td></tr>
-            <tr><td><strong>Attribute</strong></td><td>A text/category field — like Customer ID, State, Household Type</td></tr>
+            <tr><td><strong>Attribute</strong></td><td>A text/category field — like customer_policy_id, State, Household Type</td></tr>
             <tr><td><strong>Measure</strong></td><td>A numeric field you can sum or average — like Premium Amount, Claim Amount</td></tr>
           </tbody>
         </table>
 
         <div class="warn">
-          <strong>Important — IDs are attributes, not measures:</strong> Customer ID, Claim ID, and other ID fields look like numbers, but they are <em>labels</em>. In Exercise 1, you'll change these from Measure to Attribute so OAC doesn't try to add them together.
+          <strong>Important — IDs are attributes, not measures:</strong> customer_policy_id, Claim ID, and other ID fields look like numbers, but they are <em>labels</em>. In Exercise 1, you'll change these from Measure to Attribute so OAC doesn't try to add them together.
         </div>
 
         <h3>How you will know you are on track</h3>
@@ -703,10 +703,10 @@
           </div>
           <div class="exercise-body">
             <div class="warn">
-              <strong>Do this before saving.</strong> ID fields (Customer ID, customer_policy_id, Claim ID, Driver ID, Driver Assigned) look like numbers, but they are labels — not values to add up. If you skip this step, your counts will be wrong.
+              <strong>Do this before saving.</strong> ID fields (customer_policy_id, Claim ID, Driver ID, Driver Assigned) look like numbers, but they are labels — not values to add up. If you skip this step, your counts will be wrong.
             </div>
             <ul class="step-list" id="ex1b">
-              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">5</div><div class="step-text">For each ID column (Customer ID, customer_policy_id, Claim ID, Driver ID, Driver Assigned, etc.), click the column header and look for the data type icon — change it from <strong>Measure (#)</strong> to <strong>Attribute (A)</strong></div></li>
+              <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">5</div><div class="step-text">For each ID column (customer_policy_id, Claim ID, Driver ID, Driver Assigned, etc.), click the column header and look for the data type icon — change it from <strong>Measure (#)</strong> to <strong>Attribute (A)</strong></div></li>
               <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">6</div><div class="step-text">Confirm the change for all ID-style columns before moving on</div></li>
             </ul>
           </div>
@@ -720,6 +720,9 @@
           <div class="exercise-body">
             <div class="concept">
               <strong>What is a join?</strong> A join tells OAC how to connect two tables — "when customer_policy_id in Table A matches customer_policy_id in Table B, treat those rows as the same policy/customer." Without joins, the tables are just separate lists.
+            </div>
+            <div class="warn">
+              <strong>Sequence matters:</strong> Finish checking every sheet first. Correct every ID-style column to <strong>Attribute</strong> on each table; only then return to the Join Diagram and build the joins below.
             </div>
             <ul class="step-list" id="ex1c">
               <li onclick="toggleStep(this,'ex1')"><div class="step-cb"></div><div class="step-num">7</div><div class="step-text">Click the <strong>Diagram</strong> tab to see the join view. Make <strong>Policies</strong> the driving table and set <strong>Preserve Grain</strong> to the Policies table.</div></li>
@@ -741,15 +744,15 @@
             <div class="screenshot-grid">
               <figure class="reference-shot">
                 <a href="from-data-to-decisions-3hour-assets/screenshot-003.png" target="_blank" rel="noopener">
-                  <img src="from-data-to-decisions-3hour-assets/screenshot-003.png" alt="OAC dataset join diagram connecting insurance tables">
+                  <img src="from-data-to-decisions-3hour-assets/screenshot-003.png" alt="OAC dataset join diagram with Policies selected as the driving table">
                 </a>
-                <figcaption>Checkpoint: the join diagram should connect the insurance tables with Policies as the driving table.</figcaption>
+                <figcaption>Checkpoint: after all table corrections are done, return to the Join Diagram, select Policies as the driving table, and create the joins.</figcaption>
               </figure>
               <figure class="reference-shot">
                 <a href="from-data-to-decisions-3hour-assets/screenshot-008.png" target="_blank" rel="noopener">
-                  <img src="from-data-to-decisions-3hour-assets/screenshot-008.png" alt="Drivers to Cars Insured left join with customer policy and driver assignment conditions">
+                  <img src="from-data-to-decisions-3hour-assets/screenshot-008.png" alt="OAC dataset sheet showing customer_policy_id set as an Attribute">
                 </a>
-                <figcaption>Checkpoint: Drivers to Cars Insured uses customer_policy_id plus Driver ID = Driver Assigned, with Left (All from Drivers).</figcaption>
+                <figcaption>Before joining: check each sheet for ID-style columns and make sure those IDs are corrected to Attribute, as shown for customer_policy_id.</figcaption>
               </figure>
               <figure class="reference-shot">
                 <a href="from-data-to-decisions-3hour-assets/screenshot-009.png" target="_blank" rel="noopener">
@@ -799,7 +802,7 @@
         <h3>Calculation 1 — Policy Count</h3>
         <div class="concept"><strong>Business question it answers:</strong> How many unique customers do we have in total?</div>
         <div class="formula-label"><span>Formula</span><span class="badge">Customer base</span></div>
-        <div class="formula-box">COUNT(DISTINCT "Customer ID")</div>
+        <div class="formula-box">COUNT(DISTINCT "customer_policy_id")</div>
         <div class="tip"><strong>Why DISTINCT?</strong> After joining tables, one customer can appear on many rows (one per claim, one per premium period). COUNT DISTINCT collapses them back to one count per customer.</div>
         <ul class="step-list" id="ex2">
           <li onclick="toggleStep(this,'ex2')"><div class="step-cb"></div><div class="step-num">1</div><div class="step-text">Create calculation named <strong>Policy Count</strong> with the formula above. Save it.</div></li>
@@ -1105,7 +1108,7 @@
           </div>
           <div class="exercise-body">
             <ul class="step-list" id="ex5b">
-              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">2</div><div class="step-text">Create a <strong>table visualization</strong> with these columns: Customer ID, State, Household Type, Premium Amount, Insurance Paid, Loss Ratio, Customer Value Score</div></li>
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">2</div><div class="step-text">Create a <strong>table visualization</strong> with these columns: customer_policy_id, State, Household Type, Premium Amount, Insurance Paid, Loss Ratio, Customer Value Score</div></li>
               <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">3</div><div class="step-text"><strong>Sort the table</strong> by Customer Value Score — highest first. This creates your initial review list.</div></li>
             </ul>
           </div>
@@ -1118,7 +1121,7 @@
           </div>
           <div class="exercise-body">
             <ul class="step-list" id="ex5c">
-              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">4</div><div class="step-text">Create a <strong>Scatter visualization</strong>. Set: <strong>X-axis = Customer Value Score</strong>, <strong>Y-axis = Loss Ratio</strong>, <strong>Category = Customer ID</strong>. Optional: color by Household Type or Good Driver Flag.</div></li>
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">4</div><div class="step-text">Create a <strong>Scatter visualization</strong>. Set: <strong>X-axis = Customer Value Score</strong>, <strong>Y-axis = Loss Ratio</strong>, <strong>Category = customer_policy_id</strong>. Optional: color by Household Type or Good Driver Flag.</div></li>
               <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">5</div><div class="step-text">Use the four-quadrant guide below to interpret which customers are in which zone. Click on dots in the lower-right area (high value, low loss ratio) to see those customers highlighted in the table above.</div></li>
             </ul>
           </div>
