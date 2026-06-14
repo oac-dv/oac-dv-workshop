@@ -808,8 +808,8 @@
         <h3>Calculation 1 — Policy Count</h3>
         <div class="concept"><strong>Business question it answers:</strong> How many unique customers do we have in total?</div>
         <div class="formula-label"><span>Formula</span><span class="badge">Customer base</span></div>
-        <div class="formula-box">COUNT(DISTINCT "customer_policy_id")</div>
-        <div class="tip"><strong>Why DISTINCT?</strong> After joining tables, one customer can appear on many rows (one per claim, one per premium period). COUNT DISTINCT collapses them back to one count per customer.</div>
+        <div class="formula-box">COUNT(DISTINCT customer_policy_id)</div>
+        <div class="tip"><strong>Why DISTINCT?</strong> Use <strong>customer_policy_id</strong> from the <strong>Policies</strong> table. After joining tables, one customer can appear on many rows (one per claim, one per premium period). COUNT DISTINCT collapses them back to one count per customer.</div>
         <ul class="step-list" id="ex2">
           <li onclick="toggleStep(this,'ex2')"><div class="step-cb"></div><div class="step-num">1</div><div class="step-text">Create calculation named <strong>Policy Count</strong> with the formula above. Save it.</div></li>
         </ul>
@@ -870,13 +870,20 @@
           <strong>Quick check — all 6 saved?</strong> In the Data panel under My Calculations, you should see: Policy Count, Claims Count, Churned Policy Count, Churn Rate, Loss Ratio, Customer Value Score. If any show a zero or error, check that your ID fields are set to Attribute.
         </div>
 
+        <figure class="reference-shot">
+          <a href="from-data-to-decisions-3hour-assets/screenshot-037.png" target="_blank" rel="noopener">
+            <img src="from-data-to-decisions-3hour-assets/screenshot-037.png" alt="OAC My Calculations list showing all six workshop calculations">
+          </a>
+          <figcaption>End of Exercise 2 checkpoint: your My Calculations folder should show all six saved calculations before moving to Canvas 1.</figcaption>
+        </figure>
+
         <h3>Calculation reference screenshots</h3>
         <div class="screenshot-grid">
           <figure class="reference-shot">
             <a href="from-data-to-decisions-3hour-assets/screenshot-027.png" target="_blank" rel="noopener">
               <img src="from-data-to-decisions-3hour-assets/screenshot-027.png" alt="Policy Count calculation in OAC">
             </a>
-            <figcaption>Policy Count: use COUNT DISTINCT so joined claim rows do not over-count customers.</figcaption>
+            <figcaption>Policy Count: use COUNT(DISTINCT customer_policy_id) from the Policies table so joined claim rows do not over-count customers.</figcaption>
           </figure>
           <figure class="reference-shot">
             <a href="from-data-to-decisions-3hour-assets/screenshot-028.png" target="_blank" rel="noopener">
@@ -901,6 +908,12 @@
               <img src="from-data-to-decisions-3hour-assets/screenshot-034.png" alt="Loss Ratio calculation in OAC">
             </a>
             <figcaption>Loss Ratio: compare insurance paid against premium amount and format as a percentage.</figcaption>
+          </figure>
+          <figure class="reference-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-036.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-036.png" alt="Customer Value Score calculation in OAC">
+            </a>
+            <figcaption>Customer Value Score: subtract Insurance Paid from Premium Amount to estimate net customer value.</figcaption>
           </figure>
         </div>
 
