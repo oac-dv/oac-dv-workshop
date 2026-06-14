@@ -949,15 +949,16 @@
           <strong>How to create a visualization:</strong> Double-click a field in the Data panel to add it to the canvas. Or drag a field from the Data panel and drop it on the canvas. OAC will suggest a chart type — you can change it using the chart-type picker in the top-left of the visualization.
         </div>
 
-        <h3>Build these 7 visuals in order</h3>
+        <h3>Build these 8 visuals</h3>
         <div class="canvas-check" id="ex3-canvas">
-          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Policy Count</strong><small>Shows total number of customers. Drag Policy Count → change to Tile type.</small></div></div>
-          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Claims Count</strong><small>Shows total claim events. Same approach as above.</small></div></div>
-          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Churned Policy Count</strong><small>The raw churn number.</small></div></div>
-          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Churn Rate</strong><small>Formatted as %. This is your key business health signal.</small></div></div>
-          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Bar/Line: Claim Amount by Date of Incident</strong><small>Shows claim activity trend over time. Are claims going up or down?</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Text Box: Overview</strong><small>Add a text box that shows Auto Insurance Company and Business Overview.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Policy Count</strong><small>Shows total number of policies. Drag Policy Count → change to Tile type.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Loss Ratio</strong><small>Shows insurance paid as a percentage of premium amount.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Claim Amount</strong><small>Shows total claim amount with supporting claim metrics.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Churned Policy Count</strong><small>Shows the raw churn number and churn rate.</small></div></div>
           <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Map: Claim Amount by State</strong><small>Geographic view. Drag State → Map, then add Claim Amount as the color measure.</small></div></div>
-          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>(Optional) Line: Churn Rate by Renewal Month</strong><small>Only if you have time — shows churn trend over renewal periods.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Donut: Churned Policy Count by Household Type</strong><small>Shows churn distribution across household types.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex3')"><div class="cc-box"></div><div class="cc-text"><strong>Bar: Claim Amount by Date of Incident (Month)</strong><small>Shows claim activity over time. For this bar chart, open Statistics and add Reference, Trend, and Forecast.</small></div></div>
         </div>
 
         <div class="screenshot-grid">
@@ -965,13 +966,13 @@
             <a href="from-data-to-decisions-3hour-assets/screenshot-042.png" target="_blank" rel="noopener">
               <img src="from-data-to-decisions-3hour-assets/screenshot-042.png" alt="Business Overview canvas reference">
             </a>
-            <figcaption>Target state: the Business Overview canvas gives the baseline across customers, claims, churn, time, and geography.</figcaption>
+            <figcaption>This is the final build of Exercise 3: the Business Overview canvas includes the overview text box, four KPI tiles, the state map, household-type donut, and monthly claim amount bar chart.</figcaption>
           </figure>
           <figure class="reference-shot">
-            <a href="from-data-to-decisions-3hour-assets/screenshot-047.png" target="_blank" rel="noopener">
-              <img src="from-data-to-decisions-3hour-assets/screenshot-047.png" alt="Churn rate reference line in OAC">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-048.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-048.png" alt="OAC statistics panel for the Claim Amount by Date of Incident bar chart">
             </a>
-            <figcaption>Optional checkpoint: a churn reference line helps compare actual churn against a target.</figcaption>
+            <figcaption>For the Claim Amount by Date of Incident (Month) bar chart, open Statistics and add Reference, Trend, and Forecast statistics as shown.</figcaption>
           </figure>
         </div>
 
