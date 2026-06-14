@@ -445,7 +445,7 @@
           </div>
           <div class="overview-card">
             <div class="overview-badge">4</div>
-            <h4>Loss Ratio Canvas</h4>
+            <h4>Loss Ratio Analysis Canvas</h4>
             <p>Find where claim costs are high relative to premium.</p>
             <ul>
               <li>Loss Ratio by Good Driver Flag and Household Type</li>
@@ -999,48 +999,42 @@
     <div class="card" id="exercise-lossratio">
       <div class="card-head">
         <span class="kicker">Exercise 4 of 5 · Canvas 2</span>
-        <h2>Loss Ratio Canvas</h2>
+        <h2>Loss Ratio Analysis Canvas</h2>
         <p class="lead">This canvas answers: <em>Where are claim costs high relative to premium collected?</em> Some customers look valuable — until you see their claims.</p>
       </div>
       <div class="card-body">
 
         <div class="tip">
-          <strong>Add a new canvas</strong> called <em>Loss Ratio</em> using the + tab at the bottom of your workbook.
+          <strong>Duplicate the Business Overview canvas</strong>, then rename the copied canvas <em>Loss Ratio Analysis</em>. Keep the overall layout structure, then replace the visuals with the loss-ratio analysis views below.
         </div>
 
         <div class="section-progress">
-          <span class="sp-label" id="ex4-label">0 / 5 steps done</span>
+          <span class="sp-label" id="ex4-label">0 / 10 steps done</span>
           <span class="sp-percent" id="ex4-percent">0%</span>
           <div class="sp-bar"><div class="sp-fill" id="ex4-fill"></div></div>
         </div>
 
-        <h3>Build these 5 visuals</h3>
+        <h3>Create these visuals for loss ratio analysis</h3>
         <div class="canvas-check" id="ex4-canvas">
-          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Loss Ratio</strong><small>The overall company-wide loss ratio. Your benchmark for the rest of the canvas.</small></div></div>
-          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Bar: Loss Ratio by Good Driver Flag</strong><small>Does safe driving behavior correlate with lower claim costs? Drag Good Driver Flag (category), Loss Ratio (value).</small></div></div>
-          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Bar: Loss Ratio by Household Type</strong><small>Do different household types (single, family, etc.) have different cost profiles?</small></div></div>
-          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Map: States colored by Loss Ratio</strong><small>Which states have the highest ratio of claims paid to premium earned?</small></div></div>
-          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Table: State · Policy Count · Claims Count · Premium Amount · Insurance Paid · Loss Ratio</strong><small>The detail view — click any row to filter the whole canvas to that state.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Claim Amount</strong><small>Shows total claim amount with claim count, average claim amount, and average insurance paid.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Tile: Loss Ratio</strong><small>The overall company-wide loss ratio, with premium and insurance paid context.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Tabular Report: Household Type Summary</strong><small>Show Household Type, Policy Count, Premium Amount, Insurance Paid, Loss Ratio, and Claims Count.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Butterfly: Claim Amount vs Insurance Paid by Accident Type</strong><small>Compare claim amount against insurance paid so expensive accident types stand out.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Map: State by Loss Ratio</strong><small>Color states by loss ratio to see where claim cost pressure is highest.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Scatter Plot: Avg Insurance Paid vs Avg Claim Amount</strong><small>Use the scatter plot to spot outliers where paid amounts and claim amounts diverge.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Bar: Loss Ratio by Good Driver Flag</strong><small>Compare loss ratio between good-driver groups.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Bar: Loss Ratio by Gender</strong><small>Compare loss ratio by gender segment.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Bar: Loss Ratio by Marital Status</strong><small>Compare loss ratio for married and single policyholders.</small></div></div>
+          <div class="cc-item" onclick="toggleCanvas(this,'ex4')"><div class="cc-box"></div><div class="cc-text"><strong>Bar: Loss Ratio by Employment Status</strong><small>Compare loss ratio across employment status groups.</small></div></div>
         </div>
 
+        <h3>Final Exercise 4 canvas build</h3>
         <div class="screenshot-grid">
-          <figure class="reference-shot">
-            <a href="from-data-to-decisions-3hour-assets/screenshot-063.png" target="_blank" rel="noopener">
-              <img src="from-data-to-decisions-3hour-assets/screenshot-063.png" alt="Loss Ratio by Good Driver Flag visual">
+          <figure class="reference-shot wide-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-050.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-050.png" alt="Final Exercise 4 Loss Ratio Analysis canvas build">
             </a>
-            <figcaption>Target visual: Loss Ratio by Good Driver Flag should make segment cost differences easy to see.</figcaption>
-          </figure>
-          <figure class="reference-shot">
-            <a href="from-data-to-decisions-3hour-assets/screenshot-067.png" target="_blank" rel="noopener">
-              <img src="from-data-to-decisions-3hour-assets/screenshot-067.png" alt="Loss ratio color assignment in OAC">
-            </a>
-            <figcaption>Design checkpoint: use color so high loss ratio stands out without reading every number.</figcaption>
-          </figure>
-          <figure class="reference-shot">
-            <a href="from-data-to-decisions-3hour-assets/screenshot-070.png" target="_blank" rel="noopener">
-              <img src="from-data-to-decisions-3hour-assets/screenshot-070.png" alt="Completed Loss Ratio canvas reference">
-            </a>
-            <figcaption>Target state: the completed Loss Ratio canvas separates high-value opportunity from high-cost risk.</figcaption>
+            <figcaption>This is the final build of Exercise 4: the Loss Ratio Analysis canvas includes two tiles, a household-type tabular report, one butterfly visualization, one map, one scatter plot, and bar charts for loss ratio analysis.</figcaption>
           </figure>
         </div>
 
@@ -1303,7 +1297,7 @@
     });
   });
 
-  const sectionCounts = { ex1:9, ex2:6, ex3:8, ex4:5, ex5:5 };
+  const sectionCounts = { ex1:9, ex2:6, ex3:8, ex4:10, ex5:5 };
   const sectionCards = {
     ex1:'exercise-dataset',
     ex2:'exercise-metrics',
@@ -1338,6 +1332,7 @@
   function getSectionItems(key) {
     const card = document.getElementById(sectionCards[key]);
     if (key === 'ex3') return card ? Array.from(card.querySelectorAll('#ex3-canvas .cc-item')) : [];
+    if (key === 'ex4') return card ? Array.from(card.querySelectorAll('#ex4-canvas .cc-item')) : [];
     return card ? Array.from(card.querySelectorAll('.step-list li, .cc-item')) : [];
   }
 
