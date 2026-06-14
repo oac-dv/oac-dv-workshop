@@ -458,9 +458,9 @@
             <h4>Retention Priority Canvas</h4>
             <p>The payoff: score at-risk customers and make the call list.</p>
             <ul>
-              <li>Filter bar to value at risk customers</li>
-              <li>Table sorted by Customer Value Score</li>
-              <li>Scatter: Value Score x Loss Ratio in four zones</li>
+              <li>Dashboard filters: Renewal Status, Household Type, State</li>
+              <li>Scatter: Customer Value Score x Loss Ratio by customer_policy_id</li>
+              <li>Customer details table updates from selected scatter points</li>
             </ul>
           </div>
           <div class="overview-card outcome">
@@ -1074,7 +1074,7 @@
       <div class="card-body">
 
         <div class="tip">
-          <strong>Add a new canvas</strong> called <em>Retention Priority</em>. This canvas will only show customers marked as "value at risk" — everything is filtered to that group.
+          <strong>Add a new canvas</strong> called <em>Retention Priority Canvas</em>. This canvas turns the analysis into an action list: use dashboard filters, select customers in the scatter plot, and let the customer details table update with the selected records.
         </div>
 
         <div class="section-progress">
@@ -1085,57 +1085,66 @@
 
         <div class="exercise">
           <div class="exercise-head">
-            <span>Part A — Filter to at-risk customers</span>
+            <span>Part A &mdash; Add Dashboard Filters</span>
             <span class="ex-time">~3 min</span>
           </div>
           <div class="exercise-body">
             <ul class="step-list" id="ex5a">
-              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">1</div><div class="step-text">Create a <strong>Filter Bar</strong>. Add <strong>Status</strong> or <strong>Renewal Status</strong>, plus <strong>Household Type</strong> and <strong>State</strong>. Set the status filter to show only <code>value at risk</code> customers.</div></li>
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">1</div><div class="step-text">Create <strong>Dashboard Filters</strong> with <strong>Renewal Status</strong>, <strong>Household Type</strong>, and <strong>State</strong>. Use these filters to narrow the customer group before prioritizing retention.</div></li>
             </ul>
             <div class="concept">
-              <strong>Why filter at the canvas level?</strong> This canvas is only about the customers the business needs to act on. The filter ensures every visualization on this canvas shows that group only — without you needing to repeat the filter on each chart.
-            </div>
-            <div class="screenshot-grid">
-              <figure class="reference-shot">
-                <a href="from-data-to-decisions-3hour-assets/screenshot-073.png" target="_blank" rel="noopener">
-                  <img src="from-data-to-decisions-3hour-assets/screenshot-073.png" alt="OAC visualization type menu with Filter Bar selected">
-                </a>
-                <figcaption>Checkpoint: use the Filter Bar visualization type to create segment controls on the canvas.</figcaption>
-              </figure>
-              <figure class="reference-shot">
-                <a href="from-data-to-decisions-3hour-assets/screenshot-074.png" target="_blank" rel="noopener">
-                  <img src="from-data-to-decisions-3hour-assets/screenshot-074.png" alt="Filter Bar properties showing status, household type, and state controls">
-                </a>
-                <figcaption>Checkpoint: add status, household type, and state as filter controls so the review list can be narrowed quickly.</figcaption>
-              </figure>
+              <strong>Why these filters?</strong> Renewal Status identifies the retention population, while Household Type and State help narrow the recommendation to a practical customer segment.
             </div>
           </div>
         </div>
 
         <div class="exercise">
           <div class="exercise-head">
-            <span>Part B — Build the customer table</span>
+            <span>Part B &mdash; Build the retention scatter plot</span>
             <span class="ex-time">~5 min</span>
           </div>
           <div class="exercise-body">
             <ul class="step-list" id="ex5b">
-              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">2</div><div class="step-text">Create a <strong>table visualization</strong> with these columns: customer_policy_id, State, Household Type, Premium Amount, Insurance Paid, Loss Ratio, Customer Value Score</div></li>
-              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">3</div><div class="step-text"><strong>Sort the table</strong> by Customer Value Score — highest first. This creates your initial review list.</div></li>
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">2</div><div class="step-text">Create a <strong>Scatter visualization</strong>. Set <strong>X-axis = Customer Value Score</strong>, <strong>Y-axis = Loss Ratio</strong>, and <strong>Category = customer_policy_id</strong>.</div></li>
             </ul>
           </div>
         </div>
 
         <div class="exercise">
           <div class="exercise-head">
-            <span>Part C — Build the scatterplot</span>
+            <span>Part C &mdash; Build the customer details table</span>
             <span class="ex-time">~7 min</span>
           </div>
           <div class="exercise-body">
             <ul class="step-list" id="ex5c">
-              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">4</div><div class="step-text">Create a <strong>Scatter visualization</strong>. Set: <strong>X-axis = Customer Value Score</strong>, <strong>Y-axis = Loss Ratio</strong>, <strong>Category = customer_policy_id</strong>. Optional: color by Household Type or Good Driver Flag.</div></li>
-              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">5</div><div class="step-text">Use the four-quadrant guide below to interpret which customers are in which zone. Click on dots in the lower-right area (high value, low loss ratio) to see those customers highlighted in the table above.</div></li>
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">3</div><div class="step-text">Create a <strong>tabular report</strong> with customer_policy_id, State, Household Type, Premium Amount, Insurance Paid, Loss Ratio, and Customer Value Score.</div></li>
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">4</div><div class="step-text"><strong>Sort the table</strong> by Customer Value Score, highest first, so the strongest retention opportunities rise to the top.</div></li>
+              <li onclick="toggleStep(this,'ex5')"><div class="step-cb"></div><div class="step-num">5</div><div class="step-text">Select scatter points with <strong>high Customer Value Score</strong> and <strong>low Loss Ratio</strong>. Confirm the table updates to show the customer details to check and prioritize for retention.</div></li>
             </ul>
+            <div class="concept">
+              <strong>How to use the canvas:</strong> The scatter plot finds attractive retention targets; the table provides the customer_policy_id and financial details needed for follow-up.
+            </div>
           </div>
+        </div>
+
+        <h3>Retention Priority setup screenshot</h3>
+        <div class="screenshot-grid">
+          <figure class="reference-shot wide-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-051.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-051.png" alt="Retention Priority scatter plot setup with Customer Value Score, Loss Ratio, and customer_policy_id">
+            </a>
+            <figcaption>Scatter setup: use Customer Value Score on the X-axis, Loss Ratio on the Y-axis, and customer_policy_id as the point category.</figcaption>
+          </figure>
+        </div>
+
+        <h3>Final Exercise 5 canvas build</h3>
+        <div class="screenshot-grid">
+          <figure class="reference-shot wide-shot">
+            <a href="from-data-to-decisions-3hour-assets/screenshot-052.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/screenshot-052.png" alt="Final Exercise 5 Retention Priority Canvas build">
+            </a>
+            <figcaption>This is the final build of Exercise 5: dashboard filters, a Customer Value Score versus Loss Ratio scatter plot, and a customer details table that updates when scatter points are selected.</figcaption>
+          </figure>
         </div>
 
         <h3>Reading the scatterplot — the four zones</h3>
@@ -1157,13 +1166,6 @@
             <p>Low Value Score + High Loss Ratio. Low value and high cost. Not where to focus retention effort.</p>
           </div>
         </div>
-
-        <figure class="reference-shot">
-          <a href="from-data-to-decisions-3hour-assets/screenshot-075.png" target="_blank" rel="noopener">
-            <img src="from-data-to-decisions-3hour-assets/screenshot-075.png" alt="Retention Priority customer table reference">
-          </a>
-          <figcaption>Target output: the table is the practical business artifact. If the screenshot shows Customer LTV, use your Customer Value Score field for the same retention-priority role.</figcaption>
-        </figure>
 
         <h3>✍ The final question — write your answer here</h3>
         <div class="warn">
