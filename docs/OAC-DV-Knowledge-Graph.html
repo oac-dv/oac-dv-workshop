@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OAC DV Knowledge Hub</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.9/dist/vis-network.min.js"></script>
+<style>
+  :root{--bg:#0a0e16;--bg2:#0c111b;--panel:#111824;--panel2:#151d2b;--line:#222c3c;--line2:#2c3849;
+    --ink:#eef2f8;--muted:#8b97ac;--red:#d4524a;--gold:#f0b429;--accent:#6195f5;}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
+  #app{display:flex;flex-direction:column;height:100vh}
+  header{display:flex;align-items:center;gap:14px;padding:12px 20px;background:linear-gradient(180deg,#121a28,#0e1521);border-bottom:1px solid var(--line);z-index:8}
+  header .logo{width:30px;height:30px;border-radius:7px;background:radial-gradient(circle at 30% 30%,#f0b429,#d4524a);flex:0 0 30px}
+  header h1{font-size:17px;margin:0;font-weight:800}
+  header .sub{font-size:11.5px;color:var(--muted);margin-top:1px}
+  header .sub b{color:var(--gold)}
+  header .grow{flex:1}
+  #search{background:#0c121b;border:1px solid var(--line);border-radius:9px;color:#fff;padding:9px 13px;font-size:14px;width:210px;max-width:28vw}
+  #search::placeholder{color:#6b7d92}
+  .btnh{background:#19212f;border:1px solid var(--line2);color:var(--ink);border-radius:10px;padding:9px 13px;font-size:13px;cursor:pointer;white-space:nowrap;transition:border-color .15s,background .15s}
+  .btnh:hover{border-color:var(--accent);background:#1d2636}
+  .btnh.gold{background:rgba(240,180,41,.16);border-color:var(--gold);color:var(--gold);font-weight:700}
+  .btnh.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+  /* tabs */
+  #tabs{display:flex;gap:4px;padding:0 16px;background:#0c1320;border-bottom:1px solid var(--line);z-index:7}
+  .tab{display:flex;align-items:center;gap:8px;padding:12px 16px;font-size:14px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;font-weight:600}
+  .tab:hover{color:var(--ink)}
+  .tab.active{color:#fff;border-bottom-color:var(--accent)}
+  .tab .tn{font-size:11px;color:#5e6f84}
+  /* views */
+  #stage{flex:1;position:relative;min-height:0}
+  .view{position:absolute;inset:0;display:none}
+  .view.show{display:block}
+  .netwrap{position:absolute;inset:0;background:radial-gradient(900px 600px at 50% 40%, #141d2d 0%, #0c111b 60%, #090d14 100%)}
+  .net{position:absolute;inset:0}
+  .backBtn{position:absolute;top:16px;left:16px;z-index:7;display:none;align-items:center;gap:6px;background:var(--accent);border:0;color:#fff;border-radius:30px;padding:11px 18px;font-size:14.5px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.45)}
+  .backBtn:hover{background:#3c86d4}
+  .legend{position:absolute;left:14px;bottom:14px;background:rgba(17,24,36,.95);border:1px solid var(--line2);border-radius:12px;padding:12px 12px 8px;font-size:13px;max-width:260px;backdrop-filter:blur(4px)}
+  .legend h4{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .lg{display:flex;align-items:center;gap:9px;margin:3px 0;cursor:pointer;padding:5px 7px;border-radius:8px}
+  .lg:hover{background:rgba(255,255,255,.06)}
+  .lg.active{background:rgba(255,255,255,.1)}
+  .lg.focus{outline:1px solid rgba(240,180,41,.5)}
+  .lg .d{width:13px;height:13px;border-radius:50%;flex:0 0 13px}
+  .lg .lgn{flex:1}
+  .lg .lgc{color:var(--muted);font-size:11.5px}
+  .guidestrip{position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:6;background:rgba(17,24,36,.9);border:1px solid var(--line2);border-radius:30px;padding:8px 16px;font-size:12.5px;color:var(--muted);max-width:70%}
+  .guidestrip b{color:var(--gold)}
+  /* shared panel */
+  #panel{position:absolute;top:16px;right:16px;width:366px;max-width:92vw;background:rgba(16,22,33,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line2);border-radius:16px;transform:translateX(410px);transition:transform .28s cubic-bezier(.2,.7,.2,1);box-shadow:0 24px 64px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);max-height:calc(100% - 32px);display:flex;flex-direction:column;z-index:9}
+  #panel.open{transform:translateX(0)}
+  #panel .ph{padding:16px 18px 14px;border-bottom:1px solid var(--line);position:relative;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);border-radius:16px 16px 0 0}
+  #panel .cat{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+  #panel h3{margin:5px 64px 0 0;font-size:19px;line-height:1.25}
+  #panel .x{position:absolute;top:11px;right:11px;background:#27313f;border:0;color:#fff;width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:15px}
+  #panel .star{position:absolute;top:11px;right:46px;background:#27313f;border:0;color:#8a9bb0;width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:15px}
+  #panel .star.on{color:var(--gold)}
+  #panel .star:hover{color:#fff}
+  #panel .pb{padding:14px 18px;overflow-y:auto}
+  #panel p.desc{margin:0 0 8px;font-size:14px;color:#cdd8e4;line-height:1.55}
+  #panel .lab{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);margin:14px 0 5px}
+  #panel ul.dl{margin:4px 0 6px;padding-left:18px}
+  #panel ul.dl li{font-size:13.5px;color:#cdd8e4;margin:5px 0;line-height:1.5}
+  #panel .rel{display:flex;flex-wrap:wrap;gap:7px}
+  #panel .rel span{background:#222d3d;border:1px solid var(--line);border-radius:20px;padding:5px 11px;font-size:12.5px;cursor:pointer}
+  #panel .rel span:hover{border-color:var(--accent);color:#fff}
+  #panel a.doc{display:inline-block;margin-top:10px;background:var(--red);color:#fff;text-decoration:none;padding:10px 14px;border-radius:9px;font-weight:700;font-size:13.5px}
+  #panel a.doc:hover{background:#bf463e}
+  .subs{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+  .subs a{display:flex;justify-content:space-between;gap:8px;background:#161f2c;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:9px;padding:9px 12px;font-size:13px;color:#cdd8e4;text-decoration:none}
+  .subs a:hover{background:#1c2636;border-left-color:var(--gold);color:#fff}
+  .subs a .ar{color:var(--muted)}
+  .subs a:hover .ar{color:var(--gold)}
+  .psplit{display:flex;flex-direction:column;gap:8px;margin:2px 0 8px}
+  .ppath{display:flex;align-items:center;gap:12px;text-align:left;width:100%;background:#161f2c;border:1px solid var(--line);border-left:4px solid var(--rc,#888);border-radius:11px;padding:11px 13px;cursor:pointer;color:var(--ink)}
+  .ppath:hover{background:#1c2636;border-left-color:var(--rc)}
+  .ppath .pe{font-size:22px;flex:0 0 26px;text-align:center}
+  .ppath b{font-size:14px;color:#fff}
+  .ppath .ps{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+  /* ask-the-docs search dropdown */
+  #searchResults{position:fixed;top:58px;right:20px;width:420px;max-width:92vw;max-height:74vh;overflow:auto;background:rgba(16,22,33,.98);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line2);border-radius:14px;box-shadow:0 24px 64px rgba(0,0,0,.6);z-index:40;display:none;padding:8px}
+  #searchResults.open{display:block}
+  #searchResults a{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 12px;border-radius:9px;text-decoration:none;color:var(--ink);border:1px solid transparent}
+  #searchResults a:hover{background:#1c2636;border-color:var(--line)}
+  #searchResults .srt{font-size:13.5px}
+  #searchResults .srtag{font-size:11px;color:var(--muted);white-space:nowrap}
+  #searchResults .sr-ans{background:rgba(240,180,41,.12);border:1px solid rgba(240,180,41,.32);border-radius:10px;padding:11px 13px;margin:4px 4px 8px;font-size:13.5px;color:#dbe4f0;line-height:1.5}
+  #searchResults .sr-ans .sr-at{font-weight:800;color:var(--gold);margin-bottom:4px}
+  #searchResults .sr-none{padding:12px;color:var(--muted);font-size:13px}
+  .subs a .psum{color:var(--muted);font-size:12px;font-weight:400}
+  .subs a .srt{line-height:1.4}
+  /* second panel (topics) + graph shift */
+  #view-topics .net{transition:right .3s ease}
+  #view-topics.detail .net{right:744px}
+  #panel2{position:absolute;top:16px;right:392px;width:338px;max-width:92vw;background:rgba(16,22,33,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line2);border-radius:16px;transform:translateX(30px);opacity:0;pointer-events:none;transition:transform .26s cubic-bezier(.2,.7,.2,1),opacity .2s;box-shadow:0 24px 64px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);max-height:calc(100% - 32px);display:flex;flex-direction:column;z-index:9}
+  #panel2.open{transform:translateX(0);opacity:1;pointer-events:auto}
+  #panel2 .ph{padding:16px 18px 14px;border-bottom:1px solid var(--line);position:relative;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);border-radius:16px 16px 0 0}
+  #panel2 .cat{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--gold)}
+  #panel2 h3{margin:5px 0 0;font-size:18px;line-height:1.25}
+  #panel2 .pb{padding:14px 18px;overflow-y:auto}
+  @media(max-width:1100px){#view-topics.detail .net{right:16px}#panel2{right:392px;top:auto;bottom:16px;max-height:42%}}
+  /* day pages */
+  .page{position:absolute;inset:0;overflow-y:auto;padding:0}
+  .page .inner{max-width:1080px;margin:0 auto;padding:30px 28px 80px}
+  .hero{border-radius:18px;padding:30px 32px;background:linear-gradient(135deg,#16202f,#101826);border:1px solid var(--line2);position:relative;overflow:hidden}
+  .hero.dv{background:linear-gradient(135deg,#1a2433,#1d2a1f 160%)}
+  .hero.ai{background:linear-gradient(135deg,#1a2030,#241a33 160%)}
+  .hero .kick{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--gold)}
+  .hero h2{margin:8px 0 8px;font-size:28px}
+  .hero p{margin:0;color:#cdd8e4;font-size:16px;max-width:760px;line-height:1.6}
+  .hero .cta{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+  .hero a.cta-btn{background:var(--accent);color:#fff;text-decoration:none;padding:11px 18px;border-radius:10px;font-weight:700;font-size:14px}
+  .hero a.cta-btn.alt{background:#222d3d;border:1px solid var(--line2)}
+  .hero a.cta-btn:hover{filter:brightness(1.08)}
+  h3.sec{font-size:20px;margin:30px 0 6px}
+  .lead{color:var(--muted);font-size:15px;margin:0 0 14px;max-width:780px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin:14px 0}
+  .ex{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+  .ex .n{display:inline-block;background:var(--gold);color:#1a1208;font-weight:800;border-radius:8px;padding:3px 9px;font-size:12px;margin-bottom:8px}
+  .ex h4{margin:0 0 6px;font-size:16px}
+  .ex p{margin:0;color:#cdd8e4;font-size:13.5px;line-height:1.55}
+  .ex ul{margin:8px 0 0;padding-left:18px;color:#aeb9c9;font-size:13px;line-height:1.5}
+  table.wt{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;background:var(--panel);border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+  table.wt th{background:#0e1521;text-align:left;padding:10px 13px;color:#cdd8e4;font-size:12.5px;text-transform:uppercase;letter-spacing:.04em}
+  table.wt td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top;color:#dde6f2}
+  table.wt td b{color:#fff}
+  .note{background:rgba(97,149,245,.1);border:1px solid rgba(97,149,245,.3);border-radius:12px;padding:14px 16px;margin:14px 0;font-size:14px;color:#cdd8e4}
+  .note b{color:#fff}
+  .dl-row{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0}
+  .dl-row a{background:#1a2433;border:1px solid var(--line2);border-radius:10px;padding:12px 16px;text-decoration:none;color:var(--ink);font-size:13.5px}
+  .dl-row a:hover{border-color:var(--accent)}
+  .dl-row a b{display:block;color:#fff;font-size:14px;margin-bottom:2px}
+  /* persona explorer (premium cards) */
+  .phero{margin-bottom:22px}
+  .phero .kick{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--gold)}
+  .phero h2{margin:6px 0 6px;font-size:27px}
+  .phero p{margin:0;color:#cdd8e4;font-size:15px;max-width:840px;line-height:1.6}
+  .ptiers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start;margin-top:8px}
+  .prolechips{display:flex;flex-wrap:wrap;gap:7px;margin:2px 0 8px}
+  .prolechips span{background:#141c28;border:1px solid var(--line2);border-radius:20px;padding:5px 11px;font-size:12px;color:#cdd8e4}
+  .capnote{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);margin:8px 0 6px}
+  .capx{display:block;background:#141c28;border:1px solid var(--line);border-left:3px solid var(--muted);border-radius:9px;padding:9px 12px;font-size:13px;color:#cdd8e4}
+  @media(max-width:1000px){.ptiers{grid-template-columns:1fr}}
+  .ptier{background:var(--panel);border:1px solid var(--line2);border-radius:18px;overflow:hidden;box-shadow:0 14px 36px rgba(0,0,0,.34)}
+  .ptier-head{display:flex;align-items:center;gap:14px;padding:20px 22px;color:#fff;position:relative}
+  .ptier-head::after{content:"";position:absolute;inset:0;background:radial-gradient(120px 80px at 85% -20%,rgba(255,255,255,.25),transparent);pointer-events:none}
+  .ptier-head .pemoji{font-size:30px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+  .ptname{font-size:19px;font-weight:800;letter-spacing:-.01em}
+  .pbadge{display:inline-block;margin-top:5px;background:rgba(255,255,255,.22);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+  .ptier-body{padding:18px;display:flex;flex-direction:column;gap:11px}
+  .ptdesc{margin:0 0 4px;color:#cdd8e4;font-size:14px;line-height:1.55}
+  .prole-cta{align-self:flex-start;background:var(--accent);border:0;color:#fff;border-radius:10px;padding:11px 16px;font-size:13.5px;font-weight:700;cursor:pointer}
+  .prole-cta:hover{filter:brightness(1.08)}
+  .prole{display:flex;align-items:center;gap:13px;width:100%;text-align:left;background:#141c28;border:1px solid var(--line);border-left:4px solid var(--rc,#888);border-radius:13px;padding:13px 15px;cursor:pointer;transition:transform .13s,border-color .13s,background .13s,box-shadow .13s}
+  .prole:hover{transform:translateY(-3px);background:#18212f;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+  .prole .premoji{font-size:23px;flex:0 0 28px;text-align:center}
+  .prinfo{flex:1;display:flex;flex-direction:column}
+  .prname{font-size:15.5px;font-weight:700;color:#fff}
+  .prsub{font-size:12px;color:var(--muted);margin-top:2px}
+  .parrow{color:var(--muted);font-weight:800;font-size:16px}
+  .prole:hover .parrow{color:#fff}
+  /* overlays */
+  .ov{position:absolute;inset:0;background:rgba(8,12,18,.82);display:flex;align-items:center;justify-content:center;z-index:30;backdrop-filter:blur(3px)}
+  .ov.hide{display:none}
+  .card{background:#141c28;border:1px solid var(--line2);border-radius:18px;max-width:560px;width:92%;padding:28px 30px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .card.big{max-width:660px;max-height:84vh;display:flex;flex-direction:column;padding:0}
+  .card .tagline{color:var(--gold);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+  .card h2{margin:4px 0 6px;font-size:24px}
+  .card p{color:#cdd8e4;font-size:15px;line-height:1.6}
+  .card ol{color:#cdd8e4;font-size:15px;line-height:1.7;padding-left:22px;margin:10px 0 18px}
+  .card ol b{color:#fff}
+  .ahead{padding:22px 26px 14px;border-bottom:1px solid var(--line)}
+  .ahead .x{float:right;background:#27313f;border:0;color:#fff;width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:16px}
+  .abody{padding:8px 22px 18px;overflow-y:auto}
+  .acount{color:var(--muted);font-size:13px;margin:8px 4px 12px}
+  .arow{display:flex;gap:12px;padding:11px 8px;border-bottom:1px dashed var(--line)}
+  .anum{flex:0 0 34px;height:34px;border-radius:50%;background:var(--gold);color:#1a1208;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+  .ainfo{flex:1;min-width:0}
+  .at{font-size:15px;font-weight:700}
+  .at .apart{font-size:11.5px;font-weight:600;margin-left:6px}
+  .ad{font-size:13px;color:var(--muted);margin:3px 0 7px;line-height:1.5}
+  .aacts{display:flex;gap:8px;flex-wrap:wrap}
+  .aacts button,.aacts a{font-size:12px;border-radius:7px;padding:6px 10px;cursor:pointer;text-decoration:none;border:1px solid var(--line);background:#222d3d;color:var(--ink)}
+  .aacts a{background:var(--red);color:#fff;border-color:var(--red)}
+  .afoot{padding:12px 22px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap}
+  @media(max-width:760px){.legend{display:none}.guidestrip{display:none}#search{width:120px}.tab .tn{display:none}}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="logo"></div>
+    <div>
+      <h1>OAC DV Knowledge Hub</h1>
+      <div class="sub">Knowledge maps + a hands-on workshop · focus: <b>Visualize Data</b> · use case: auto-insurance retention</div>
+    </div>
+    <div class="grow"></div>
+    <input id="search" type="search" placeholder="Ask the docs… e.g. time zones, parameters" oninput="onSearch(this.value)" autocomplete="off">
+    <button class="btnh gold" id="agendaBtn" onclick="openAgenda()">🎤 Demo agenda</button>
+    <button class="btnh" onclick="showIntro()">？ Help</button>
+  </header>
+
+  <div id="searchResults"></div>
+  <div id="tabs">
+    <div class="tab active" data-tab="welcome" onclick="showTab('welcome')">👋 Welcome <span class="tn">start here</span></div>
+    <div class="tab" data-tab="personas" onclick="showTab('personas')">👥 Personas <span class="tn">3 user types</span></div>
+    <div class="tab" data-tab="topics" onclick="showTab('topics')">🗺️ Topic Map <span class="tn">6 parts · 41 chapters</span></div>
+    <div class="tab" data-tab="day1" onclick="showTab('day1')">📅 Day 1 <span class="tn">DV hands-on</span></div>
+    <div class="tab" data-tab="day2" onclick="showTab('day2')">🤖 Day 2 <span class="tn">AI Assistant + Agents</span></div>
+  </div>
+
+  <div id="stage">
+    <!-- TOPIC MAP -->
+    <div class="view" id="view-topics">
+      <div class="netwrap"><div class="net" id="netTopics"></div></div>
+      <button class="backBtn" id="back-topics" onclick="G_TOPIC.overview()">‹ Back to all parts</button>
+      <div class="guidestrip" id="guide-topics"></div>
+      <div class="legend"><h4>The 6 parts — jump in</h4><div id="legend-topics"></div></div>
+    </div>
+    <!-- WELCOME -->
+    <div class="view show" id="view-welcome"><div class="page"><div class="inner">
+      <div class="hero" style="background:linear-gradient(135deg,#16202f,#101826 55%,#1a2433 165%)">
+        <div class="kick">OAC DV Knowledge Hub · Welcome</div>
+        <h2>From data to decisions — a two-day OAC Data Visualization workshop</h2>
+        <p>Welcome! Over two days we'll turn Oracle Analytics Cloud Data Visualization from a list of features into something you can actually use. <b>Day 1</b> is a hands-on build around one real problem — keeping auto-insurance customers from leaving. <b>Day 2</b> goes deep on OAC's AI features: how to enable them, get effective answers, and tune them with a feedback pipeline so the responses keep getting better.</p>
+        <div class="cta">
+          <a class="cta-btn" style="cursor:pointer" onclick="showTab('personas')">👥 Meet the personas</a>
+          <a class="cta-btn alt" style="cursor:pointer" onclick="showTab('topics')">🗺️ Explore the topics</a>
+          <a class="cta-btn alt" style="cursor:pointer" onclick="showTab('day1')">📅 Jump to Day 1</a>
+        </div>
+      </div>
+
+      <h3 class="sec">📊 What is Oracle Analytics Data Visualization?</h3>
+      <p class="lead">OAC Data Visualization (DV) is the self-service analytics layer of Oracle Analytics Cloud. It lets you connect to data, shape it, and explore it visually — without writing code.</p>
+      <p class="lead">You bring data together into <b>datasets</b>, then build <b>workbooks</b> made of <b>canvases</b> and <b>visualizations</b> — 40+ chart types created by dragging columns. You make them interactive with filters, parameters and data actions; let the platform surface patterns automatically with Auto Insights and Explain; and ask questions in plain English using the built-in AI Assistant and AI Agents. The result is a fast path from raw data to a decision-ready story.</p>
+
+      <h3 class="sec">👥 Who works in OAC — the personas</h3>
+      <p class="lead">OAC serves three kinds of users. This workshop is built mainly for the first two; the third keeps the platform running behind the scenes.</p>
+      <div class="cards">
+        <div class="ex" style="border-left:4px solid #5b8def"><span class="n" style="background:#5b8def;color:#fff">👀</span><h4>Business Users — Consumers</h4><p>You read dashboards and make decisions. You'll follow the story and learn to explore the answers yourself — sort, drill, filter and ask the AI Assistant.</p></div>
+        <div class="ex" style="border-left:4px solid #2dd4a7"><span class="n" style="background:#2dd4a7;color:#08231a">🛠️</span><h4>Power Users — Content Creators</h4><p>You build the datasets, workbooks and AI Agents. You'll build the retention workbook canvas by canvas and configure the AI features.</p></div>
+        <div class="ex" style="border-left:4px solid #f2706b"><span class="n" style="background:#f2706b;color:#fff">🛡️</span><h4>OAC Administrator</h4><p>Provisions the service, manages users, security and connections, and keeps the platform healthy — the persona working behind the scenes.</p></div>
+      </div>
+      <p><a class="cta-btn alt" style="cursor:pointer" onclick="showTab('personas')">See exactly what each persona can do →</a></p>
+
+      <h3 class="sec">🗺️ The topics — explored at a high level</h3>
+      <p class="lead">The OAC documentation is organised into six parts. We'll tour all six at a high level on the Topic Map, then zoom into <b>Part III — Visualize Data</b>, the part both personas touch every day.</p>
+      <table class="wt"><tr><th>Part</th><th>What it covers</th></tr>
+        <tr><td><b>I · Introduction</b></td><td>Getting started — two paths, one for Content Creators and one for Consumers.</td></tr>
+        <tr><td><b>II · Prepare Data</b></td><td>Connect, cleanse, enrich and transform data into analysis-ready datasets and data flows.</td></tr>
+        <tr><td><b>III · Visualize Data</b> <span style="color:var(--gold)">(our focus)</span></td><td>Workbooks, 40+ chart types, filters, parameters, insights, maps, ML — and the AI Assistant &amp; Agents.</td></tr>
+        <tr><td><b>IV · Report Data (Classic)</b></td><td>Classic analyses and dashboards for formal, structured reporting.</td></tr>
+        <tr><td><b>V · Publish (Pixel-Perfect)</b></td><td>Precise, print-ready documents — invoices, statements, forms.</td></tr>
+        <tr><td><b>VI · Reference</b></td><td>FAQs, troubleshooting, design tips and the full expression-function reference.</td></tr>
+      </table>
+      <p><a class="cta-btn alt" style="cursor:pointer" onclick="showTab('topics')">Open the Topic Map →</a></p>
+
+      <h3 class="sec">🚗 Day 1 — hands-on: auto-insurance retention</h3>
+      <p class="lead">One story carries Day 1, so nothing feels abstract. You'll build the workbook end to end.</p>
+      <div class="hero dv" style="margin-top:6px"><div class="kick">From Data to Decisions</div><h2 style="font-size:22px">"Which customers do we call first — and why?"</h2><p>You're a data analyst at an auto insurer. The retention team can't phone everyone. Using <b>churn risk</b>, <b>customer value</b> and <b>claim cost</b>, we'll connect the data, build the decision metrics, and assemble the canvases into a data-backed priority list of the at-risk customers worth saving first — and the evidence behind each.</p></div>
+      <p><a class="cta-btn alt" style="cursor:pointer" onclick="showTab('day1')">Open the Day 1 hands-on →</a></p>
+
+      <h3 class="sec">🤖 Day 2 — OAC AI features &amp; the feedback pipeline</h3>
+      <p class="lead">Day 2 builds on the same workbook to explore OAC's AI features and, just as importantly, how to make them better over time.</p>
+      <div class="cards">
+        <div class="ex"><span class="n">1</span><h4>Enable the AI features</h4><p>Turn on and configure the AI Assistant and AI Agents so they're ready to query your data conversationally.</p></div>
+        <div class="ex"><span class="n">2</span><h4>Use them for effective responses</h4><p>Ask the same retention questions in plain English and learn the prompting patterns that produce accurate, useful answers.</p></div>
+        <div class="ex"><span class="n">3</span><h4>Enable the feedback pipeline</h4><p>Review the generated <b>Logical SQL (LSQL)</b> behind each answer to see exactly how the AI interpreted your question.</p></div>
+        <div class="ex"><span class="n">4</span><h4>Correct &amp; enrich</h4><p>Improve responses by fixing <b>synonyms</b>, adding <b>supplemental instructions</b>, and giving the model <b>more context about the data</b> — then re-test.</p></div>
+      </div>
+      <p><a class="cta-btn alt" style="cursor:pointer" onclick="showTab('day2')">Open the Day 2 AI session →</a></p>
+
+      <h3 class="sec">🎯 What you'll walk away with</h3>
+      <p class="lead">By the end of the two days you will be able to:</p>
+      <div class="cards">
+        <div class="ex"><h4>Build with confidence</h4><p>Connect data, build a multi-canvas workbook, and turn it into a clear, decision-ready story — the auto-insurance retention priority list.</p></div>
+        <div class="ex"><h4>Know where things live</h4><p>Place any feature on the map of OAC's six parts, and know which persona owns which task.</p></div>
+        <div class="ex"><h4>Put AI to work</h4><p>Enable and use the AI Assistant and Agents to answer business questions in plain English against your own content.</p></div>
+        <div class="ex"><h4>Make AI better over time</h4><p>Run the feedback loop — review LSQL and correct synonyms, supplemental instructions and data context — so responses keep improving.</p></div>
+      </div>
+
+      <div class="note"><b>Reference documents:</b> all materials — the workbook, datasets, step-by-step exercise guides and links to the official Oracle documentation — will be provided so you can repeat everything after the workshop.</div>
+
+      <div class="dl-row"><a style="cursor:pointer" onclick="showTab('day1')"><b>📅 Day 1 — build it</b>From Data to Decisions hands-on</a><a style="cursor:pointer" onclick="showTab('day2')"><b>🤖 Day 2 — AI &amp; feedback</b>Enable, use and tune OAC AI</a></div>
+    </div></div></div>
+    <!-- PERSONA EXPLORER -->
+    <div class="view" id="view-personas"><div class="page"><div class="inner" id="personas"></div></div></div>
+    <!-- DAY 1 -->
+    <div class="view" id="view-day1"><div class="page"><div class="inner" id="day1"></div></div></div>
+    <!-- DAY 2 -->
+    <div class="view" id="view-day2"><div class="page"><div class="inner" id="day2"></div></div></div>
+
+    <!-- shared panel -->
+    <div id="panel">
+      <div class="ph"><button class="x" onclick="closePanel()">✕</button><button class="star" id="pStar" title="Add to / remove from your demo" onclick="gToggleDemo()">☆</button><div class="cat" id="pCat"></div><h3 id="pTitle"></h3></div>
+      <div class="pb" id="pBody"></div>
+    </div>
+    <!-- second panel: topics in this chapter -->
+    <div id="panel2">
+      <div class="ph"><div class="cat" id="p2Cat">Topics in this chapter</div><h3 id="p2Title"></h3></div>
+      <div class="pb" id="p2Body"></div>
+    </div>
+
+    <!-- intro -->
+    <div id="intro" class="ov hide">
+      <div class="card">
+        <div class="tagline">Help</div>
+        <h2>OAC DV Knowledge Hub</h2>
+        <p>Five tabs in one place:</p>
+        <ol>
+          <li><b>👋 Welcome</b> — what DV is, the personas, the topics, and the two-day plan (Day 1 hands-on, Day 2 AI). Start here.</li>
+          <li><b>👥 Personas</b> — the 3 user types and exactly what each can do, linked to the docs.</li>
+          <li><b>🗺️ Topic Map</b> — the official guide as a clickable map (6 parts, 41 numbered chapters; Part III is our focus).</li>
+          <li><b>📅 Day 1</b> — the hands-on “From Data to Decisions” build.</li>
+          <li><b>🤖 Day 2</b> — AI Assistant + OAC Agents on that same workbook.</li>
+        </ol>
+        <p style="font-size:13.5px;color:var(--muted)">On the Topic Map: pick a part → see its chapters → click one for a plain-English explanation, its sub-topics and the docs links.</p>
+        <button class="btnh primary" onclick="hideIntro()">Got it →</button>
+      </div>
+    </div>
+    <!-- agenda -->
+    <div id="agenda" class="ov hide">
+      <div class="card big">
+        <div class="ahead"><button class="x" onclick="closeAgenda()">✕</button>
+          <div class="tagline">Presenter view</div><h2 style="margin-bottom:2px">🎤 My demo agenda</h2>
+          <p style="margin:4px 0 0;font-size:13.5px">Your session running order (Topic Map). Defaults to all of Part III. Open a chapter and use ⭐ to add or remove it.</p>
+        </div>
+        <div class="abody" id="agendaBody"></div>
+        <div class="afoot"><button class="btnh" onclick="resetDemo()">↺ Reset to Part III</button><button class="btnh" onclick="clearDemo()">Clear all</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DOCBASE="https://docs.oracle.com/en/cloud/paas/analytics-cloud/acubi/";
+function lighten(hex){const n=parseInt(hex.slice(1),16);let r=Math.min(255,(n>>16)+50),g=Math.min(255,((n>>8)&255)+50),b=Math.min(255,(n&255)+50);return"#"+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);}
+function shadeC(hex,d){const n=parseInt(hex.slice(1),16);let r=Math.max(0,Math.min(255,(n>>16)+d)),g=Math.max(0,Math.min(255,((n>>8)&255)+d)),b=Math.max(0,Math.min(255,(n&255)+d));return"#"+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);}
+function escAttr(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+/* glossy rounded-rectangle card as an SVG image (gradient fill + glass highlight + rounded corners + shadow) */
+function hubSVG(color,icon,lines,o){
+  o=o||{}; const W=o.big?262:232, H=o.big?134:120, R=24;
+  const top=shadeC(color,46), bot=shadeC(color,-30), stroke=o.focus?'#f0b429':lighten(color), sw=o.focus?5:2;
+  const dark=!!o.darkText, txt=dark?'#23180a':'#ffffff';
+  const iconY=o.big?48:44, name0=o.big?86:80, lh=21;
+  const names=lines.map((t,i)=>`<text x='${W/2}' y='${name0+i*lh}' text-anchor='middle' font-size='${o.big?17:15}' font-weight='700' fill='${txt}' font-family='-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif'>${escAttr(t)}</text>`).join('');
+  const svg="<svg xmlns='http://www.w3.org/2000/svg' width='"+W+"' height='"+H+"' viewBox='0 0 "+W+" "+H+"'>"
+   +"<defs>"
+   +"<linearGradient id='bg' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='"+top+"'/><stop offset='1' stop-color='"+bot+"'/></linearGradient>"
+   +"<linearGradient id='gl' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#ffffff' stop-opacity='0.40'/><stop offset='0.48' stop-color='#ffffff' stop-opacity='0.07'/><stop offset='0.48' stop-color='#ffffff' stop-opacity='0'/></linearGradient>"
+   +"<filter id='ds' x='-25%' y='-25%' width='150%' height='150%'><feDropShadow dx='0' dy='5' stdDeviation='6' flood-color='#000000' flood-opacity='0.5'/></filter>"
+   +"</defs>"
+   +"<rect x='8' y='6' width='"+(W-16)+"' height='"+(H-14)+"' rx='"+R+"' fill='url(#bg)' stroke='"+stroke+"' stroke-width='"+sw+"' filter='url(#ds)'/>"
+   +"<rect x='13' y='10' width='"+(W-26)+"' height='"+((H-20)*0.5)+"' rx='"+(R-6)+"' fill='url(#gl)'/>"
+   +"<text x='"+(W/2)+"' y='"+iconY+"' text-anchor='middle' font-size='"+(o.big?34:30)+"' font-family='Segoe UI Emoji,Apple Color Emoji,Noto Color Emoji,sans-serif'>"+icon+"</text>"
+   +names+"</svg>";
+  return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+}
+
+/* ============================ TOPIC MODEL ============================ */
+const TG=[
+ {id:"P1",roman:"I",name:"Introduction",color:"#5b8def",icon:"🧭",url:"index.html",s:"Getting started — two paths: Content Creators and Consumers.",blurb:"Part I is organised by persona — it has two “Get Started” paths: one for Content Creators (the people who build) and one for Consumers (the people who read & explore)."},
+ {id:"P2",roman:"II",name:"Prepare Data",color:"#2dd4a7",icon:"🧹",url:"prepare-data.html",s:"Make data analysis-ready — connect, clean, enrich, build data flows.",blurb:"Where raw data becomes analysis-ready. Connect to files, databases and business apps as datasets; cleanse, transform and enrich the data; and build repeatable data flows (and sequences) that refresh on a schedule. Everything downstream — every chart, insight and model — depends on getting this layer right."},
+ {id:"P3",roman:"III",name:"Visualize Data",color:"#f5a524",icon:"📊",url:"visualize-data.html",s:"Build it — workbooks, charts, filters, parameters, insights, maps & AI. (Our focus.)",blurb:"The heart of Data Visualization and this workshop's focus. Build workbooks and 40+ visualization types, make them interactive with filters, parameters and data actions, understand data with Auto Insights/Explain, map it, predict with no-code ML, add Generative AI and AI Agents — then present and share. This is where both personas spend their time.",focus:true},
+ {id:"P4",roman:"IV",name:"Report Data (Classic)",color:"#a78bfa",icon:"🧾",url:"report-data-oracle-business-intelligence-cloud-service.html",s:"Classic analyses & dashboards — formal, structured reporting.",blurb:"The classic, formal reporting tool: analyses and dashboards with prompts, views and actions. Still fully supported alongside DV and useful for highly structured, operational reporting against governed subject areas."},
+ {id:"P5",roman:"V",name:"Publish (Pixel-Perfect)",color:"#f2706b",icon:"🖨️",url:"publish-data.html",s:"Pixel-perfect publishing — precise, print-ready documents.",blurb:"Oracle Analytics Publisher — for precise, print-ready documents such as invoices, statements, government forms, checks and shipping labels. Create report jobs, schedule and burst them, and manage their history."},
+ {id:"P6",roman:"VI",name:"Reference",color:"#38bec9",icon:"📚",url:"reference.html",s:"Reference shelf — FAQs, troubleshooting, design tips, expression editor.",blurb:"The reference shelf: FAQs, troubleshooting, design tips, the data-preparation reference, the full Expression Editor function reference, and certification details (supported browsers, sources and environments)."},
+];
+const TICON={1:"🧭",2:"👀",3:"🗂️",4:"🧹",5:"⚙️",6:"🗃️",7:"📓",8:"🎨",9:"📊",10:"🖌️",11:"💬",12:"🤖",13:"🔎",14:"🎚️",15:"💡",16:"🗺️",17:"🖱️",18:"🎬",19:"🔮",20:"✨",21:"📤",22:"🗄️",23:"🧾",24:"🔁",25:"📋",26:"🔍",27:"❓",28:"🕹️",29:"📁",30:"🖨️",31:"📄",32:"⏱️",33:"🛠️",34:"📚",35:"🗃️",36:"❔",37:"🩺",38:"✅",39:"🧪",40:"🧮",41:"🏅"};
+const TT=[
+ [1,"P1","Get Started (Content Creators)","index.html","Find and explore content, create and share pages, set up watchlists, and save work — orientation for builders."],
+ [2,"P1","Get Started (Consumers)","faqs-analytics-consumers.html","For people who read dashboards: open shared content, sort/drill/select, swap columns, and filter as a consumer."],
+ [3,"P2","Connect to Your Data Using Datasets","connect-your-data-using-datasets.html","Bring in and shape data from files, databases or subject areas — the foundation for everything."],
+ [4,"P2","Enrich and Transform Data","enrich-and-transform-data.html","Cleanse and standardize data, and add information you didn't have."],
+ [5,"P2","Create Datasets Using Data Flows","create-datasets-using-data-flows.html","Build a repeatable recipe that transforms raw data into a clean dataset automatically."],
+ [6,"P2","Manage Datasets","manage-datasets.html","Control how datasets refresh, reload and cache."],
+ [7,"P3","Build and Manage Workbooks","chapter-build-and-manage-workbooks.html","Your DV project file — datasets, canvases, visualizations and calculations."],
+ [8,"P3","Design the Look and Feel of Workbooks","chapter-design-look-and-feel-workbooks.html","Themes and canvas templates for a consistent, branded look."],
+ [9,"P3","Create and Use Visualizations","chapter-create-and-use-visualizations.html","Turn data into 40+ chart types by dragging columns — or let Oracle pick the best."],
+ [10,"P3","Design the Look and Feel of Visualizations","chapter-design-look-and-feel-visualizations.html","Format individual charts — colours, labels, axes, conditional formatting."],
+ [11,"P3","Generate Visualizations with the AI Assistant","generate-visualizations-oracle-analytics-ai-assistant.html","Ask a plain-English question and get a chart built for you."],
+ [12,"P3","Use AI Agents & the AI Assistant","use-ai-agents-and-oracle-analytics-ai-assistant-interact-data.html","Domain-specialized assistants that explore data conversationally using your content."],
+ [13,"P3","Filter Data","filter-data.html","Narrow data to just what matters, with controls consumers can use."],
+ [14,"P3","Create and Use Parameters","create-and-use-parameters.html","A user-chosen value the workbook reacts to — the interactivity engine."],
+ [15,"P3","Understand Your Data Using Insights","understand-your-data-using-insights.html","Auto Insights, Explain and Contextual Insights — AI that explains your data."],
+ [16,"P3","Apply Map Backgrounds & Map Layers","apply-map-backgrounds-and-map-layers-enhance-visualizations.html","Put data on maps — points, polygons, heat, lines and custom layers."],
+ [17,"P3","Use Data Actions","use-data-actions.html","Make charts clickable — navigate, open a URL, or set a parameter."],
+ [18,"P3","Build a Presentation Flow","build-presentation-flow.html","Control how consumers see and move through a workbook."],
+ [19,"P3","Predictive & Machine Learning Models","use-oracle-analytics-predictive-models-and-oracle-machine-learning-models.html","One-click statistics and no-code ML to predict and find patterns."],
+ [20,"P3","Use Generative AI","use-generative-ai-oracle-analytics.html","Summarize, classify and filter by meaning inside flows, workbooks and datasets."],
+ [21,"P3","Import, Export, and Share","import-export-and-share.html","Get content in/out, share, schedule emails and embed elsewhere."],
+ [22,"P3","Manage Visualization Content","manage-visualization-content.html","Organize visualization content in the catalog."],
+ [23,"P4","Create Analyses","create-analyses.html","Classic table-and-pivot reporting against a subject area."],
+ [24,"P4","View Data in Different Ways","view-data-different-ways.html","Add views — tables, pivots, graphs, gauges, narrative."],
+ [25,"P4","Build Dashboards","build-dashboards.html","Assemble classic dashboards from analyses and prompts."],
+ [26,"P4","Filter and Select Data for Analyses","filter-and-select-data-analyses.html","Apply column filters and selection steps."],
+ [27,"P4","Prompt in Analyses and Dashboards","prompt-analyses-and-dashboards.html","Let consumers choose values that drive analyses and pages."],
+ [28,"P4","Make Analyses Interactive","make-analyses-interactive.html","Add actions, master-detail links and drilldowns."],
+ [29,"P4","Manage Reporting Content","manage-reporting-content.html","Organize classic analyses and dashboards."],
+ [30,"P5","Introduction to Pixel-Perfect Publishing","introduction-pixel-perfect-publishing.html","Highly formatted, printable documents — invoices, statements, forms."],
+ [31,"P5","View Pixel-Perfect Reports","view-pixel-perfect-reports.html","Run, view and interact with pixel-perfect reports."],
+ [32,"P5","Create Pixel-Perfect Report Jobs","create-pixel-perfect-report-jobs.html","Schedule report jobs — recurrence, formats and delivery."],
+ [33,"P5","View and Manage Report Jobs","view-and-manage-pixel-perfect-report-jobs.html","Monitor and manage scheduled report jobs."],
+ [34,"P5","View and Manage Report History","view-and-manage-pixel-perfect-report-history.html","See the history of report runs and outputs."],
+ [35,"P5","Manage Pixel-Perfect Reports","manage-pixel-perfect-reports.html","Organize, edit and govern reports and data models."],
+ [36,"P6","Frequently Asked Questions","frequently-asked-questions.html","Answers to common questions about visualizing and reporting."],
+ [37,"P6","Troubleshoot","troubleshoot.html","Common problems and how to solve them."],
+ [38,"P6","Design Tips","design-tips.html","Guidance for building effective visualizations and reports."],
+ [39,"P6","Data Preparation Reference","data-preparation-reference.html","Developer capabilities and OCI service integration."],
+ [40,"P6","Expression Editor Reference","expression-editor-reference.html","Every element you can use in expressions and calculations."],
+ [41,"P6","Certification Information","certification-information.html","Supported browsers, sources and environments."],
+];
+const TCROSS=[[3,4],[3,5],[3,6],[4,39],[5,19],[5,20],[5,6],[7,9],[7,8],[7,40],[7,14],[9,10],[9,16],[9,13],[9,18],[9,38],[13,14],[14,17],[17,9],[15,11],[11,12],[12,20],[15,19],[11,2],[21,22],[22,29],[18,2],[23,24],[23,25],[25,27],[25,26],[23,28],[29,23],[9,23],[30,31],[30,32],[32,33],[32,34],[30,35],[36,37],[38,9],[19,39],[41,36]];
+const TDETAIL={
+ 3:{what:"A dataset is data you bring in and shape for analysis — from a file, a database connection, or a governed subject area.",uses:["One table, or many joined on a Join Diagram","Live access or Extracted (cached for speed)","Built on 100+ connectors plus generic REST/JDBC"],why:"Every visualization stands on a dataset — it's the foundation.",when:"Start any analysis by creating or choosing a dataset; use a governed subject area for official numbers.",example:"Upload a sales spreadsheet, join it to a customer table, and you're ready to visualize.",helps:"Self-service access to data without waiting on IT."},
+ 4:{what:"Data preparation cleanses, standardizes and enriches a dataset before you visualize it.",uses:["Auto-suggested fixes (split a name, fix a date)","Transforms: rename, group, bin, change type, create columns","Enrichments: add City/State/Lat-Long from a ZIP; fiscal periods from a date"],why:"Real-world data is messy; good prep is the difference between right and wrong numbers.",when:"Right after connecting, before visualizing.",example:"Give DV a ZIP code and it adds City, State and coordinates so you can instantly map the data.",helps:"Cleaner data and richer analysis with very little effort."},
+ 5:{what:"A data flow is a saved, repeatable recipe that combines, organizes and transforms raw data into a clean new dataset — automatically each time it runs.",uses:["Steps: Add Data, Join, Union, Filter, Add Columns, Aggregate, Apply Model/AI, Save Data","Chain flows into a Sequence and schedule them","Processes up to 5 million rows per source"],why:"It kills the weekly “export to Excel and re-clean” habit and is auditable.",when:"Whenever cleaning must repeat, combine sources, run on a schedule, or apply ML/AI.",example:"Every Monday, Finance's sales + budget + variance steps run overnight; the clean dataset is simply there by morning.",helps:"Consistent, hands-off data prep that scales."},
+ 6:{what:"Manage how datasets refresh, reload and cache after they're built.",why:"Fresh, fast data keeps dashboards trustworthy and snappy.",when:"Set reload schedules; choose Extracted mode for stable data that must open fast.",example:"Schedule a nightly reload and extract a subject area so dashboards open instantly.",helps:"Up-to-date dashboards without manual refreshes."},
+ 7:{what:"A workbook is your DV project file — it holds datasets, canvases and the visualizations that tell your story. Calculations live here too.",uses:["Create → Workbook → add data → drag fields onto a canvas → Save","Build calculations (e.g. Profit Margin %)","Refresh data, manage datasets, save and share"],why:"It's where everything comes together, gets saved and shared.",when:"Start here for any new analysis.",example:"Create a workbook on the monthly-close file, add a variance calculation, lay out a canvas, and publish before the noon review.",helps:"One organised, shareable place for an analysis."},
+ 8:{what:"Themes and canvas templates that give a workbook a consistent, branded look.",why:"Consistency builds trust and saves time.",when:"Apply your corporate theme at the start; reuse templates for new canvases.",example:"Apply the company theme in one click so colours, fonts and logo match across every page.",helps:"Professional, on-brand dashboards in a fraction of the time."},
+ 9:{what:"Turn data into charts, tables and maps by dragging columns onto the canvas — or let Oracle pick the best chart for your selection.",uses:["Create Best Visualization (Oracle chooses)","Pick Visualization (you choose the type)","Drag onto the canvas or Grammar pane (Columns, Rows, Values, Category)","40+ chart types; switch type any time; Show Assignments reveals each axis"],why:"It's the fastest path from raw columns to an answer — no chart skill required.",when:"Any time you want to see the data.",example:"Select Region and Revenue → Create Best Visualization → a bar chart appears.",helps:"Speed and self-service — a chart in seconds."},
+ 10:{what:"Format individual visualizations — colours, labels, axes, number formats and conditional formatting.",why:"Good formatting makes the message instant and removes ambiguity.",when:"After the chart is right, polish it; add conditional formatting to flag good/bad values.",example:"Format margin as a %, colour negative values red, label the axis clearly.",helps:"Charts that communicate at a glance."},
+ 11:{what:"Ask a plain-English question and Oracle Analytics builds the visualization for you.",uses:["Natural-language Ask from a workbook or the home page","The AI Assistant chat that builds/refines visuals with generative AI","AI for data prep — beautify column names, auto-write descriptions"],why:"It removes the fear of “analytics” — anyone gets an answer by typing a question. (Index the dataset first.)",when:"Great for consumers, and the strongest opening “wow” of a demo.",example:"Type “show me sales by region this quarter” → a chart appears; “top 5 only” refines it.",helps:"The fastest way to drive adoption beyond analysts."},
+ 12:{what:"Domain-specialized AI assistants that use your own documents (RAG) and business language.",why:"They let consumers explore data conversationally, grounded in your content; deployable in 15+ languages.",when:"When you want a guided, chat-style experience tailored to a department.",example:"A “Sales Assistant” agent answers “how is the West region tracking vs target?” using your sales subject area and docs.",helps:"Self-service answers without training, in users' own words."},
+ 13:{what:"A filter narrows the data down to just what you care about — e.g. “electronics, in Texas, last quarter.”",uses:["Types: List/Box, Range, Date, Top/Bottom N, Expression, Selection Steps","Scopes: one visualization, the canvas/workbook (filter bar), dashboard controls, or dataset-level","Pinned filters follow you across canvases"],why:"It focuses attention and gives consumers a safe way to explore.",when:"Canvas filters set page context; viz filters target one tile; dashboard controls let people self-serve.",example:"Add Region + Date controls at the top; a manager picks “West” + “This Quarter” and every chart updates.",helps:"One dashboard serves many audiences."},
+ 14:{what:"A parameter is a user-defined variable that holds and manages a current value (or values) you reuse in many places in a workbook, to dynamically manipulate its data.",uses:["As column selectors in workbooks and visualizations","In workbook titles and visualization labels","In expression filters","In workbook, dashboard, and visualization filters","In calculations","In Logical SQL expressions","To conditionally show or hide a visualization","In data actions"],kinds:"System parameters (built-in, e.g. current date or canvas) and Custom parameters you create (e.g. “Target Margin”).",why:"Filters only remove data; a parameter orchestrates — one control can re-title, recolour, recompute, show/hide and re-filter at once.",when:"What-if analysis, metric/period/region switchers, show-hide logic, movable target lines, and app-like navigation.",example:"Add a “Measure to Show” parameter offering Revenue, Profit, Units. A drop-down lets viewers pick one; the bar chart, KPI tile and title all update — one dashboard does the work of three.",helps:"Fewer dashboards to maintain; consumers answer their own “what if?” questions without editing.",note:"You set an initial value (typed in or from a Logical SQL query). A parameter's scope is the workbook where you define it — you can't share parameters across workbooks."},
+ 15:{what:"AI that helps you understand data automatically.",uses:["Auto Insights — suggests the most interesting charts when you add data","Explain — right-click a column for a plain-language summary of drivers, anomalies, segments","Contextual Insights — select a data point for instant explanation charts"],why:"It surfaces the story before you build, and answers “why” on the spot.",when:"Use Auto Insights at the start; Explain/Contextual when a number surprises you.",example:"Add a sales dataset → three charts suggested; click a dip → “driven by the West region, holiday week.”",helps:"Faster discovery, fewer missed findings — great in a live demo."},
+ 16:{what:"Put data on a map — points, polygons and heat — over Google, Mapbox or EZ Map backgrounds.",uses:["Point, polygon and heat maps","Dynamic lines (curved, directional) between locations","Custom vector layers for your own regions/territories"],why:"Location patterns are obvious on a map and invisible in a table.",when:"Any time data has a place — stores, regions, routes, territories.",example:"Colour stores by sales across the country; draw shipping routes between warehouses.",helps:"Instant geographic insight."},
+ 17:{what:"A data action turns a chart into a launchpad — a click does something.",uses:["Navigate to another canvas/workbook, carrying your selection as a filter","Open a URL (e.g. a record in another system)","Set a parameter to change the dashboard's state","Trigger from buttons and button bars"],why:"They turn dashboards into app-like experiences with real navigation.",when:"Build drill paths (summary → detail) and menus.",example:"Click a region on a map → open its detail page already filtered to that region.",helps:"Guided, interactive stories instead of static charts."},
+ 18:{what:"Present mode controls how consumers see and move through a workbook.",why:"It turns a builder's cluttered canvas into a clean, guided, app-like experience.",when:"Before sharing with executives or consumers.",example:"Hide the toolbar, order canvases Summary → Regions → Products → Forecast, enable the Insights panel.",helps:"Less confusion, a clear narrative, the right controls per audience."},
+ 19:{what:"Add prediction and pattern-finding — one-click statistics and no-code machine learning.",uses:["One-click stats on any chart: Forecast, Clusters, Outliers, Trend lines","No-code ML in data flows: Train → Configure → check Quality → Apply","Integrated models from Oracle Database (OML) or OCI Data Science"],why:"It answers “what will happen?” and “what's hidden here?” without code.",when:"Forecast for planning; clustering for segments; classification for churn or lead scoring.",example:"Add a forecast line to next quarter's sales; build a churn model in a data flow and score customers nightly.",helps:"Foresight and segmentation without a data-science team."},
+ 20:{what:"Use generative AI inside data flows, workbooks and datasets.",why:"It handles language-heavy tasks — summarising, classifying and filtering by meaning.",when:"Summarise comments, classify tickets, or filter records by natural-language criteria.",example:"In a data flow, summarise thousands of reviews into themes, or auto-tag tickets by topic.",helps:"Turns unstructured text into usable, analysable data."},
+ 21:{what:"Get content in and out, share with people, schedule emails and embed elsewhere.",why:"Analysis only matters when it reaches people.",when:"Publish a workbook, email a weekly PDF, or embed a dashboard in another app.",example:"Schedule a Monday 7am email of yesterday's numbers as a PDF to leadership.",helps:"Insights arrive where people already work."},
+ 22:{what:"Organize your visualization content in the catalog — move, set permissions and control thumbnails.",why:"Findable, governed content keeps a growing library usable.",when:"As your team creates many workbooks and datasets.",example:"Place official dashboards in /Shared Folders with view-only access for consumers.",helps:"Order and governance as adoption grows."},
+};
+
+/* sub-topics per chapter (title, slug) — the doc's "Topics:" list, deep-linked */
+const SUBTOPICS={
+ 1:[["About Visualizations and Analyses","visualizations-and-analyses.html"],["Accessing Oracle Analytics Cloud","accessing-oracle-analytics-cloud.html"],["Configure Time Zones","configure-time-zones.html"],["Find and Explore Your Content","find-and-explore-your-content.html"],["› Use the Search Bar to Find Content","use-search-find-your-content.html"],["› Explore Content with Navigator","explore-your-content-navigator.html"],["Create and Share Pages","create-and-share-pages.html"],["Providing Custom Groups of Content","providing-custom-groups-content.html"],["Saving Your Content in the Catalog","saving-your-content-catalog.html"],["View Content on Mobile Devices","view-content-mobile-devices.html"]],
+ 2:[["Access OAC as a consumer","accessing-oracle-analytics-consumer.html"],["Find & explore shared content","find-and-explore-analytics-content-thats-been-shared-you.html"],["Visualization tooltips","access-visualization-tooltips.html"],["Sort, drill & select data","sort-drill-and-select-data-visualizations.html"],["Swap columns","swap-columns-visualization.html"],["Add/remove columns (tables & pivots)","add-or-remove-columns-tables-or-pivots.html"],["Use Contextual Insights","use-contextual-insights-understand-your-data.html"],["Add a filter (as a consumer)","add-filter-workbook-consumer.html"],["Filter personalizations & states","filter-personalizations-and-workbook-states.html"],["Use the AI Assistant as a consumer","using-oracle-analytics-ai-assistant-consumer.html"],["Export workbook content","export-workbook-content-various-formats.html"],["FAQs for consumers","faqs-analytics-consumers.html"]],
+ 3:[["Overview to Using Datasets","overview-using-datasets.html"],["Design Datasets","design-datasets.html"],["Use Joins to Build Datasets","use-joins-build-datasets.html"],["Create Datasets from Data Sources","create-datasets-data-sources.html"]],
+ 4:[["Enrich & Transform Your Data","enrich-and-transform-your-data.html"],["Enrichment Recommendations","enrich-data-using-enrichment-recommendations.html"],["Transform Using the AI Assistant","transform-data-using-ai-assistant.html"],["Transform Editor","transform-data-using-transform-editor.html"],["Transform Using Replace","transform-data-using-replace.html"],["Replace Missing/Null Values","replace-missing-or-null-values-dataset.html"],["Convert Text to Date/Time","convert-text-columns-date-or-time-columns.html"],["Adjust Date/Number Format","adjust-display-format-date-or-number-column.html"],["Create a Bin Column","create-bin-column-when-you-prepare-data.html"],["Configure Column Properties","configure-columns-properties-dataset.html"],["Add Columns to a Dataset","add-columns-dataset.html"],["Edit the Preparation Script","edit-data-preparation-script.html"]],
+ 5:[["About Data Flows","data-flows.html"],["Working in the Data Flow Designer","working-data-flow-designer.html"],["Steps to Organize & Integrate Data","what-steps-can-i-use-organize-and-integrate-my-data.html"],["What is a Sequence?","what-is-sequence.html"],["Create a Dataset Using a Data Flow","create-dataset-using-data-flow.html"],["Run to Create/Update a Dataset","generate-or-update-dataset-using-data-flow.html"],["Reuse a Data Flow","reuse-data-flow.html"],["Read Cached Data","configure-data-flow-read-cached-data.html"],["Incremental Processing","configure-incremental-processing-data-flow.html"],["Schedule a Data Flow","generate-or-update-dataset-specific-time.html"],["Process with a Sequence","process-data-using-sequence-data-flows.html"],["Manage Your Data Flows","manage-your-data-flows.html"]],
+ 6:[["Dataset Type Icons","dataset-type-icons.html"],["View Datasets & Info","view-list-datasets-and-information-them.html"],["Reload a Dataset's Data","reload-datasets-data.html"],["Reload Schedules","work-dataset-reload-schedules.html"],["Inspect Properties","inspect-datasets-properties.html"],["Rename & Describe","rename-dataset-and-change-its-description.html"],["Certify a Dataset","certify-dataset.html"],["Index for the AI Assistant","make-data-available-oracle-analytics-ai-assistant.html"],["Add Synonyms (searchable)","make-analytics-content-more-searchable.html"],["Permissions","add-or-update-datasets-permissions.html"],["Duplicate a Dataset","duplicate-dataset.html"],["Delete a Dataset","delete-dataset.html"]],
+ 7:[["Begin to Build a Workbook","begin-build-workbook.html"],["Save a Workbook","workbook.html"],["Configure How Workbooks Open","configure-how-workbooks-open.html"],["Manage Datasets Within a Workbook","manage-datasets-workbook.html"],["Refresh Data in a Workbook","refresh-data-workbook.html"],["Use Calculations in Workbooks","use-calculations-workbooks.html"],["Derived Dates in Workbooks","derived-dates-workbooks.html"],["Compose Expressions","compose-expressions.html"],["Set Workbook Thumbnails","set-workbookthumbnails.html"],["Pause Data Queries in a Workbook","pause-data-queries-workbook.html"],["Open a Custom Workbook Extension","open-custom-workbook-extension.html"],["Embed a Workbook in a Dashboard","embed-workbook-and-visualizations-dashboard.html"]],
+ 8:[["Workbook Themes","workbook-themes.html"],["Use Canvas Layout Templates","use-canvas-layout-templates-workbook.html"],["Work with Canvas Properties","work-canvas-properties.html"],["Design Canvas Layouts for Screen Sizes","design-canvas-layouts-different-screen-sizes.html"],["Use Images in Workbooks","use-images-workbooks.html"]],
+ 9:[["Create a Visualization","create-visualization.html"],["Work with Visualizations on a Canvas","work-visualizations-canvas.html"],["About Visualization Types","visualization-types.html"],["Change Visualization Types","change-visualization-types.html"],["Use Range Charts","use-range-charts.html"],["Use Gantt Charts","use-gantt-charts.html"],["Use Button Bars","use-button-bars-consumer-interaction-workbook.html"],["Use Gauge Visualizations","use-gauge-visualizations.html"],["Add a Language Narrative","add-language-narrative-visualization.html"],["Create a Legend Visualization","create-legend-visualization.html"],["Use Table and Pivot Visualizations","use-table-and-pivot-visualizations.html"],["Use Sankey Visualizations","use-sankey-visualizations.html"],["Embed External Content (iframe)","embed-external-content-workbook-canvas-using-iframe.html"],["Use Knowledge Enrichments","using-knowledge-enrichments-workbook-editor.html"]],
+ 10:[["Use Tooltips in Visualizations","use-tooltips-visualizations.html"],["About Visualization Properties","visualization-properties.html"],["Adjust Visualization Properties","adjust-visualization-properties.html"],["Enhance with Statistical Analytics","enhance-visualizations-statistical-analytics.html"],["Use Spark Charts","use-spark-charts-examine-trends.html"],["Let Consumers Swap Columns","let-consumers-swap-columns-visualizations.html"],["Format Numeric Values of Columns","format-numeric-values-columns.html"],["Apply Color to Visualizations","apply-color-visualizations.html"],["Conditional Formatting","highlight-important-data-events-conditional-formatting.html"],["Sorting Data in Visualizations","sorting-data-visualizations1.html"],["Add Notes to Visualizations","add-notes-visualizations.html"]],
+ 11:[["About the AI Assistant","oracle-analytics-ai-assistant.html"],["Generate Visualizations in a Workbook","generate-visualizations-workbooks-oracle-analytics-ai-assistant.html"],["Generate Visualizations from the Home Page","generate-visualizations-your-home-page.html"]],
+ 12:[["About AI Agents","oracle-analytics-ai-agents.html"],["Create an AI Agent","create-oracle-analytics-ai-agent.html"],["Make an AI Agent Available to a Workbook","make-oracle-analytics-ai-agent-available-workbook.html"],["Modify an AI Agent","modify-oracle-analytics-ai-agent.html"],["Delete an AI Agent","delete-oracle-analytics-ai-agent.html"]],
+ 13:[["About Filters","filters.html"],["How Do Filters Limit Each Other?","how-do-filters-limit-each-other.html"],["Filter Properties","filter-properties.html"],["Filter Personalizations & Workbook States","filter-personalizations-and-workbook-states.html"],["Use the Filter Bar","use-filter-workbook.html"],["Use Dashboard Filters","use-dashboard-filters-workbook.html"],["Use Visualization Filters","use-visualization-filters-workbook.html"],["Use Filter Groups (Preview)","use-filter-groups-workbook-preview.html"],["Use Selection Steps","use-selection-steps-workbook.html"],["Change the Filter Type","change-filter-type.html"],["Use Top/Bottom N Filters","use-top-bottom-n-filters-workbook.html"],["Create an Expression Filter","create-expression-filter.html"]],
+ 14:[["What Are Parameters?","what-are-parameters.html"],["About System Parameters","system-parameters.html"],["About Parameter Properties","parameter-properties.html"],["Modifying and Deleting Parameters","modifying-and-deleting-parameters.html"],["Create a Parameter","create-parameter.html"],["Parameter with Logical SQL (Double Column)","create-parameter-that-uses-logical-sql-query-double-column.html"],["Parameter with SQL Expression Data Type","create-parameter-sql-expression-data-type.html"],["Syntax for Referencing Parameters","syntax-referencing-parameters.html"],["Bind Parameters to Filters","bind-parameters-filters.html"],["Use Parameters in Workbooks","use-parameters-workbooks.html"]],
+ 15:[["Use Auto Insights","use-auto-insights-understand-your-data.html"],["Use Explain","use-explain-understand-your-data.html"],["Use Contextual Insights","use-contextual-insights-understand-your-data.html"]],
+ 16:[["Overview to Using Spatial Data","overview-using-spatial-data-visualizations.html"],["Enhance Visualizations with Map Backgrounds","enhance-visualizations-map-backgrounds.html"],["Use Different Map Backgrounds","use-different-map-backgrounds-workbook.html"],["Interpret Data with Color & Size","interpret-data-values-color-and-size-map-visualizations.html"],["Add GeoJSON Custom Map Layers","add-geojson-custom-map-layers.html"],["Dynamic Line Map Layers","use-dynamic-line-map-layers-connect-locations-map-visualizations.html"],["Use Vector Map Layers","use-vector-map-layers-map-visualizations.html"],["Apply Multiple Data Layers","apply-multiple-data-layers-single-map-visualization.html"],["Use Heatmap Layers","use-heatmap-layers-map-visualization.html"],["Add Map Backgrounds","add-map-backgrounds.html"]],
+ 17:[["Connect Canvases","create-data-actions-connect-canvases.html"],["Connect to External URLs","create-data-actions-connect-external-urls-visualization-canvases.html"],["About HTTP API Data Actions","creating-http-api-data-actions.html"],["Create HTTP Data Actions","create-http-api-data-actions.html"],["Connect to Publisher Reports","use-data-actions-connect-oracle-analytics-publisher-reports.html"],["Invoke Data Actions","invoke-data-actions-visualization-canvases.html"],["How Data Actions Affect Filters","how-data-actions-affect-filters.html"],["Tips on Using Data Actions","tips-using-data-actions.html"]],
+ 18:[["What Is a Presentation Flow?","what-is-presentation-flow.html"],["Auto and Manual Modes in Present","what-are-auto-and-manual-modes-present.html"],["Manual Mode & How Canvases Synch","manual-mode-and-how-canvases-synch.html"],["Switch Between Auto/Manual Modes","switch-auto-and-manual-modes-present.html"],["View Canvas Layout Breakpoints","view-canvas-layout-breakpoints-present.html"],["Open the Presentation Flow","open-presentation-flow.html"],["Specify the Canvases Layout","specify-canvases-layout-present.html"],["Set Workbook Properties in Present","set-workbook-properties-present.html"],["Set Canvas Properties in Present","set-canvas-properties-present.html"],["Preview a Presentation Flow","preview-presentation-flow.html"]],
+ 19:[["What ML & AI Services Are Supported?","what-machine-learning-and-ai-integration-does-oracle-analytics-support.html"],["Create & Use Predictive Models","create-and-use-oracle-analytics-predictive-models.html"],["Use Oracle Machine Learning Models","use-oracle-machine-learning-models-oracle-analytics.html"],["Apply a Model to a Dataset","apply-predictive-or-registered-oracle-machine-learning-model-dataset.html"],["Perform Similarity Analysis","perform-similarity-analysis-oracle-analytics.html"],["Use OCI Vision Models","use-oci-vision-models-oracle-analytics.html"],["Use OCI Data Science Models","use-oci-data-science-models-oracle-analytics.html"],["Use OCI Language Models","use-oci-language-models-oracle-analytics.html"],["Use OCI Document Understanding","use-oci-document-understanding-models-oracle-analytics.html"]],
+ 20:[["Overview of Generative AI","overview-using-generative-ai-models-oracle-analytics.html"],["Apply Generative AI in a Data Flow","apply-generative-ai-data-flow-oracle-analytics.html"],["Apply Generative AI in a Workbook","apply-generative-ai-workbook-oracle-analytics.html"],["Apply Generative AI in Data Prep","apply-generative-ai-data-preparation-oracle-analytics.html"]],
+ 21:[["Import a Workbook File","import-workbook-file.html"],["Export Workbook Content (PDF/PPT/CSV…)","export-workbook-content-various-formats1.html"],["Share Your Content","share-your-content.html"],["Share a Workbook","share-workbook.html"],["Share URL with a Specific Canvas","share-workbook-url-specific-canvas-selected.html"],["Share URL with Persisted Filters","share-workbook-url-persisted-filter-values.html"],["Export Workbook/Folder as a File","export-workbook-or-folder-file.html"],["Export a Visualization","export-visualization.html"],["Post to Slack / Teams","visualization-or-canvas-content-sharing-platforms.html"],["Email a Visualization/Canvas","email-file-visualization-canvas-or-dashboard.html"],["Schedule Email Delivery","share-visualizations-using-workbook-email-schedules.html"]],
+ 22:[["Overview to Managing Content","overview-managing-content.html"],["About Accessing the Catalog","accessing-catalog.html"],["Manage Existing Content","managing-existing-items.html"],["Create & Manage New Items","creating-and-managing-new-items.html"],["Verify an Item's Location","verifying-items-location-catalog.html"],["Add an Alias for Legacy References","using-aliases.html"],["Create a Catalog Folder","create-catalog-folder.html"],["Move Catalog Folders & Contents","move-catalog-folders-and-contents.html"],["Assign Folder/Workbook Permissions","assign-shared-catalog-folder-and-workbook-permissions.html"]],
+ 23:[["Typical Workflow to Create Analyses","typical-workflow-create-analyses.html"],["Create Your First Analysis","create-your-first-analysis.html"],["Set Properties for Columns","set-properties-columns.html"],["Export from Analyses & Dashboards","export-content-analyses-and-dashboards.html"],["Edit Formulas / Calculated Measures","edit-formulas-or-calculated-measures.html"],["Set Properties for Analyses","set-properties-analyses.html"],["Set Your Preferences","set-your-preferences.html"],["Combine Columns (Advanced)","advanced-techniques-combine-columns-display-data-differently.html"],["Examine Logical SQL (Advanced)","advanced-techniques-examine-logical-sql-statements-analyses.html"]],
+ 24:[["Typical Workflow (Views)","typical-workflow-viewing-data-different-ways.html"],["About Views","views1.html"],["Add Views","add-views.html"],["Edit Views","edit-views.html"],["Graph Data in Analyses","graph-data-analyses.html"],["Sort Values in Views","sort-values-views.html"],["Drill in Results","drill-results.html"],["Link Views (Master-Detail)","link-views-master-detail-relationships.html"],["Modify the Layout of Data","modify-layout-data-views.html"]],
+ 25:[["Typical Workflow (Dashboards)","typical-workflow-build-dashboards.html"],["Create Your First Dashboard","create-your-first-dashboard.html"],["Edit Dashboards","edit-dashboards.html"],["Add & Delete Pages","add-and-delete-pages-dashboards.html"],["Create & Manage Layouts","create-and-manage-layouts-dashboards-and-dashboard-pages.html"],["Print Dashboards","print-dashboards.html"],["Briefing Books","organize-dashboard-pages-briefing-books.html"],["Save & Restore State","and-restore-dashboard-state.html"],["Publish & Link Pages","publish-dashboard-pages.html"]],
+ 26:[["Typical Workflow (Filter & Select)","typical-workflow-filter-and-select-data.html"],["About Filters & Selection Steps","filters-and-selection-steps.html"],["Create Filters for Columns","create-filters-columns.html"],["Edit Filters for Columns","edit-filters-columns.html"],["Reuse Filters","reuse-filters.html"],["Use a Saved Analysis as a Filter","use-saved-analysis-filter.html"],["Refine Selections of Data","refine-selections-data.html"],["Groups & Calculated Items","manipulate-members-groups-and-calculated-items.html"]],
+ 27:[["Typical Workflow (Prompts)","typical-workflow-create-prompts-analyses-and-dashboards.html"],["Create Prompts","create-prompts.html"],["Edit Prompts","edit-prompts.html"],["Add Prompts to Dashboard Pages","add-prompts-dashboard-pages.html"]],
+ 28:[["Typical Workflow (Interactive)","typical-workflow-make-analyses-interactive.html"],["Create Named Actions for Reuse","create-named-actions-reuse.html"],["Create Inline Actions","create-inline-actions.html"],["Add Actions to Analyses","add-actions-analyses.html"],["Add Actions to Dashboard Pages","add-actions-dashboard-pages.html"],["Edit Named Actions","edit-named-actions.html"],["Edit/Delete Action Links","edit-and-delete-action-links-analyses.html"],["Save Inline Actions to Catalog","inline-actions-analyses-catalog.html"]],
+ 29:[["Typical Workflow (Manage Reporting)","typical-workflow-manage-reporting-content.html"],["Naming Restrictions","naming-restrictions-items-classic-catalog.html"],["Rename Reporting Content","rename-reporting-content.html"],["Search & Replace Text","search-and-replace-text-classic-catalog-items.html"],["Access Favorites","access-favorites-easily.html"],["Access Properties","access-properties.html"],["Assign Access Permissions","assign-access-permissions.html"],["Send Email Reports & Track Deliveries","send-email-reports-and-track-deliveries.html"],["Automate with Deliveries","automate-business-processes-deliveries.html"]],
+ 30:[["Overview of Pixel-Perfect Reporting","overview-pixel-perfect-reporting.html"],["Tasks for Report Consumers","tasks-report-consumers.html"],["Set Your Account Preferences","set-your-account-preferences.html"],["About the Catalog","catalog.html"],["Download Desktop Tools","download-desktop-tools.html"]],
+ 38:[["Find the SQL_ID for a Query","find-sql_id-oracle-analytics-query.html"],["Use the IndexCol Function","use-indexcol-function.html"],["Maintain Initialization Blocks","maintain-initialization-blocks.html"],["Usage Tracking with Init Blocks","use-usage-tracking-initialization-blocks.html"],["Minimize Network-Latency Impact","minimize-impact-query-performance-due-network-latency.html"],["Aggregation Rule for Report Totals","assign-aggregation-rule-report-totals.html"],["Best Option to Render Dashboards","select-best-option-render-dashboards.html"],["Filter vs Time-Series Functions","use-filter-functions-instead-time-series-functions.html"],["Improve AI Assistant Results","improve-results-oracle-analytics-ai-assistant.html"]],
+ 39:[["Data Profiles & Semantic Recommendations","data-profiles-and-semantic-recommendations.html"],["Transform Reference","enrich-and-transform-reference.html"],["Data Flow Limits","data-flow-limits.html"],["Developer Options (embed & perf)","developer-options.html"],["Connect to Your OCI Tenancy","create-connection-your-oci-tenancy.html"],["Integrate OCI Data Science","integrate-oracle-analytics-oci-data-science.html"],["Integrate OCI Language","integrate-oracle-analytics-oci-language.html"],["Integrate OCI Vision","integrate-oracle-analytics-oci-vision.html"],["Integrate Generative AI Models","integrate-oracle-analytics-generative-ai-models.html"]],
+};
+
+/* ============================ PERSONA MODEL ============================ */
+const PG=[
+ {id:"pUser",name:"Business User / Consumer",color:"#5b8def",icon:"👀",blurb:"Managers, reps and executives who read dashboards and decide — they don't build. Start: a watchlist + the Ask box + a daily email. Session: Unlocking Consumer Controls."},
+ {id:"pAnalyst",name:"Business Analyst",color:"#2dd4a7",icon:"📊",blurb:"The power user who builds datasets, dashboards and stories by drag-and-drop. Start: dataset → canvas → filter → calc → theme → publish. Session: Intro + Advanced Dashboarding."},
+ {id:"pCDS",name:"Citizen Data Scientist",color:"#a78bfa",icon:"🔬",blurb:"An analyst who predicts and finds patterns with no-code ML. Start: one-click Forecast, then a simple clustering data flow. Session: Machine Learning & AI in OAC."},
+ {id:"pDev",name:"Analytics Developer / Modeler",color:"#f5a524",icon:"🏗️",blurb:"Builds the governed semantic model everyone trusts. Start: a tiny model (1 fact, 2 dims), set grain, add security, deploy, connect Git. Session: Semantic Modeling."},
+ {id:"pEng",name:"Data Engineer",color:"#38bec9",icon:"🔌",blurb:"Wires up connectivity and pipelines so fresh data keeps flowing. Start: one connection → one scheduled data flow. Session: Intro to Datasets."},
+ {id:"pAdmin",name:"OAC Administrator",color:"#f2706b",icon:"🛡️",blurb:"Keeps the service running, secure and governed. Start: roles & permissions, then snapshots, then usage tracking. Session: Administration in OAC."},
+];
+const PSHORT={pUser:"Business User",pAnalyst:"Analyst",pCDS:"Data Scientist",pDev:"Developer",pEng:"Data Engineer",pAdmin:"OAC Administrator"};
+/* OAC predefined application (BI) roles each role maps to */
+const PROLE={pUser:"BI Consumer",pAnalyst:"BI Content Author",pCDS:"BI Content Author",pDev:"BI Content Author",pEng:"BI Data Load Author",pAdmin:"BI Service Administrator"};
+const PCAT=[
+ {id:"catBU",leaf:true,role:"pUser",name:"Business Users",icon:"👀",color:"#5b8def",birole:"BI Consumer"},
+ {id:"catPower",name:"Power User",icon:"🛠️",color:"#2dd4a7",birole:"BI Content Author",desc:"In Oracle Analytics these are Content Authors — granted the <b>BI Content Author</b> application role (Guide Part I: “Get Started… For Content Creators”). They build datasets, workbooks, models and pipelines. Spans analysts, citizen data scientists, modelers and data engineers (data engineers also use <b>BI Data Load Author</b>).",members:["pAnalyst","pCDS","pDev","pEng"]},
+ {id:"catAdmin",leaf:true,role:"pAdmin",name:"OAC Administrator",icon:"🛡️",color:"#f2706b",birole:"BI Service Administrator"},
+];
+const PT=[
+ ["pUser","💬","Ask / Natural language","Type a plain-English question and get a chart back — zero training.","“show me sales by region this quarter”","generate-visualizations-oracle-analytics-ai-assistant.html"],
+ ["pUser","🤖","AI Assistant & Insights","A chat helper that answers questions about a dashboard's data.","“Which product is dragging down margin?”","use-ai-agents-and-oracle-analytics-ai-assistant-interact-data.html"],
+ ["pUser","📌","Watchlists","Pin the metrics you care about to your home page and track them.","A daily “My KPIs”: revenue, pipeline, churn.","index.html"],
+ ["pUser","💡","Contextual Insights","Click a data point and get an instant auto-explanation.","Tap a dip → “driven by the West region, holiday week.”","understand-your-data-using-insights.html"],
+ ["pUser","🔎","Personalized filters","Tune the view to your own area without changing it for others.","A regional manager filters to just their territory.","filter-data.html"],
+ ["pUser","📱","Mobile & subscriptions","Dashboards on your phone plus scheduled email digests.","A PDF of yesterday's numbers in the inbox at 7am.","index.html"],
+ ["pAnalyst","🗂️","Datasets & data prep","Connect, clean, join and enrich data yourself — no waiting on IT.","Blend a sales export with a marketing spreadsheet.","connect-your-data-using-datasets.html"],
+ ["pAnalyst","📊","40+ visualizations","The right chart for any question, plus switch on the fly.","Trend as a line, comparison as a bar, place as a map.","visualization-types.html"],
+ ["pAnalyst","🧮","Calculations","Your own reusable formulas built from existing columns.","Build “profit margin %” once and reuse it everywhere.","use-calculations-workbooks.html"],
+ ["pAnalyst","🔎","Filters (all scopes)","Focus the data and give consumers controls.","Region + date dashboard filters at the top.","filter-data.html"],
+ ["pAnalyst","🎚️","Parameters & data actions","Build what-if tools and app-like navigation.","A slider for “price increase %”; click a bar to drill.","create-and-use-parameters.html"],
+ ["pAnalyst","💡","Auto Insights & Explain","Let AI suggest the first charts and explain columns.","Drop in data → instant starter visuals.","use-auto-insights-understand-your-data.html"],
+ ["pAnalyst","🎨","Themes & templates","Consistent, branded dashboards fast.","Apply the company theme in one click.","chapter-design-look-and-feel-workbooks.html"],
+ ["pCDS","📈","One-click statistics","Forecast, clustering, outliers and trend lines on any chart.","Add a forecast line to next quarter's sales.","use-oracle-analytics-predictive-models-and-oracle-machine-learning-models.html"],
+ ["pCDS","⚙️","No-code ML in data flows","Train, tune and score ML models by drag-and-drop.","A churn model: which customers may leave?","create-datasets-using-data-flows.html"],
+ ["pCDS","🔁","ML lifecycle","Train → Configure → check Quality → Apply, then schedule.","Score new leads every night automatically.","use-oracle-analytics-predictive-models-and-oracle-machine-learning-models.html"],
+ ["pCDS","🔮","Prophet & similarity","Stronger forecasts; find “records like this one”.","“Find customers similar to our best one.”","use-oracle-analytics-predictive-models-and-oracle-machine-learning-models.html"],
+ ["pCDS","✨","OCI AI Services","Vision, Language, Document & Video AI in data flows.","Read sentiment from thousands of reviews.","use-generative-ai-oracle-analytics.html"],
+ ["pCDS","🧠","Integrated ML (OML)","Register and apply models from Autonomous DB or notebooks.","Apply a model a data scientist trained in Python.","use-oracle-analytics-predictive-models-and-oracle-machine-learning-models.html"],
+ ["pDev","🏗️","Semantic Modeler (3 layers)","Physical → Logical → Presentation hides complexity.","Messy DB tables become a clean “Sales” subject area.",""],
+ ["pDev","🎯","Grain / level measures","Define detail levels so totals never double-count.","Yearly target sits correctly beside daily sales.",""],
+ ["pDev","🧬","Hierarchies & calculations","Build drill paths and shared metrics once.","Country→State→City; a standard “Net Revenue”.",""],
+ ["pDev","🛡️","Row-level & object security","One model, but each person sees only their slice.","Reps see only their accounts — same dashboard.",""],
+ ["pDev","🌿","SMML + Git","Text-based model enables versioning and teamwork.","Two developers work in branches, merge safely.",""],
+ ["pDev","✅","Consistency checks & lineage","Validate the model; trace physical→presentation.","Custom rules enforce your naming standards.",""],
+ ["pEng","🔌","100+ connectors","Reach any source — Oracle, Snowflake, Databricks, REST.","Live link to Autonomous Data Warehouse.","connect-your-data-using-datasets.html"],
+ ["pEng","🔒","Private Access Channel","Securely reach sources inside the corporate network.","Connect to an on-prem database safely.","connect-your-data-using-datasets.html"],
+ ["pEng","⚙️","Data Flows & Sequences","Repeatable pipelines: join, clean, aggregate, output.","Nightly build of a clean “customer 360” dataset.","create-datasets-using-data-flows.html"],
+ ["pEng","➕","Incremental loads & caching","Load only new data; pre-cache for speed.","Append today's OCI Object Storage files only.","manage-datasets.html"],
+ ["pEng","⚡","Live / Extracted modes","Choose live queries or fast cached extracts.","Extract a subject area for snappy dashboards.","manage-datasets.html"],
+ ["pEng","🧾","Custom SQL & RLS","Precise control over what's pulled and who sees it.","A custom SQL source feeding a secured dataset.","connect-your-data-using-datasets.html"],
+ ["pAdmin","👤","Users, groups & roles","Grant access by role, at a fine grain.","“Authors” build; “Viewers” only read.",""],
+ ["pAdmin","🔑","Fine-grained permissions","Control who can deploy models or build AI agents.","Only senior devs can deploy semantic models.",""],
+ ["pAdmin","💾","Snapshots (LCM)","Promote content dev→prod; back up and restore.","Scheduled nightly snapshot to OCI storage.",""],
+ ["pAdmin","📊","Usage Tracking & audit","See every query and user action, including IP.","A workbook monitoring slow queries and adoption.",""],
+ ["pAdmin","🎛️","Console settings","Configure maps, themes, the search index, more.","Index subject areas + synonyms for the AI Assistant.",""],
+ ["pAdmin","🔧","REST APIs & OCI","Automate start/stop/scale and content management.","Auto-stop the instance overnight to save cost.",""],
+];
+const PCROSS=[]; // personas: relationships shown via shared features are implicit; keep overview clean
+
+/* ============================ GRAPH ENGINE ============================ */
+function makeGraph(cfg){
+  const NODE={}, BYG={}, REL={};
+  NODE["ROOT"]={title:cfg.rootLabel,cat:cfg.rootCat,color:"#f0b429",part:null,url:cfg.rootUrl,desc:cfg.rootDesc};
+  cfg.groups.forEach(g=>{ NODE[g.id]={title:g.name,cat:cfg.numbered?("Part "+g.roman):"Persona",color:g.color,part:g.id,url:g.url?DOCBASE+g.url:cfg.rootUrl,desc:g.blurb,roman:g.roman,icon:g.icon,focus:!!g.focus,isGroup:true,birole:(typeof PROLE!=='undefined'&&PROLE[g.id])||''}; BYG[g.id]=[]; });
+  cfg.items.forEach(it=>{ NODE[it.id]={title:it.title,num:it.num,cat:cfg.numbered?("Chapter "+it.num+" · Part "+groupOf(it.gid).roman):groupOf(it.gid).name,color:groupOf(it.gid).color,part:it.gid,url:it.url?DOCBASE+it.url:"",desc:it.desc,detail:it.detail,icon:it.icon,num:it.num}; BYG[it.gid].push(it.id); });
+  (cfg.cats||[]).forEach(c=>{ NODE[c.id]={title:c.name,cat:"Persona group",color:c.color,icon:c.icon,desc:c.desc,isCat:true,members:c.members,url:cfg.rootUrl,birole:c.birole}; });
+  (cfg.cross||[]).forEach(([a,b])=>{ const x=cfg.numbered?("c"+a):a, y=cfg.numbered?("c"+b):b; (REL[x]=REL[x]||[]).push(y); (REL[y]=REL[y]||[]).push(x); });
+  function groupOf(gid){ return cfg.groups.find(g=>g.id===gid); }
+  function relOf(id){ return (REL[id]||[]).filter((v,i,a)=>a.indexOf(v)===i); }
+
+  const nodes=new vis.DataSet([]), edges=new vis.DataSet([]);
+  const net=new vis.Network(document.getElementById(cfg.netId),{nodes,edges},{
+    physics:false,
+    interaction:{hover:false,hoverConnectedEdges:false,dragNodes:false,dragView:true,zoomView:true,navigationButtons:false,keyboard:false},
+    nodes:{borderWidth:2,shadow:{enabled:true,color:"rgba(0,0,0,.45)",size:12,x:0,y:3},font:{face:"-apple-system,Segoe UI,Roboto,sans-serif"}},
+    edges:{color:{color:"#2c3a4f",highlight:"#f0b429",hover:"#5a6c83"},smooth:{type:"continuous"},width:1.4},
+  });
+  const api={cfg,NODE,BYG,REL,relOf,net,nodes,edges,view:"overview",selected:null,demo:cfg.demo?loadDemo():null};
+
+  function groupDot(g,x,y,big){
+    const focus=!!g.focus; const nm=g.short||(typeof PSHORT!=='undefined'&&PSHORT[g.id])||g.name;
+    const lines=cfg.numbered?["Part "+g.roman, nm+(focus?" ★":"")]:[nm];
+    return {id:g.id,x,y,fixed:true,shape:"image",image:hubSVG(g.color,g.icon,lines,{big:big,focus:focus}),shapeProperties:{useImageSize:true},label:""};
+  }
+  function itemBox(id,x,y){
+    const nd=NODE[id]; const demo=api.demo&&api.demo.has(id);
+    const label=(nd.icon?nd.icon+"  ":"")+(cfg.numbered&&nd.num?nd.num+" · ":"")+nd.title;
+    return {id,x,y,fixed:true,shape:"box",label,widthConstraint:{minimum:120,maximum:188},heightConstraint:{minimum:44},
+      color:{background:demo?"#2a2414":"#161f2c",border:demo?"#f0b429":nd.color,highlight:{background:"#1f2b3d",border:"#f0b429"},hover:{background:"#1c2636",border:demo?"#f0b429":lighten(nd.color)}},
+      font:{color:demo?"#ffe6ad":"#dde6f2",size:16,multi:false},borderWidth:demo?3:2,margin:15,
+      shapeProperties:{borderRadius:14},
+      shadow:{enabled:true,color:demo?"rgba(240,180,41,.35)":"rgba(0,0,0,.45)",size:demo?18:12,x:0,y:4}};
+  }
+  function rootCircle(x,y){ return {id:"ROOT",x:x,y:y,fixed:true,shape:"image",image:hubSVG("#f0b429",cfg.rootIcon||"",[cfg.rootLabel],{big:true,darkText:true}),shapeProperties:{useImageSize:true},label:""}; }
+  function mainCircle(id,icon,label,color,x,y,sub){ return {id,x,y,fixed:true,shape:"circle",margin:16,widthConstraint:{minimum:98,maximum:150},
+    color:{background:color,border:lighten(color),highlight:{background:color,border:"#fff"},hover:{background:color,border:"#fff"}},
+    label:icon+"\n"+label+(sub?"\n"+sub:""),font:{color:"#fff",size:16,strokeWidth:0}}; }
+  api.overview=function(){
+    api.view="overview"; api.selected=null; if(ACTIVE===api) closePanel();
+    nodes.clear(); edges.clear();
+    if(cfg.cats){
+      // left-to-right org chart: root · tiers (vertical) · roles (fan right)
+      const list=[rootCircle(-560,0)]; const n=cfg.cats.length; const tierX=-200, roleX=300;
+      cfg.cats.forEach((c,ci)=>{ const ty=(ci-(n-1)/2)*270;
+        if(c.leaf){
+          list.push(mainCircle(c.role,c.icon,c.name,c.color,tierX,ty,c.birole));
+          edges.add({id:"rc_"+c.id,from:"ROOT",to:c.role,color:{color:"#2c3a4f"},width:1.6});
+        } else {
+          list.push(mainCircle(c.id,c.icon,c.name,c.color,tierX,ty,c.birole));
+          edges.add({id:"rc_"+c.id,from:"ROOT",to:c.id,color:{color:"#2c3a4f"},width:1.6});
+          const m=c.members.length;
+          c.members.forEach((pid,k)=>{ const g=groupOf(pid); const cyy=ty+(k-(m-1)/2)*132;
+            list.push(groupDot(g,roleX,cyy,false));
+            edges.add({id:"cm_"+pid,from:c.id,to:pid,color:{color:"#2c3a4f"},width:1.4});
+          });
+        }
+      });
+      nodes.add(list);
+    } else {
+      const list=[rootCircle(0,0)]; const R=440;
+      cfg.groups.forEach((g,i)=>{ const a=(-90+i*(360/cfg.groups.length))*Math.PI/180;
+        list.push(groupDot(g,Math.cos(a)*R,Math.sin(a)*R,false));
+        edges.add({id:"r_"+g.id,from:"ROOT",to:g.id,color:{color:g.focus?"#7d6a35":"#2c3a4f"},width:g.focus?2.5:1.5});
+      });
+      nodes.add(list);
+    }
+    backEl().style.display='none';
+    setGuide(cfg.numbered?"6 parts in the guide · our focus is <b>Part III ★</b>. Click a part to explore its numbered chapters."
+                         :"3 user types — <b>Business Users · Power User · OAC Administrator</b> (6 roles in total). Click a role to see the features that matter most to it.");
+    highlightLegend(null); net.fit({animation:{duration:600}});
+  };
+  api.focus=function(gid){
+    api.view=gid; api.selected=null; if(ACTIVE===api) closePanel();
+    const g=groupOf(gid); const ids=BYG[gid]; const n=ids.length;
+    nodes.clear(); edges.clear(); nodes.add(groupDot(g,0,0,true));
+    if(n>8){                          // large parts (e.g., Part III) → clockwise ring, hub in the centre
+      const R=Math.max(300,n*36);
+      ids.forEach((id,i)=>{ const a=(-90+i*(360/n))*Math.PI/180;
+        nodes.add(itemBox(id,Math.cos(a)*R,Math.sin(a)*R));
+        edges.add({id:"e_"+id,from:gid,to:id,color:{color:"#2c3a4f"},width:1.4});
+      });
+    } else {                          // smaller parts → vertical ordered list in document order
+      const gapY=116; let prev=gid;
+      ids.forEach((id,i)=>{ const y=150+i*gapY;
+        nodes.add(itemBox(id,0,y));
+        edges.add({id:"e_"+id,from:prev,to:id,color:{color:"#2c3a4f"},width:1.5});
+        prev=id;
+      });
+    }
+    backEl().style.display='flex';
+    setGuide(cfg.numbered?("<b>Part "+g.roman+" · "+g.name+"</b> — "+(g.s||"")+" &nbsp;·&nbsp; click a chapter for details, <b>Esc</b> to go back.")
+                         :"Click a feature for what it is, a real example and the docs link · <b>‹ Back</b> or <b>Esc</b>.");
+    highlightLegend(gid); net.fit({animation:{duration:600}});
+  };
+  function applySel(id){ nodes.update({id,borderWidth:4,color:{background:"#33456a",border:"#f0b429",highlight:{background:"#33456a",border:"#f0b429"}},font:{color:"#fff",size:17}}); if(edges.get("e_"+id)) edges.update({id:"e_"+id,color:{color:"#f0b429"},width:3.5}); }
+  function dimOthers(keep){
+    nodes.update(nodes.getIds().map(nid=>({id:nid,opacity: nid===keep?1:(nid===api.view?0.5:0.16)})));
+    edges.update(edges.getIds().map(eid=>({id:eid,color:{color:(eid==='e_'+keep)?'#f0b429':'#2c3a4f',opacity:(eid==='e_'+keep)?1:0.1,highlight:'#f0b429',hover:'#5a6c83'}})));
+  }
+  api.restore=function(){ nodes.update(nodes.getIds().map(nid=>({id:nid,opacity:1}))); edges.update(edges.getIds().map(eid=>({id:eid,color:{color:'#2c3a4f',opacity:1,highlight:'#f0b429',hover:'#5a6c83'}}))); };
+  api.select=function(id){ if(api.selected&&api.selected!==id) resetStyle(api.selected); api.selected=id; applySel(id); dimOthers(id); openPanel(api,id); showTopicsPanel(api,id); };
+  function resetStyle(id){ const pos=nodes.get(id); if(!pos) return; nodes.update(itemBox(id,pos.x,pos.y)); }
+  api.resetStyle=resetStyle;
+  api.hop=function(id){ const pid=NODE[id].part; if(pid&&pid!==api.view){ api.focus(pid); setTimeout(()=>{api.select(id);net.focus(id,{scale:1.05,animation:{duration:500}});},650);} else {api.select(id);net.focus(id,{scale:1.05,animation:{duration:500}});} };
+  api.search=function(q){ q=q.trim().toLowerCase(); if(!q) return;
+    let hit=null;
+    for(const id in NODE){ if(NODE[id].isGroup||NODE[id].isCat||id==="ROOT") continue; if((NODE[id].title+" "+(NODE[id].num||"")).toLowerCase().includes(q)){hit=id;break;} }
+    if(!hit){ for(const id in NODE){ if(NODE[id].isGroup||NODE[id].isCat||id==="ROOT") continue; if((NODE[id].desc||"").toLowerCase().includes(q)){hit=id;break;} } }
+    if(!hit){ for(const g of cfg.groups){ if(g.name.toLowerCase().includes(q)){ api.focus(g.id); return; } } return; }
+    api.hop(hit);
+  };
+  api.toggleDemo=function(id){ if(!api.demo) return; api.demo.has(id)?api.demo.delete(id):api.demo.add(id); saveDemo(api.demo);
+    if(nodes.get(id)){ const pos=nodes.get(id); nodes.update(itemBox(id,pos.x,pos.y)); if(api.selected===id) applySel(id); }
+    if(api.view==="overview") api.overview();
+    if(curPanel===id) openPanel(api,id);
+    if(agendaOpen) renderAgenda();
+  };
+  function backEl(){ return document.getElementById(cfg.backId); }
+  function setGuide(html){ document.getElementById(cfg.guideId).innerHTML=html; }
+  function highlightLegend(gid){ document.querySelectorAll('#'+cfg.legendId+' .lg').forEach(el=>el.classList.toggle('active',el.dataset.g===gid)); }
+  api.groupOf=groupOf; api.itemBox=itemBox;
+
+  // legend
+  document.getElementById(cfg.legendId).innerHTML=cfg.groups.map(g=>`<div class="lg ${g.focus?'focus':''}" data-g="${g.id}" onclick="G_${cfg.key}.focus('${g.id}')"><span class="d" style="background:${g.color}"></span><span class="lgn">${g.icon} ${cfg.numbered?('Part '+g.roman+' · '):''}${g.name}${g.focus?' ★':''}</span><span class="lgc">${BYG[g.id].length}</span></div>`).join('');
+
+  // events
+  net.on("click",p=>{ if(!p.nodes.length){ if(api.selected){resetStyle(api.selected);api.selected=null;} api.restore(); closePanel(); return; }
+    const id=p.nodes[0];
+    if(api.view==="overview"){ if(id==="ROOT") openPanel(api,"ROOT"); else if(NODE[id]&&NODE[id].isCat) openPanel(api,id); else api.focus(id); }
+    else { if(id===api.view){ if(api.selected){resetStyle(api.selected);api.selected=null;} api.restore(); hideTopicsPanel(); openPanel(api,id); } else api.select(id); }
+  });
+  net.on("doubleClick",p=>{ if(!p.nodes.length) return; const id=p.nodes[0];
+    if(NODE[id]&&NODE[id].isCat) return;
+    if(api.view==="overview"&&id!=="ROOT"){ api.focus(id); return; }
+    const u=NODE[id]&&NODE[id].url; if(u) window.open(u,"_blank"); });
+  return api;
+}
+
+/* ---- attach detail to topic items, build configs ---- */
+const TOPIC_ITEMS=TT.map(t=>({id:"c"+t[0],gid:t[1],num:t[0],title:t[2],slug:t[3],url:t[3],desc:t[4],icon:TICON[t[0]],detail:TDETAIL[t[0]]||null}));
+const PERSONA_ITEMS=PT.map((r,i)=>({id:"pf"+i,gid:r[0],title:r[2],icon:r[1],url:r[5],desc:r[3],detail:{what:r[3],example:r[4]}}));
+
+const G_TOPIC=makeGraph({key:"TOPIC",netId:"netTopics",legendId:"legend-topics",guideId:"guide-topics",backId:"back-topics",
+  groups:TG,items:TOPIC_ITEMS,cross:TCROSS,numbered:true,demo:true,rootIcon:"📘",
+  rootLabel:"OAC DV Guide",rootCat:"The whole guide · 6 parts",rootUrl:DOCBASE,
+  rootDesc:"“Visualizing Data and Building Reports in Oracle Analytics Cloud” — 6 parts, 41 numbered chapters. This session focuses on Part III, Visualize Data."});
+let ACTIVE=G_TOPIC;
+
+/* ============================ PERSONA EXPLORER (3 doc-aligned personas) ============================ */
+const PERSONAS3=[
+ {id:"pConsumer",name:"Business Users",sub:"Consumers",role:"BI Consumer",icon:"👀",color:"#5b8def",
+  blurb:"They read dashboards and explore content that's been shared with them — consuming insights and making decisions. They don't build.",
+  doc:"get-started-visualizing-data-consumers.html",
+  caps:[["Access OAC as a consumer","accessing-oracle-analytics-consumer.html"],["Find & explore shared content","find-and-explore-analytics-content-thats-been-shared-you.html"],["Use visualization tooltips","access-visualization-tooltips.html"],["Sort, drill & select data","sort-drill-and-select-data-visualizations.html"],["Swap columns in a visualization","swap-columns-visualization.html"],["Add/remove columns in tables & pivots","add-or-remove-columns-tables-or-pivots.html"],["Use Contextual Insights","use-contextual-insights-understand-your-data.html"],["Add a filter (as a consumer)","add-filter-workbook-consumer.html"],["Filter personalizations & workbook states","filter-personalizations-and-workbook-states.html"],["Use the AI Assistant as a consumer","using-oracle-analytics-ai-assistant-consumer.html"],["Export workbook content","export-workbook-content-various-formats.html"],["FAQs for consumers","faqs-analytics-consumers.html"]]},
+ {id:"pPower",name:"Power Users",sub:"Content Creators",role:"BI Content Author",icon:"🛠️",color:"#2dd4a7",
+  blurb:"They create the content everyone else uses — datasets, data flows, workbooks, visualizations, models and pipelines. This group spans Analysts, Citizen Data Scientists, Developers/Modelers and Data Engineers.",
+  doc:"get-started-visualizing-data-and-building-reports.html",
+  roles:["📊 Analyst","🔬 Citizen Data Scientist","🏗️ Developer / Modeler","🔌 Data Engineer"],
+  caps:[["Connect & shape data (datasets)","connect-your-data-using-datasets.html"],["Clean & enrich data","enrich-and-transform-data.html"],["Build repeatable data flows","create-datasets-using-data-flows.html"],["Build & manage workbooks","chapter-build-and-manage-workbooks.html"],["Create & use 40+ visualizations","chapter-create-and-use-visualizations.html"],["Filter data","filter-data.html"],["Create & use parameters","create-and-use-parameters.html"],["Understand data with Insights","understand-your-data-using-insights.html"],["Map backgrounds & layers","apply-map-backgrounds-and-map-layers-enhance-visualizations.html"],["Use data actions","use-data-actions.html"],["Build a presentation flow","build-presentation-flow.html"],["Predictive & no-code ML","use-oracle-analytics-predictive-models-and-oracle-machine-learning-models.html"],["Use Generative AI","use-generative-ai-oracle-analytics.html"],["Build AI Agents","use-ai-agents-and-oracle-analytics-ai-assistant-interact-data.html"],["Import, export & share","import-export-and-share.html"]]},
+ {id:"pAdmin",name:"OAC Administrator",sub:"Administrators",role:"BI Service Administrator",icon:"🛡️",color:"#f2706b",
+  blurb:"They keep the platform running, secure and governed — managing who can do what, promoting content safely, and watching usage and cost.",
+  docHref:"https://docs.oracle.com/en/cloud/paas/analytics-cloud/",docLabel:"Open Administration docs",
+  caps:[["Manage users, groups & application roles",""],["Grant fine-grained permissions",""],["Promote content with Snapshots (dev→prod, backup/restore)",""],["Monitor with Usage Tracking & audit logs",""],["Configure the Console (maps, themes, search index)",""],["Automate start / stop / scale with REST APIs",""]]},
+];
+function pShade(hex){const n=parseInt(hex.slice(1),16);let r=Math.max(0,(n>>16)-46),g=Math.max(0,((n>>8)&255)-46),b=Math.max(0,(n&255)-46);return"#"+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);}
+function renderPersonas(){
+  const cards=["pAdmin","pPower","pConsumer"].map(pid=>{ const p=PERSONAS3.find(x=>x.id===pid);
+    const head=`<div class="ptier-head" style="background:linear-gradient(135deg,${p.color},${pShade(p.color)})"><span class="pemoji">${p.icon}</span><div><div class="ptname">${p.name}</div><span class="pbadge">${p.sub} · ${p.role}</span></div></div>`;
+    const rolechips = p.roles?`<div class="prolechips">${p.roles.map(r=>`<span>${r}</span>`).join('')}</div>`:'';
+    const linked=!!p.caps[0][1];
+    const caps=`<div class="capnote">What they can do${linked?' — click to open the docs':''}</div><div class="subs">${p.caps.map(c=>c[1]?`<a href="${DOCBASE}${c[1]}" target="_blank" rel="noopener">${c[0]}<span class="ar">↗</span></a>`:`<span class="capx">${c[0]}</span>`).join('')}</div>`;
+    const docbtn = p.doc?`<a class="doc" href="${DOCBASE}${p.doc}" target="_blank" rel="noopener" style="margin-top:14px">📖 Get started (docs) ↗</a>`:(p.docHref?`<a class="doc" href="${p.docHref}" target="_blank" rel="noopener" style="margin-top:14px">📖 ${p.docLabel} ↗</a>`:'');
+    return `<div class="ptier">${head}<div class="ptier-body"><p class="ptdesc">${p.blurb}</p>${rolechips}${caps}${docbtn}</div></div>`;
+  }).join('');
+  document.getElementById('personas').innerHTML=`
+   <div class="phero"><div class="kick">Who uses OAC DV · start here</div><h2>Three personas, aligned to OAC's BI roles</h2>
+     <p>The documentation organises users into three groups. Pick a persona to see exactly what they can do — every capability links to the matching Oracle documentation page.</p></div>
+   <div class="ptiers">${cards}</div>`;
+}
+
+/* ============================ SHARED PANEL ============================ */
+let curPanel=null;
+function sect(label,html){ return html?`<div class="lab">${label}</div>${html}`:''; }
+function openPanel(api,id){
+  ACTIVE=api; const NODE=api.NODE; const nd=NODE[id]; if(!nd) return; curPanel=id;
+  document.getElementById('pCat').textContent=nd.cat; document.getElementById('pCat').style.color=nd.color;
+  const ic=nd.icon||""; document.getElementById('pTitle').textContent=(ic?ic+"  ":"")+(api.cfg.numbered&&nd.num?nd.num+" · ":"")+nd.title;
+  const star=document.getElementById('pStar'); const isItem=!nd.isGroup&&!nd.isCat&&id!=="ROOT";
+  if(api.demo&&isItem){ star.style.display=''; star.textContent=api.demo.has(id)?'⭐':'☆'; star.classList.toggle('on',api.demo.has(id)); } else star.style.display='none';
+  const childWord=api.cfg.numbered?"Chapters in this part":"Features for this persona";
+  let html='';
+  if(nd.isCat){
+    html=(nd.birole?`<p class="desc">Application role: <b style="color:var(--gold)">${nd.birole}</b></p>`:'')+`<p class="desc">${nd.desc}</p>`+sect("Roles in this group",`<div class="rel">${nd.members.map(m=>`<span onclick="G_${api.cfg.key}.focus('${m}')">${NODE[m].icon} ${NODE[m].title}</span>`).join('')}</div>`);
+  } else if(id==="ROOT"){
+    html=`<p class="desc">${nd.desc}</p>`+`<div class="lab">The 6 parts — what's in each</div><div class="subs">${api.cfg.groups.map(g=>`<a onclick="G_${api.cfg.key}.focus('${g.id}')" style="cursor:pointer;border-left-color:${g.color}"><span class="srt"><b>${g.icon} ${api.cfg.numbered?('Part '+g.roman+' · '):''}${g.name}${g.focus?' ★':''}</b>${g.s?`<br><span class="psum">${g.s}</span>`:''}</span><span class="ar">›</span></a>`).join('')}</div>`
+      +`<a class="doc" href="${nd.url}" target="_blank" rel="noopener">📖 Open the guide ↗</a>`;
+  } else if(nd.isGroup){
+    const tids=api.BYG[id]||[];
+    html=(nd.birole?`<p class="desc">Application role: <b style="color:var(--gold)">${nd.birole}</b></p>`:'')+`<p class="desc">${nd.desc}</p>`+(nd.focus?`<p class="desc" style="color:var(--gold)">★ This is our session focus.</p>`:'');
+    if(id==="P1"){
+      html+=`<div class="lab">Start with your persona</div>`
+        +`<div class="psplit"><button class="ppath" style="--rc:#2dd4a7" onclick="G_${api.cfg.key}.select('c1')"><span class="pe">🛠️</span><span><b>Power Users — Content Creators</b><span class="ps">Ch 1 · build datasets, dashboards &amp; content</span></span></button>`
+        +`<button class="ppath" style="--rc:#5b8def" onclick="G_${api.cfg.key}.select('c2')"><span class="pe">👀</span><span><b>Business Users — Consumers</b><span class="ps">Ch 2 · read, explore &amp; decide</span></span></button></div>`
+        +`<p class="desc" style="font-size:13px;color:var(--muted)">Pick the path that matches your role — each opens its “Get Started” topics.</p>`;
+    }
+    html+=sect(childWord,`<div class="rel">${tids.map(t=>`<span onclick="G_${api.cfg.key}.select('${t}')">${api.demo&&api.demo.has(t)?'⭐ ':''}${NODE[t].icon} ${api.cfg.numbered?(NODE[t].num+' · '):''}${NODE[t].title}</span>`).join('')}</div>`)
+      +(nd.url?`<a class="doc" href="${nd.url}" target="_blank" rel="noopener">📖 Open in Oracle docs ↗</a>`:'');
+  } else {
+    const d=nd.detail;
+    if(d){
+      html+=sect("What it is",`<p class="desc">${d.what}</p>`);
+      if(d.kinds) html+=sect("Kinds",`<p class="desc">${d.kinds}</p>`);
+      if(d.uses&&d.uses.length) html+=sect("Where / how you use it",`<ul class="dl">${d.uses.map(u=>`<li>${u}</li>`).join('')}</ul>`);
+      if(d.why) html+=sect("Why use it",`<p class="desc">${d.why}</p>`);
+      if(d.when) html+=sect("When to use it",`<p class="desc">${d.when}</p>`);
+      if(d.example) html+=sect("Real-life example",`<p class="desc">${d.example}</p>`);
+      if(d.helps) html+=sect("How it helps",`<p class="desc">${d.helps}</p>`);
+      if(d.note) html+=sect("Good to know",`<p class="desc">${d.note}</p>`);
+    } else { html+=`<p class="desc">${nd.desc}</p>`; }
+    if(nd.url) html+=`<a class="doc" href="${nd.url}" target="_blank" rel="noopener">📖 Open chapter overview ↗</a>`;
+    const r=api.relOf(id);
+    if(r.length) html+=sect("Related",`<div class="rel">${r.map(c=>NODE[c]?`<span onclick="G_${api.cfg.key}.hop('${c}')">${NODE[c].icon} ${api.cfg.numbered&&NODE[c].num?NODE[c].num+' · ':''}${NODE[c].title}</span>`:'').join('')}</div>`);
+  }
+  document.getElementById('pBody').innerHTML=html;
+  document.getElementById('panel').classList.add('open');
+}
+function closePanel(){ curPanel=null;
+  document.getElementById('panel').classList.remove('open');
+  document.getElementById('panel2').classList.remove('open');
+  exitDetailMode();
+  if(ACTIVE&&ACTIVE.restore) ACTIVE.restore();
+}
+function showTopicsPanel(api,id){
+  const nd=api.NODE[id]; const subs=(api.cfg.numbered&&typeof SUBTOPICS!=='undefined')?SUBTOPICS[nd.num]:null;
+  if(!subs||!subs.length){ hideTopicsPanel(); return; }
+  document.getElementById('p2Cat').textContent="Chapter "+nd.num+" — click to open the page";
+  document.getElementById('p2Title').textContent=(nd.icon?nd.icon+"  ":"")+nd.title;
+  document.getElementById('p2Body').innerHTML=`<div class="subs">${subs.map(s=>`<a href="${DOCBASE}${s[1]}" target="_blank" rel="noopener">${s[0]}<span class="ar">↗</span></a>`).join('')}</div>`;
+  document.getElementById('panel2').classList.add('open'); enterDetailMode();
+}
+function hideTopicsPanel(){ document.getElementById('panel2').classList.remove('open'); exitDetailMode(); }
+function refitTopics(){ try{ G_TOPIC.net.setSize('100%','100%'); G_TOPIC.net.fit({animation:{duration:350}}); }catch(e){} }
+function enterDetailMode(){ const v=document.getElementById('view-topics'); if(!v.classList.contains('detail')){ v.classList.add('detail'); requestAnimationFrame(()=>requestAnimationFrame(refitTopics)); } }
+function exitDetailMode(){ const v=document.getElementById('view-topics'); if(v&&v.classList.contains('detail')){ v.classList.remove('detail'); requestAnimationFrame(()=>requestAnimationFrame(refitTopics)); } }
+function gToggleDemo(){ if(curPanel && ACTIVE.demo) ACTIVE.toggleDemo(curPanel); }
+/* ---- ask-the-docs search ---- */
+const SEARCHINDEX=[];
+TT.forEach(t=>{ const g=TG.find(x=>x.id===t[1]); SEARCHINDEX.push({t:(TICON[t[0]]?TICON[t[0]]+" ":"")+t[0]+" · "+t[2],u:DOCBASE+t[3],tag:"Part "+(g?g.roman:"")+" chapter"}); });
+Object.keys(SUBTOPICS).forEach(num=>SUBTOPICS[num].forEach(s=>SEARCHINDEX.push({t:s[0],u:DOCBASE+s[1],tag:"Ch "+num+" topic"})));
+const ANSWERS={
+ "time zone":{t:"About Time Zones",d:"Oracle Analytics provides time-zone support for both subject areas and datasets, so values in DateTime/timestamp columns display in the right time zone in workbooks."},
+ "parameter":{t:"Parameters",d:"A user-defined value the workbook reacts to — for what-if analysis, switching metric/period/region, show/hide visuals, reference lines and app-like navigation."},
+ "filter":{t:"Filter Data",d:"Narrows data to what you care about. Types: List, Range, Date, Top/Bottom N, Expression, Selection Steps; scopes from one visualization to the whole workbook."},
+ "data flow":{t:"Data Flows",d:"A repeatable recipe that combines, transforms and outputs a clean dataset automatically — schedulable and chainable into a sequence."},
+ "grain":{t:"Grain / Granularity",d:"What one row of data represents. Set in the semantic model so measures aggregate correctly and totals don't double-count (fan-out)."},
+ "data action":{t:"Data Actions",d:"Make a chart clickable — navigate to another canvas (carrying your selection), open a URL, or set a parameter."},
+ "auto insight":{t:"Auto Insights",d:"When you add data, OAC scans it and suggests the most interesting charts — a head start before you build."},
+ "explain":{t:"Explain",d:"Right-click a column for an automatic plain-language summary of its drivers, anomalies and key segments."},
+ "ai assistant":{t:"AI Assistant",d:"Ask a plain-English question and OAC builds the visualization for you (index the dataset first)."},
+ "ai agent":{t:"AI Agents",d:"Domain-specialized assistants (RAG) that use your documents and business language so consumers explore data conversationally."},
+ "generative":{t:"Generative AI",d:"Use generative AI in data flows, workbooks and datasets — summarize comments, classify tickets, or filter by natural-language criteria."},
+ "map":{t:"Maps & Layers",d:"Put data on maps using point, polygon and heat layers, dynamic lines and custom vector layers."},
+ "calculation":{t:"Calculations",d:"Your own formulas built from existing columns (margins, ratios), using the Expression Editor's hundreds of functions."},
+ "presentation":{t:"Presentation Flow",d:"Present mode controls how consumers see and move through a workbook — header, navigation, canvas order, personalization."},
+ "dataset":{t:"Datasets",d:"Data you bring in and shape for analysis — from a file, a database connection or a subject area; one table or many joined on a Join Diagram."},
+ "enrich":{t:"Enrich & Transform",d:"Cleanse and standardize data and add information you didn't have — e.g. City/State from a ZIP, or fiscal periods from a date."},
+ "watchlist":{t:"Watchlists",d:"Pin the metrics you care about to your home page and track them with automatic insights."},
+ "snapshot":{t:"Snapshots (LCM)",d:"Promote content dev→prod and back up / restore; schedule recurring snapshots (Administration)."}
+};
+function closeSearch(){ const b=document.getElementById('searchResults'); if(b) b.classList.remove('open'); }
+function onSearch(q){
+  q=(q||'').trim(); const box=document.getElementById('searchResults'); if(!box) return;
+  if(q.length<2){ box.classList.remove('open'); box.innerHTML=''; return; }
+  const ql=q.toLowerCase();
+  let ans=''; for(const k in ANSWERS){ if(ql.includes(k)){ const a=ANSWERS[k]; ans=`<div class="sr-ans"><div class="sr-at">${a.t}</div><div>${a.d}</div></div>`; break; } }
+  const seen={}; const hits=SEARCHINDEX.filter(x=>{ if(!x.t.toLowerCase().includes(ql)) return false; if(seen[x.u]) return false; seen[x.u]=1; return true; }).slice(0,16);
+  box.innerHTML = ans + (hits.length? hits.map(h=>`<a href="${h.u}" target="_blank" rel="noopener"><span class="srt">${h.t}</span><span class="srtag">${h.tag} ↗</span></a>`).join('') : (ans?'':`<div class="sr-none">No topic matches “${q}”. Try another keyword.</div>`));
+  box.classList.add('open');
+}
+document.addEventListener('mousedown',e=>{ if(e.target.closest&&(e.target.closest('#searchResults')||e.target.id==='search')) return; closeSearch(); });
+
+/* ============================ DEMO (topics) ============================ */
+function loadDemo(){ try{const a=JSON.parse(localStorage.getItem('oacdv_demo')||'null'); return new Set(Array.isArray(a)?a:defaultDemo());}catch(e){return new Set(defaultDemo());} }
+function defaultDemo(){ return TOPIC_ITEMS.filter(it=>it.gid==="P3").map(it=>it.id); }
+function saveDemo(set){ try{localStorage.setItem('oacdv_demo',JSON.stringify([...set]));}catch(e){} }
+let agendaOpen=false;
+function renderAgenda(){
+  const NODE=G_TOPIC.NODE; const items=[...G_TOPIC.demo].map(id=>NODE[id]).filter(Boolean).sort((a,b)=>a.num-b.num);
+  const body=items.length? items.map((nd,i)=>{ const g=G_TOPIC.groupOf(nd.part);
+     return `<div class="arow"><div class="anum">${i+1}</div><div class="ainfo">
+       <div class="at">${nd.icon} ${nd.num} · ${nd.title}<span class="apart" style="color:${nd.color}">Part ${g.roman}</span></div>
+       <div class="ad">${nd.detail?nd.detail.what:nd.desc}</div>
+       <div class="aacts"><button onclick="agendaJump('c${nd.num}')">Open in map</button><a href="${nd.url}" target="_blank" rel="noopener">Docs ↗</a><button onclick="G_TOPIC.toggleDemo('c${nd.num}')">Remove ✕</button></div></div></div>`;
+   }).join('') : '<p style="color:var(--muted);padding:10px 4px">No topics in your demo yet. Open a chapter on the Topic Map and click ⭐, or “Reset to Part III”.</p>';
+  document.getElementById('agendaBody').innerHTML=`<div class="acount">${items.length} chapter${items.length===1?'':'s'} in your running order (numbered as in the guide)</div>`+body;
+}
+function openAgenda(){ agendaOpen=true; renderAgenda(); document.getElementById('agenda').classList.remove('hide'); }
+function closeAgenda(){ agendaOpen=false; document.getElementById('agenda').classList.add('hide'); }
+function agendaJump(id){ closeAgenda(); showTab('topics'); G_TOPIC.hop(id); }
+function resetDemo(){ G_TOPIC.demo=new Set(defaultDemo()); saveDemo(G_TOPIC.demo); refreshTopics(); }
+function clearDemo(){ G_TOPIC.demo=new Set(); saveDemo(G_TOPIC.demo); refreshTopics(); }
+function refreshTopics(){ if(G_TOPIC.view==="overview") G_TOPIC.overview(); else G_TOPIC.focus(G_TOPIC.view); if(agendaOpen) renderAgenda(); }
+
+/* ============================ TABS ============================ */
+function showTab(t){
+  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.dataset.tab===t));
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('show'));
+  document.getElementById('view-'+t).classList.add('show');
+  closePanel();
+  document.getElementById('search').style.display='';
+  closeSearch();
+  document.getElementById('agendaBtn').style.display=(t==='topics')?'':'none';
+  if(t==='topics'){ ACTIVE=G_TOPIC; G_TOPIC.net.fit({animation:{duration:400}}); }
+}
+
+/* ============================ DAY PAGES ============================ */
+const DV_URL="https://oac-dv.github.io/oac-dv-workshop/";
+const AI_URL="https://oac-ai.github.io/oac-ai-workshops/ai-assistant-agents.html";
+document.getElementById('day1').innerHTML=`
+ <div class="hero dv">
+   <div class="kick">Day 1 · Hands-on · ~3 hours</div>
+   <h2>From Data to Decisions using Oracle Analytics Cloud</h2>
+   <p>You're a data analyst at an auto-insurance company. The retention team can't call everyone — so you'll build a data-backed priority list: connect four tables, create six business metrics, and build three canvases to find which at-risk customers to contact first.</p>
+   <div class="cta"><a class="cta-btn" href="${DV_URL}" target="_blank" rel="noopener">▶ Open the live Day 1 workshop ↗</a>
+   <a class="cta-btn alt" href="https://oac-dv.github.io/oac-dv-workshop/downloads/Car%20Insurance%20-%20Only%20Required%20Data.xlsx" target="_blank" rel="noopener">⬇ Download dataset (XLSX)</a></div>
+ </div>
+ <h3 class="sec">The decision you're building toward</h3>
+ <p class="lead">A dashboard shows what happened. This workbook tells the business what to do next: <b>which at-risk customers are worth saving first, and why</b> — using churn risk, customer value and claim cost.</p>
+ <h3 class="sec">The five exercises</h3>
+ <div class="cards">
+   <div class="ex"><span class="n">1</span><h4>Build the Dataset Foundation</h4><p>Connect four tables into one trusted dataset joined on Customer ID.</p><ul><li>Create → Dataset → upload the Excel, select all 4 sheets</li><li>Set ID fields (Customer ID, Claim ID…) to <b>Attribute</b></li><li>Join on Customer ID in the Diagram → save as “Customer Insurance”</li></ul></div>
+   <div class="ex"><span class="n">2</span><h4>Create the Six Decision Metrics</h4><p>Translate raw data into business language with calculations.</p><ul><li>Policy Count, Claims Count, Churned Policy Count</li><li>Churn Rate, Loss Ratio (both as %)</li><li>Customer Value Score = Premium − Insurance Paid</li></ul></div>
+   <div class="ex"><span class="n">3</span><h4>Business Overview Canvas</h4><p>Answer “what's the current state of the business?”</p><ul><li>Tiles: Policy Count, Claims Count, Churn Rate</li><li>Trend: Claim Amount by date</li><li>Map: Claim Amount by State</li></ul></div>
+   <div class="ex"><span class="n">4</span><h4>Loss Ratio Canvas</h4><p>Find where claim costs are high relative to premium.</p><ul><li>Loss Ratio by Good Driver Flag & Household Type</li><li>Map states by Loss Ratio</li><li>Detail table you can click to filter</li></ul></div>
+   <div class="ex"><span class="n">5</span><h4>Retention Priority Canvas</h4><p>The payoff — score at-risk customers and make the call list.</p><ul><li>Filter bar to “value at risk” customers</li><li>Table sorted by Customer Value Score</li><li>Scatter: Value Score × Loss Ratio (four zones)</li></ul></div>
+   <div class="ex" style="border-color:var(--gold)"><span class="n">★</span><h4>Outcome</h4><p>A decision tool, not just a dashboard: your top customers to contact for retention — and the evidence behind each.</p></div>
+ </div>
+ <h3 class="sec">The six metrics</h3>
+ <table class="wt"><tr><th>Metric</th><th>What it answers</th></tr>
+   <tr><td><b>Policy Count</b></td><td>How many unique customers do we have? (COUNT DISTINCT Customer ID)</td></tr>
+   <tr><td><b>Claims Count</b></td><td>How many claim events happened?</td></tr>
+   <tr><td><b>Churned Policy Count</b></td><td>How many customers have already left?</td></tr>
+   <tr><td><b>Churn Rate</b></td><td>What % of customers churned? (Churned ÷ Policy Count)</td></tr>
+   <tr><td><b>Loss Ratio</b></td><td>For every $1 of premium, how much was paid in claims?</td></tr>
+   <tr><td><b>Customer Value Score</b></td><td>Net value per customer = Premium − Insurance Paid</td></tr>
+ </table>
+ <div class="note"><b>Why it ties to the Topic Map:</b> this build uses <b>Datasets</b> (ch 3), <b>Calculations</b> (ch 7), <b>Visualizations</b> (ch 9), <b>Filters</b> (ch 13) and <b>Maps</b> (ch 16). Open those chapters on the Topic Map for the underlying concepts.</div>
+ <div class="note"><b>What's next:</b> the workbook you build today becomes the answer key for <b>Day 2</b> — you'll ask OAC's AI Assistant the same retention questions and see if it reaches the same insight.</div>
+`;
+document.getElementById('day2').innerHTML=`
+ <div class="hero ai">
+   <div class="kick">Day 2 · AI Assistant + OAC Agents</div>
+   <h2>Let the AI answer the same questions</h2>
+   <p>Yesterday you built the retention workbook by hand. Today you'll point OAC's AI Assistant and AI Agents at the same data — ask the retention questions in plain English, and judge whether the AI reaches the same insight you reached manually, or finds something new.</p>
+   <div class="cta"><a class="cta-btn" href="${AI_URL}" target="_blank" rel="noopener">▶ Open the live Day 2 workshop ↗</a></div>
+ </div>
+ <h3 class="sec">What you'll do</h3>
+ <div class="cards">
+   <div class="ex"><span class="n">1</span><h4>Index the dataset</h4><p>Make your Customer Insurance data searchable so the AI Assistant can answer questions about it.</p></div>
+   <div class="ex"><span class="n">2</span><h4>Ask in plain English</h4><p>“Which at-risk customers have the highest value and lowest loss ratio?” — compare the AI's chart to your Canvas 3.</p></div>
+   <div class="ex"><span class="n">3</span><h4>Use Auto Insights & Explain</h4><p>Let the AI surface the drivers of churn and explain a suspicious spike on its own.</p></div>
+   <div class="ex"><span class="n">4</span><h4>Build an AI Agent</h4><p>Create a domain agent (RAG) that uses your data + business language so any consumer can ask retention questions conversationally.</p></div>
+   <div class="ex"><span class="n">5</span><h4>Evaluate</h4><p>Did the AI match your manual recommendation? Where did it help, and where does human judgement still matter?</p></div>
+ </div>
+ <h3 class="sec">Key concepts</h3>
+ <table class="wt"><tr><th>Capability</th><th>What it does</th></tr>
+   <tr><td><b>AI Assistant (Ask)</b></td><td>Type a question, get a built visualization — no chart skills needed.</td></tr>
+   <tr><td><b>Auto Insights / Explain</b></td><td>Suggests the most interesting charts and explains a column's drivers and anomalies.</td></tr>
+   <tr><td><b>AI Agents (RAG)</b></td><td>Domain-specialized chat assistants grounded in your documents and business terms.</td></tr>
+   <tr><td><b>Generative AI</b></td><td>Summarize, classify and filter by meaning inside flows, workbooks and datasets.</td></tr>
+ </table>
+ <div class="note"><b>Ties to the Topic Map:</b> Day 2 lives in Part III — <b>AI Assistant</b> (ch 11), <b>AI Agents</b> (ch 12), <b>Insights</b> (ch 15) and <b>Generative AI</b> (ch 20). Open those for the concepts behind each step.</div>
+ <div class="note">Full step-by-step content and any data files are on the live workshop site — use the button above. This page is your map and orientation for the session.</div>
+`;
+
+/* ============================ INTRO / ESC ============================ */
+function showIntro(){ document.getElementById('intro').classList.remove('hide'); }
+function hideIntro(){ document.getElementById('intro').classList.add('hide'); }
+document.addEventListener('keydown',e=>{ if(e.key!=='Escape') return;
+  if(!document.getElementById('agenda').classList.contains('hide')){ closeAgenda(); return; }
+  if(!document.getElementById('intro').classList.contains('hide')){ hideIntro(); return; }
+  if(document.getElementById('panel').classList.contains('open')){ if(ACTIVE&&ACTIVE.selected){ACTIVE.resetStyle(ACTIVE.selected);ACTIVE.selected=null;} closePanel(); return; }
+  if(ACTIVE===G_TOPIC && ACTIVE.view!=='overview') ACTIVE.overview();
+});
+
+/* init */
+G_TOPIC.overview(); renderPersonas(); showTab('welcome');
+</script>
+</body>
+</html>
