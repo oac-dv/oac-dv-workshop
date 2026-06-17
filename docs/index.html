@@ -1290,6 +1290,54 @@
           </div>
         </div>
 
+        <h3>AI concepts before you start</h3>
+        <div class="overview-grid">
+          <div class="overview-card">
+            <div class="overview-badge">A</div>
+            <h4>What is an AI Assistant?</h4>
+            <p>An AI Assistant is the conversational analytics experience in OAC. You ask a business question in natural language, and OAC creates visual answers, modifies charts, or builds a dashboard depending on where you ask.</p>
+            <ul>
+              <li><strong>Workbook AI Assistant:</strong> ask inside an existing workbook and add visual answers to the canvas.</li>
+              <li><strong>Homepage AI Assistant:</strong> start from the Home page and generate a multi-visual dashboard from one prompt.</li>
+            </ul>
+          </div>
+          <div class="overview-card">
+            <div class="overview-badge">G</div>
+            <h4>What is an AI Agent?</h4>
+            <p>An AI Agent is a governed conversational experience that combines analytics data with business instructions, KPI definitions, and knowledge documents.</p>
+            <ul>
+              <li>Use it when answers need company language, policy context, or rules beyond raw columns.</li>
+              <li>In this workshop, the agent helps explain loss ratio patterns and retention risk.</li>
+            </ul>
+          </div>
+          <div class="overview-card">
+            <div class="overview-badge">R</div>
+            <h4>Why this is different</h4>
+            <p>Traditional dashboards require users to find the right page and interpret the chart. AI experiences let users ask directly, refine the question, and move from answer to action faster.</p>
+            <ul>
+              <li>Exercise 6: build visuals through Workbook AI Assistant.</li>
+              <li>Exercise 7: ask the AI Agent for loss-ratio insights.</li>
+              <li>Exercise 8: generate a dashboard from the Home page.</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Why indexing and synonyms matter</h3>
+        <table>
+          <thead><tr><th>Setup Item</th><th>Plain-English Meaning</th><th>Why It Matters</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Indexing</strong></td><td>Makes the dataset searchable for AI Assistant, Homepage Search, and Agent experiences.</td><td>If a dataset is not indexed, AI may not find it or may not know which columns and values can answer the prompt.</td></tr>
+            <tr><td><strong>Column Scope</strong></td><td>Controls which columns are available for AI questions.</td><td>Include useful business fields and hide technical or confusing fields so the AI picks the right data.</td></tr>
+            <tr><td><strong>Synonyms</strong></td><td>Maps user language to dataset columns and values.</td><td>Users say "premium", "claims paid", "policy count", or "customer"; synonyms help OAC connect those words to fields like Premium Amount, Insurance Paid, and customer_policy_id.</td></tr>
+            <tr><td><strong>Certification</strong></td><td>Marks a dataset as trusted.</td><td>Certified datasets rank better when multiple datasets could answer a question, which helps Homepage AI choose the right source.</td></tr>
+            <tr><td><strong>Clean Data Types</strong></td><td>Measures, attributes, dates, and locations are correctly classified.</td><td>Good field types prevent bad answers, such as summing IDs or failing to draw maps.</td></tr>
+          </tbody>
+        </table>
+
+        <div class="concept">
+          <strong>Reference:</strong> These concepts are adapted from the <a href="https://oac-ai.github.io/oac-ai-workshops/ai-assistant-agents.html" target="_blank" rel="noopener">OAC AI Assistant &amp; AI Agents self-paced guide</a>, which describes Workbook AI Assistant, Homepage AI Assistant, AI Agents, indexing, and synonyms as the foundation for reliable natural-language analytics.
+        </div>
+
         <h3 id="day-2-steps">What you'll do</h3>
         <div class="overview-grid">
           <div class="overview-card">
