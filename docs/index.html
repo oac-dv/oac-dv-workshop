@@ -270,6 +270,12 @@
     .prompt-card{border:1px solid var(--line);border-left:5px solid var(--section-color);border-radius:8px;background:#fff;padding:13px 15px;margin:14px 0;}
     .prompt-card span{display:block;color:var(--muted);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;}
     .prompt-card strong{display:block;font-size:18px;line-height:1.35;color:#102a43;}
+    .prompt-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0;}
+    .prompt-item{border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px 13px;}
+    .prompt-item span{display:block;color:var(--section-color);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;}
+    .prompt-item code{display:block;background:#f6f8fa;border:1px solid #d8e3eb;border-radius:6px;padding:8px 9px;color:#102a43;font-family:Consolas,"Courier New",monospace;font-size:13px;line-height:1.45;white-space:normal;}
+    .expected-response{border-left:5px solid var(--section-color);border-radius:0 8px 8px 0;background:var(--section-soft);padding:11px 13px;margin:10px 0 14px;font-size:13px;color:#27313b;}
+    .expected-response strong{display:block;color:var(--section-color);margin-bottom:3px;}
     .prereq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0;}
     .prereq-card{border:1px solid var(--line);border-top:4px solid var(--section-color);border-radius:8px;background:#fff;padding:13px 14px;min-height:128px;}
     .prereq-card strong{display:block;font-size:14px;margin-bottom:6px;}
@@ -299,7 +305,7 @@
       .hero-story-grid{grid-template-columns:1fr;}
       .layout{grid-template-columns:1fr;padding:14px;}
       aside.nav{position:relative;top:auto;}
-      .story-strip,.canvas-check,.scatter-grid,.mission-grid,.success-grid,.persona-grid,.checkpoint-strip,.screenshot-grid,.download-grid,.overview-grid,.prereq-grid{grid-template-columns:1fr;}
+      .story-strip,.canvas-check,.scatter-grid,.mission-grid,.success-grid,.persona-grid,.checkpoint-strip,.screenshot-grid,.download-grid,.overview-grid,.prereq-grid,.prompt-grid{grid-template-columns:1fr;}
       .join-map{display:block;border:0;background:transparent;}
       .join-map thead{display:none;}
       .join-map tbody,.join-map tr,.join-map td{display:block;width:100%;}
@@ -1287,25 +1293,125 @@
       <div class="card-head">
         <span class="kicker">Exercise 7 of 8</span>
         <h2>AI Agent</h2>
-        <p class="lead">Create an AI Agent that understands the Auto Insurance dataset, retention logic, KPI definitions, and supporting knowledge documents.</p>
+        <p class="lead">Open the Auto Insurance Retention Agent and test governed, business-aware answers against the Day 2 Auto Insurance workbook.</p>
       </div>
       <div class="card-body">
         <div class="ai-meta">
           <span class="ai-chip">AI Agent</span>
-          <span class="ai-chip">Authors</span>
-          <span class="ai-chip">Content coming shortly</span>
+          <span class="ai-chip">Day 2 Folder</span>
+          <span class="ai-chip">Shared Folders</span>
         </div>
 
-        <div class="placeholder-panel">
-          <h3>Exercise content coming shortly</h3>
-          <p>This section is reserved for the AI Agent lab. It will cover creating the agent, connecting the Auto Insurance data, adding business instructions, grounding the agent with KPI definitions and policy context, associating the agent with the workbook, and validating answers for accuracy.</p>
+        <div class="tip">
+          <strong>What you're testing:</strong> The AI Agent sits on top of the Auto Insurance data and business instructions. Instead of only building a chart, it can explain the result in the language of retention, loss ratio, premium, claims, and policy count.
         </div>
 
-        <div class="concept">
-          <strong>Preview:</strong> AI Agents add governed business context on top of analytics. Instead of only answering from columns, the agent can apply retention rules, explain KPI meaning, and use knowledge documents to make answers sound like your organization.
+        <div class="section-progress">
+          <span class="sp-label" id="ex7-label">0 / 6 steps done</span>
+          <span class="sp-percent" id="ex7-percent">0%</span>
+          <div class="sp-bar"><div class="sp-fill" id="ex7-fill"></div></div>
         </div>
 
-        <button class="complete-btn" onclick="completeSection(this,'exercise-ai-agent','nc-ex7')">Complete AI Agent overview review</button>
+        <div class="exercise">
+          <div class="exercise-head">
+            <span>Open the Day 2 agent</span>
+            <span class="ex-time">~15 min</span>
+          </div>
+          <div class="exercise-body">
+            <ol class="step-list">
+              <li onclick="toggleStep(this,'ex7')"><span class="step-num">1</span><div class="step-text">From the OAC Home page, open <strong>Shared Folders</strong>.</div></li>
+              <li onclick="toggleStep(this,'ex7')"><span class="step-num">2</span><div class="step-text">Open <strong>Avery Dennison_workshop</strong>, then open the <strong>Day 2</strong> folder.</div></li>
+              <li onclick="toggleStep(this,'ex7')"><span class="step-num">3</span><div class="step-text">Open <strong>Auto Insurance Retention Agent - Day2</strong>.</div></li>
+              <li onclick="toggleStep(this,'ex7')"><span class="step-num">4</span><div class="step-text">Run the starter prompts to confirm the agent can create tiles, donut charts, maps, and bar charts from the Auto Insurance data.</div></li>
+              <li onclick="toggleStep(this,'ex7')"><span class="step-num">5</span><div class="step-text">Run the Loss Ratio Analysis Canvas prompts and compare the generated responses to the screenshots below.</div></li>
+              <li onclick="toggleStep(this,'ex7')"><span class="step-num">6</span><div class="step-text">Use the response narrative to explain which states or customer segments need closer retention review.</div></li>
+            </ol>
+          </div>
+        </div>
+
+        <h3>Agent prompt library</h3>
+        <p class="lead">Copy these prompts into the agent and test the responses. The first group checks basic chart generation; the second group recreates the Loss Ratio Analysis Canvas.</p>
+
+        <div class="prompt-grid">
+          <div class="prompt-item"><span>Tile</span><code>Show me the total premium amount in tile</code></div>
+          <div class="prompt-item"><span>Tile</span><code>show me the total insurance paid amount in tile</code></div>
+          <div class="prompt-item"><span>Donut</span><code>Show me the Churned policy count by household type in Donut chart</code></div>
+          <div class="prompt-item"><span>Map</span><code>Which states have the highest claim amount</code></div>
+          <div class="prompt-item"><span>Bar Chart</span><code>Claim amount by incident month in bar chart</code></div>
+          <div class="prompt-item"><span>Status</span><code>Show me the status by Household Type</code></div>
+          <div class="prompt-item"><span>State</span><code>Give total insurance paid amount by state</code></div>
+          <div class="prompt-item"><span>Segment</span><code>Analyze claim amount by marital status</code></div>
+        </div>
+
+        <figure class="reference-shot wide-shot">
+          <a href="from-data-to-decisions-3hour-assets/ai-agent-day2-prompt-list.png" target="_blank" rel="noopener">
+            <img src="from-data-to-decisions-3hour-assets/ai-agent-day2-prompt-list.png" alt="Auto Insurance Retention Agent Day 2 prompt list">
+          </a>
+          <figcaption>Open <strong>Auto Insurance Retention Agent - Day2</strong> from Shared Folders &rarr; Avery Dennison_workshop &rarr; Day 2, then use these starter prompts to validate the agent.</figcaption>
+        </figure>
+
+        <h3>Loss Ratio Analysis Canvas prompts</h3>
+        <div class="prompt-grid">
+          <div class="prompt-item"><span>State Map</span><code>Give me loss ratio by state</code></div>
+          <div class="prompt-item"><span>Pie Chart</span><code>loss ratio by marital status by pie chart</code></div>
+          <div class="prompt-item"><span>Pie Chart</span><code>loss ratio by good driver flag in pie chart</code></div>
+          <div class="prompt-item"><span>Bar Chart</span><code>loss ratio by household in bar chart</code></div>
+          <div class="prompt-item"><span>Top States</span><code>loss ratio by top 5 states</code></div>
+          <div class="prompt-item"><span>Table</span><code>Give me top 5 states policy count, claims count, premium amount, loss ratio in tabular view</code></div>
+        </div>
+
+        <h3>Expected agent responses</h3>
+        <div class="screenshot-grid">
+          <figure class="reference-shot wide-shot">
+            <a href="from-data-to-decisions-3hour-assets/ai-agent-loss-ratio-state.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/ai-agent-loss-ratio-state.png" alt="AI Agent response for loss ratio by state">
+            </a>
+            <figcaption>Prompt: <strong>Give me loss ratio by state</strong></figcaption>
+          </figure>
+          <div class="expected-response">
+            <strong>Expected insight</strong>
+            New York shows the highest loss ratio while Rhode Island records the lowest.
+          </div>
+
+          <figure class="reference-shot wide-shot">
+            <a href="from-data-to-decisions-3hour-assets/ai-agent-loss-ratio-top-5-states.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/ai-agent-loss-ratio-top-5-states.png" alt="AI Agent response for loss ratio by top 5 states">
+            </a>
+            <figcaption>Prompt: <strong>loss ratio by top 5 states</strong></figcaption>
+          </figure>
+          <div class="expected-response">
+            <strong>Expected insight</strong>
+            New York has the highest loss ratio among the top 5 states while New Jersey has the lowest.
+          </div>
+
+          <figure class="reference-shot wide-shot">
+            <a href="from-data-to-decisions-3hour-assets/ai-agent-top-5-state-table.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/ai-agent-top-5-state-table.png" alt="AI Agent table response for top 5 states by premium amount">
+            </a>
+            <figcaption>Prompt: <strong>Give me top 5 states policy count, claims count, premium amount, loss ratio in tabular view</strong></figcaption>
+          </figure>
+          <div class="expected-response">
+            <strong>Expected insight</strong>
+            Connecticut leads across policy count, claims count, and premium amount. New York records the highest loss ratio while Massachusetts shows the lowest.
+          </div>
+
+          <figure class="reference-shot wide-shot">
+            <a href="from-data-to-decisions-3hour-assets/ai-agent-loss-ratio-marital-status.png" target="_blank" rel="noopener">
+              <img src="from-data-to-decisions-3hour-assets/ai-agent-loss-ratio-marital-status.png" alt="AI Agent pie chart response for loss ratio by marital status">
+            </a>
+            <figcaption>Prompt: <strong>loss ratio by marital status by pie chart</strong></figcaption>
+          </figure>
+          <div class="expected-response">
+            <strong>Expected insight</strong>
+            The pie chart displays how loss ratio distributes across marital status categories.
+          </div>
+        </div>
+
+        <div class="tip">
+          <strong>Key takeaway:</strong> A good AI Agent answer should return both a visualization and a business-readable explanation. For this lab, check that the chart type matches the prompt and that the narrative correctly calls out the high-risk state or segment.
+        </div>
+
+        <button class="complete-btn" onclick="completeSection(this,'exercise-ai-agent','nc-ex7')">Complete AI Agent prompt testing</button>
       </div>
     </div>
 
@@ -1501,13 +1607,14 @@
     });
   });
 
-  const sectionCounts = { ex1:9, ex2:6, ex3:8, ex4:10, ex5:5, ex8:5 };
+  const sectionCounts = { ex1:9, ex2:6, ex3:8, ex4:10, ex5:5, ex7:6, ex8:5 };
   const sectionCards = {
     ex1:'exercise-dataset',
     ex2:'exercise-metrics',
     ex3:'exercise-overview',
     ex4:'exercise-lossratio',
     ex5:'exercise-retention',
+    ex7:'exercise-ai-agent',
     ex8:'exercise-homepage-assistant'
   };
   const sectionProgress = {};
