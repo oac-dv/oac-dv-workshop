@@ -16,6 +16,9 @@
       --ex3:#b7791f; --ex3-soft:#fff7e6;
       --ex4:#c2410c; --ex4-soft:#fff0e8;
       --ex5:#15803d; --ex5-soft:#edf8ef;
+      --ex6:#6d28d9; --ex6-soft:#f4efff;
+      --ex7:#0e7490; --ex7-soft:#e8f7fb;
+      --ex8:#be123c; --ex8-soft:#fff1f4;
     }
     *{box-sizing:border-box;}
     html{scroll-behavior:smooth;}
@@ -34,7 +37,7 @@
     .progress-wrap{display:flex;align-items:center;gap:10px;}
     .progress-label{color:#8ee8b9;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap;}
     #overall-bar{width:190px;height:10px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.18);border-radius:999px;overflow:hidden;}
-    #overall-fill{height:100%;background:linear-gradient(90deg,var(--ex1),var(--ex2),var(--ex3),var(--ex4),var(--ex5));border-radius:999px;width:0%;transition:width .4s;}
+    #overall-fill{height:100%;background:linear-gradient(90deg,var(--ex1),var(--ex2),var(--ex3),var(--ex4),var(--ex5),var(--ex6),var(--ex7),var(--ex8));border-radius:999px;width:0%;transition:width .4s;}
     #overall-pct{color:#ffe08a;font-size:12px;font-weight:900;min-width:32px;text-align:right;}
 
     /* ── HERO ── */
@@ -77,7 +80,7 @@
     aside.nav a{--nav-color:var(--teal);display:flex;align-items:center;gap:10px;min-height:42px;padding:9px 16px;color:var(--ink);text-decoration:none;border-left:5px solid transparent;border-bottom:1px solid #edf2ef;font-size:13px;font-weight:800;line-height:1.25;transition:background .15s,border-color .15s,color .15s;}
     aside.nav a:last-child{border-bottom:0;}
     aside.nav a:hover,aside.nav a.active{background:linear-gradient(90deg,var(--soft),#fff);border-left-color:var(--nav-color);color:#102a43;}
-    #nav-ex1{--nav-color:var(--ex1);}#nav-ex2{--nav-color:var(--ex2);}#nav-ex3{--nav-color:var(--ex3);}#nav-ex4{--nav-color:var(--ex4);}#nav-ex5{--nav-color:var(--ex5);}
+    #nav-ex1{--nav-color:var(--ex1);}#nav-ex2{--nav-color:var(--ex2);}#nav-ex3{--nav-color:var(--ex3);}#nav-ex4{--nav-color:var(--ex4);}#nav-ex5{--nav-color:var(--ex5);}#nav-ex6{--nav-color:var(--ex6);}#nav-ex7{--nav-color:var(--ex7);}#nav-ex8{--nav-color:var(--ex8);}
     .nav-check{width:16px;height:16px;border-radius:50%;border:2px solid #cdd8d2;flex-shrink:0;transition:all .2s;background:#fff;box-shadow:inset 0 0 0 3px #fff;}
     aside.nav a.active .nav-check{border-color:var(--nav-color);}
     .nav-check.done{background:var(--nav-color);border-color:var(--nav-color);}
@@ -92,6 +95,9 @@
     #exercise-overview{--section-color:var(--ex3);--section-soft:var(--ex3-soft);}
     #exercise-lossratio{--section-color:var(--ex4);--section-soft:var(--ex4-soft);}
     #exercise-retention{--section-color:var(--ex5);--section-soft:var(--ex5-soft);}
+    #exercise-workbook-assistant{--section-color:var(--ex6);--section-soft:var(--ex6-soft);}
+    #exercise-ai-agent{--section-color:var(--ex7);--section-soft:var(--ex7-soft);}
+    #exercise-homepage-assistant{--section-color:var(--ex8);--section-soft:var(--ex8-soft);}
     .kicker{display:block;color:var(--section-color);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.12em;margin-bottom:5px;}
     h2{margin:0;font-size:24px;line-height:1.2;}
     h3{margin:20px 0 8px;font-size:17px;}
@@ -258,6 +264,25 @@
     .sp-label{font-size:12px;font-weight:900;color:var(--ink);white-space:nowrap;}
     .sp-percent{font-size:13px;font-weight:900;color:var(--section-color);white-space:nowrap;}
 
+    /* AI ASSISTANT EXERCISES */
+    .ai-meta{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px;}
+    .ai-chip{display:inline-flex;align-items:center;min-height:28px;border:1px solid rgba(23,32,42,.12);border-radius:999px;background:var(--section-soft);color:var(--section-color);padding:4px 10px;font-size:12px;font-weight:900;}
+    .prompt-card{border:1px solid var(--line);border-left:5px solid var(--section-color);border-radius:8px;background:#fff;padding:13px 15px;margin:14px 0;}
+    .prompt-card span{display:block;color:var(--muted);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;}
+    .prompt-card strong{display:block;font-size:18px;line-height:1.35;color:#102a43;}
+    .prereq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:14px 0;}
+    .prereq-card{border:1px solid var(--line);border-top:4px solid var(--section-color);border-radius:8px;background:#fff;padding:13px 14px;min-height:128px;}
+    .prereq-card strong{display:block;font-size:14px;margin-bottom:6px;}
+    .prereq-card p{font-size:13px;line-height:1.45;color:var(--muted);margin:0;}
+    .flow-panel{border:1px solid var(--line);border-radius:8px;background:linear-gradient(180deg,#fff,#fbfdfc);padding:15px 16px;margin:16px 0;}
+    .flow-panel h3{margin-top:0;}
+    .flow-line{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 2px;}
+    .flow-pill{display:inline-flex;align-items:center;min-height:34px;border-radius:8px;background:var(--section-color);color:white;padding:7px 11px;font-size:13px;font-weight:900;}
+    .flow-arrow{color:var(--muted);font-weight:900;}
+    .placeholder-panel{border:1px dashed #b9c7c0;border-radius:8px;background:#fbfdfc;padding:16px 18px;margin:14px 0;}
+    .placeholder-panel h3{margin-top:0;}
+    .placeholder-panel p{color:var(--muted);}
+
     /* ── RESPONSIVE ── */
     @media(max-width:820px){
       .topbar{align-items:flex-start;gap:8px;flex-direction:column;}
@@ -274,7 +299,7 @@
       .hero-story-grid{grid-template-columns:1fr;}
       .layout{grid-template-columns:1fr;padding:14px;}
       aside.nav{position:relative;top:auto;}
-      .story-strip,.canvas-check,.scatter-grid,.mission-grid,.success-grid,.persona-grid,.checkpoint-strip,.screenshot-grid,.download-grid,.overview-grid{grid-template-columns:1fr;}
+      .story-strip,.canvas-check,.scatter-grid,.mission-grid,.success-grid,.persona-grid,.checkpoint-strip,.screenshot-grid,.download-grid,.overview-grid,.prereq-grid{grid-template-columns:1fr;}
       .join-map{display:block;border:0;background:transparent;}
       .join-map thead{display:none;}
       .join-map tbody,.join-map tr,.join-map td{display:block;width:100%;}
@@ -364,6 +389,9 @@
     <a href="#exercise-overview" id="nav-ex3"><div class="nav-check" id="nc-ex3"></div>Exercise 3 · Overview</a>
     <a href="#exercise-lossratio" id="nav-ex4"><div class="nav-check" id="nc-ex4"></div>Exercise 4 · Loss Ratio</a>
     <a href="#exercise-retention" id="nav-ex5"><div class="nav-check" id="nc-ex5"></div>Exercise 5 · Retention</a>
+    <a href="#exercise-workbook-assistant" id="nav-ex6"><div class="nav-check" id="nc-ex6"></div>Exercise 6 - Workbook AI</a>
+    <a href="#exercise-ai-agent" id="nav-ex7"><div class="nav-check" id="nc-ex7"></div>Exercise 7 - AI Agent</a>
+    <a href="#exercise-homepage-assistant" id="nav-ex8"><div class="nav-check" id="nc-ex8"></div>Exercise 8 - Homepage AI</a>
     <a href="#reflection" id="nav-ref"><div class="nav-check" id="nc-ref"></div>Wrap-Up</a>
   </aside>
 
@@ -1182,18 +1210,212 @@
           <strong>Final reference check:</strong> If your canvas does not match the expected build, open the Exercise-5 reference workbook in OAC and compare the dashboard filters, scatter plot bindings, and customer details table.
         </div>
 
-        <button class="complete-btn" onclick="completeSection(this,'exercise-retention','nc-ex5')">✓ Canvas 3 complete — all exercises done!</button>
+        <button class="complete-btn" onclick="completeSection(this,'exercise-retention','nc-ex5')">Complete Canvas 3 - continue to Workbook AI</button>
       </div>
     </div>
 
     <!-- ══════════════════════════════════
-         WRAP-UP
+         DAY 2 AI EXERCISES
     ══════════════════════════════════ -->
+    <div class="card" id="day-2-ai-extension">
+      <div class="card-head">
+        <span class="kicker">Day 2 Extension</span>
+        <h2>AI Assistant + OAC Agents</h2>
+        <p class="lead">You built the retention workbook by hand. Now use OAC AI to ask the same questions in plain English, compare the answers, and accelerate the path from question to dashboard.</p>
+      </div>
+      <div class="card-body">
+        <div class="day-brief day-two" id="day-2-ai-overview">
+          <span class="day-kicker">Day 2 &middot; AI Assistant + OAC Agents</span>
+          <h3>Let the AI answer the same questions</h3>
+          <p>Point OAC's AI Assistant and AI Agents at the Auto Insurance data, ask the retention questions in plain English, and judge whether the AI reaches the same insight you reached manually, or finds something new.</p>
+          <div class="day-actions">
+            <a class="day-link" href="#exercise-workbook-assistant">Start Exercise 6</a>
+            <a class="day-link secondary" href="#exercise-homepage-assistant">Jump to Homepage AI</a>
+          </div>
+        </div>
+
+        <h3 id="day-2-steps">What you'll do</h3>
+        <div class="overview-grid">
+          <div class="overview-card">
+            <div class="overview-badge">6</div>
+            <h4>Workbook AI Assistant</h4>
+            <p>Open the workbook, invoke the Sparkle icon, ask dataset-specific questions, and compare AI answers with your manual canvases.</p>
+          </div>
+          <div class="overview-card">
+            <div class="overview-badge">7</div>
+            <h4>AI Agent</h4>
+            <p>Create an agent that applies Auto Insurance business rules, KPI definitions, and knowledge documents to every answer.</p>
+          </div>
+          <div class="overview-card">
+            <div class="overview-badge">8</div>
+            <h4>Homepage AI Assistant</h4>
+            <p>Start from the OAC Home page, ask for an executive Auto Insurance dashboard, refine by household, and deep dive into workbook or Agent analysis.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI EXERCISE 6: WORKBOOK AI ASSISTANT -->
+    <div class="card" id="exercise-workbook-assistant">
+      <div class="card-head">
+        <span class="kicker">Exercise 6 of 8</span>
+        <h2>Workbook AI Assistant</h2>
+        <p class="lead">Use natural language inside an OAC workbook to ask follow-up questions against the Auto Insurance dataset.</p>
+      </div>
+      <div class="card-body">
+        <div class="ai-meta">
+          <span class="ai-chip">Workbook AI Assistant</span>
+          <span class="ai-chip">Authors + Consumers</span>
+          <span class="ai-chip">Content coming shortly</span>
+        </div>
+
+        <div class="placeholder-panel">
+          <h3>Exercise content coming shortly</h3>
+          <p>This section is reserved for the detailed Workbook AI Assistant lab. It will build on the workbook from Exercises 1-5 and show how to open the Sparkle icon, ask dataset-specific questions, add AI-generated answers to the canvas, and compare AI output with your manual retention analysis.</p>
+        </div>
+
+        <div class="concept">
+          <strong>Preview:</strong> The Workbook AI Assistant works inside an existing workbook. It is best when you already know the dataset or dashboard context and want to explore, refine, explain, or add visual answers without manually binding every chart.
+        </div>
+
+        <button class="complete-btn" onclick="completeSection(this,'exercise-workbook-assistant','nc-ex6')">Complete Workbook AI Assistant review</button>
+      </div>
+    </div>
+
+    <!-- AI EXERCISE 7: AI AGENT -->
+    <div class="card" id="exercise-ai-agent">
+      <div class="card-head">
+        <span class="kicker">Exercise 7 of 8</span>
+        <h2>AI Agent</h2>
+        <p class="lead">Create an AI Agent that understands the Auto Insurance dataset, retention logic, KPI definitions, and supporting knowledge documents.</p>
+      </div>
+      <div class="card-body">
+        <div class="ai-meta">
+          <span class="ai-chip">AI Agent</span>
+          <span class="ai-chip">Authors</span>
+          <span class="ai-chip">Content coming shortly</span>
+        </div>
+
+        <div class="placeholder-panel">
+          <h3>Exercise content coming shortly</h3>
+          <p>This section is reserved for the AI Agent lab. It will cover creating the agent, connecting the Auto Insurance data, adding business instructions, grounding the agent with KPI definitions and policy context, associating the agent with the workbook, and validating answers for accuracy.</p>
+        </div>
+
+        <div class="concept">
+          <strong>Preview:</strong> AI Agents add governed business context on top of analytics. Instead of only answering from columns, the agent can apply retention rules, explain KPI meaning, and use knowledge documents to make answers sound like your organization.
+        </div>
+
+        <button class="complete-btn" onclick="completeSection(this,'exercise-ai-agent','nc-ex7')">Complete AI Agent overview review</button>
+      </div>
+    </div>
+
+    <!-- AI EXERCISE 8: HOMEPAGE AI ASSISTANT -->
+    <div class="card" id="exercise-homepage-assistant">
+      <div class="card-head">
+        <span class="kicker">Exercise 8 of 8</span>
+        <h2>Homepage AI Assistant</h2>
+        <p class="lead">Build an executive overview dashboard for the Auto Insurance dataset from a single prompt on the OAC Home page.</p>
+      </div>
+      <div class="card-body">
+        <div class="ai-meta">
+          <span class="ai-chip">~10 min</span>
+          <span class="ai-chip">All Users</span>
+          <span class="ai-chip">Homepage AI Assistant</span>
+        </div>
+
+        <p>The Homepage AI Assistant is your fastest path from login to insight. The moment you sign in to Oracle Analytics, you can type a single prompt and get a complete, multi-visualization dashboard - no workbook setup needed. Think of it as the front door to AI-powered analytics: start broad on the Home page, then dive deep into workbooks and Agents when you need more.</p>
+
+        <div class="warn">
+          <strong>Prerequisites - what must be true before Homepage queries work:</strong> make sure the Auto Insurance dataset is indexed for Assistants and Homepage Search, certified so it ranks high when multiple datasets could answer the prompt, and configured with synonyms on dataset columns using terms your users actually say.
+        </div>
+
+        <div class="prereq-grid">
+          <div class="prereq-card">
+            <strong>Index the dataset</strong>
+            <p>A dataset will not surface in Home page AI results until it is indexed for Assistants and Homepage Search.</p>
+          </div>
+          <div class="prereq-card">
+            <strong>Certify trusted data</strong>
+            <p>Certified datasets are preferred by Homepage AI when more than one dataset could answer a question.</p>
+          </div>
+          <div class="prereq-card">
+            <strong>Add user synonyms</strong>
+            <p>Synonyms make natural-language prompts reliable by mapping familiar words to the right columns.</p>
+          </div>
+        </div>
+
+        <div class="flow-panel">
+          <h3>The Homepage AI Flow</h3>
+          <div class="flow-line" aria-label="Homepage AI flow">
+            <span class="flow-pill">Login</span>
+            <span class="flow-arrow">-&gt;</span>
+            <span class="flow-pill">Ask Shift+Enter</span>
+            <span class="flow-arrow">-&gt;</span>
+            <span class="flow-pill">Dashboard</span>
+            <span class="flow-arrow">-&gt;</span>
+            <span class="flow-pill">Refine</span>
+            <span class="flow-arrow">-&gt;</span>
+            <span class="flow-pill">Deep Dive</span>
+          </div>
+        </div>
+
+        <div class="prompt-card">
+          <span>Homepage prompt</span>
+          <strong>Build me an executive overview dashboard for Auto Insurance Dataset</strong>
+        </div>
+
+        <div class="section-progress">
+          <span class="sp-label" id="ex8-label">0 / 5 steps done</span>
+          <span class="sp-percent" id="ex8-percent">0%</span>
+          <div class="sp-bar"><div class="sp-fill" id="ex8-fill"></div></div>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-head">
+            <span>Homepage AI steps</span>
+            <span class="ex-time">~10 min</span>
+          </div>
+          <div class="exercise-body">
+            <ol class="step-list">
+              <li onclick="toggleStep(this,'ex8')"><span class="step-num">1</span><div class="step-text"><strong>Login &amp; Ask:</strong> Sign in to OAC. In the Home page search bar, type <code>Build me an executive overview dashboard for Auto Insurance Dataset</code> and press <code>Shift + Enter</code>. The AI builds a dashboard with an insights summary, up to five visualizations, and related-content links.</div></li>
+              <li onclick="toggleStep(this,'ex8')"><span class="step-num">2</span><div class="step-text"><strong>Follow-Up:</strong> Type a follow-up such as <code>Analyze by household</code> and press <code>Enter</code> to update the existing dashboard. Toggle between questions using the breadcrumbs on the left.</div></li>
+              <li onclick="toggleStep(this,'ex8')"><span class="step-num">3</span><div class="step-text"><strong>Explore or Modify:</strong> Click <strong>Data</strong> to swap the dataset, or click <strong>Explore as Workbook</strong> to open the result as a new workbook you can edit.</div></li>
+              <li onclick="toggleStep(this,'ex8')"><span class="step-num">4</span><div class="step-text"><strong>Invoke AI Assistant:</strong> Inside the workbook, click the Sparkle icon to open the AI Assistant for deeper, dataset-specific Q&amp;A.</div></li>
+              <li onclick="toggleStep(this,'ex8')"><span class="step-num">5</span><div class="step-text"><strong>Use the Agent:</strong> If an AI Agent is attached to the workbook, the Agent's business rules, KPI definitions, and knowledge documents enhance every answer.</div></li>
+            </ol>
+          </div>
+        </div>
+
+        <h3>What the single prompt creates</h3>
+        <figure class="reference-shot wide-shot">
+          <a href="from-data-to-decisions-3hour-assets/homepage-ai-dashboard.png" target="_blank" rel="noopener">
+            <img src="from-data-to-decisions-3hour-assets/homepage-ai-dashboard.png" alt="OAC Homepage AI Assistant generated executive overview dashboard for Auto Insurance Dataset">
+          </a>
+          <figcaption>Homepage AI Assistant result: one Home page prompt creates an executive dashboard summary for the Auto Insurance dataset.</figcaption>
+        </figure>
+
+        <h3>Follow up without starting over</h3>
+        <figure class="reference-shot wide-shot">
+          <a href="from-data-to-decisions-3hour-assets/homepage-ai-followup-household.png" target="_blank" rel="noopener">
+            <img src="from-data-to-decisions-3hour-assets/homepage-ai-followup-household.png" alt="OAC Homepage AI Assistant follow-up question analyzing the Auto Insurance dashboard by household">
+          </a>
+          <figcaption>Follow-up result: asking "Analyze by household" refines the existing dashboard instead of creating a separate manual workbook build.</figcaption>
+        </figure>
+
+        <div class="tip">
+          <strong>Key takeaway:</strong> Homepage AI is your zero-to-dashboard express lane. Start with intent, refine with follow-ups, then deep dive in the workbook or attached AI Agent when the business question needs more context.
+        </div>
+
+        <button class="complete-btn" onclick="completeSection(this,'exercise-homepage-assistant','nc-ex8')">Complete Homepage AI Assistant</button>
+      </div>
+    </div>
+
+    <!-- FINAL WRAP-UP -->
     <div class="card" id="reflection">
       <div class="card-head">
         <span class="kicker">Wrap-Up</span>
-        <h2>What You Built — and What Comes Next</h2>
-        <p class="lead">Take a moment to look at the full workbook you've created. This is not a demo — it's a real analytical process you can repeat with your own data.</p>
+        <h2>What You Built — and How AI Extends It</h2>
+        <p class="lead">Take a moment to look at the workbook and AI pathways you've created. This is not a demo — it's a real analytical process you can repeat with your own data.</p>
       </div>
       <div class="card-body">
 
@@ -1207,50 +1429,14 @@
             <tr><td><strong>4. Tell the full story</strong></td><td>Canvas 1 showed the overall picture</td><td>Context before action — you always need the baseline</td></tr>
             <tr><td><strong>5. Understand cost</strong></td><td>Canvas 2 revealed where claim costs were high</td><td>Prevents prioritizing costly customers by mistake</td></tr>
             <tr><td><strong>6. Make the decision</strong></td><td>Canvas 3 ranked at-risk customers by value and cost</td><td>The workbook became a decision tool, not a report</td></tr>
+            <tr><td><strong>7. Ask with AI</strong></td><td>The Workbook AI Assistant answered questions inside the workbook</td><td>Turns exploration into a conversational workflow</td></tr>
+            <tr><td><strong>8. Add business context</strong></td><td>The AI Agent applied KPI definitions, business rules, and knowledge documents</td><td>Makes answers more governed and domain-specific</td></tr>
+            <tr><td><strong>9. Start from Home</strong></td><td>Homepage AI built an executive dashboard from one prompt</td><td>Gives every user a fast path from login to insight</td></tr>
           </tbody>
         </table>
 
         <div class="tip">
           <strong>This pattern works beyond insurance.</strong> Replace "premium" with contract value, "churn" with non-renewal, and "claim" with support cost — and this exact process applies to SaaS, retail, banking, or any customer revenue scenario.
-        </div>
-
-        <h3>What's coming in Day 2</h3>
-        <div class="day-brief day-two" id="day-2-ai-overview">
-          <span class="day-kicker">Day 2 &middot; AI Assistant + OAC Agents</span>
-          <h3>Let the AI answer the same questions</h3>
-          <p>Yesterday you built the retention workbook by hand. Today you'll point OAC's AI Assistant and AI Agents at the same data, ask the retention questions in plain English, and judge whether the AI reaches the same insight you reached manually, or finds something new.</p>
-          <div class="day-actions">
-            <a class="day-link" href="#day-2-steps">Open the live Day 2 workshop</a>
-          </div>
-        </div>
-
-        <h3 id="day-2-steps">What you'll do</h3>
-        <div class="overview-grid">
-          <div class="overview-card">
-            <div class="overview-badge">1</div>
-            <h4>Index the dataset</h4>
-            <p>Make your Customer Insurance data searchable so the AI Assistant can answer questions about it.</p>
-          </div>
-          <div class="overview-card">
-            <div class="overview-badge">2</div>
-            <h4>Ask in plain English</h4>
-            <p>&ldquo;Which at-risk customers have the highest value and lowest loss ratio?&rdquo; Compare the AI's chart to your Canvas 3.</p>
-          </div>
-          <div class="overview-card">
-            <div class="overview-badge">3</div>
-            <h4>Use Auto Insights &amp; Explain</h4>
-            <p>Let the AI surface the drivers of churn and explain a suspicious spike on its own.</p>
-          </div>
-          <div class="overview-card">
-            <div class="overview-badge">4</div>
-            <h4>Build an AI Agent</h4>
-            <p>Create a domain agent (RAG) that uses your data and business language so any consumer can ask retention questions conversationally.</p>
-          </div>
-          <div class="overview-card">
-            <div class="overview-badge">5</div>
-            <h4>Evaluate</h4>
-            <p>Did the AI match your manual recommendation? Where did it help, and where does human judgement still matter?</p>
-          </div>
         </div>
 
         <h3>Key concepts</h3>
@@ -1315,13 +1501,14 @@
     });
   });
 
-  const sectionCounts = { ex1:9, ex2:6, ex3:8, ex4:10, ex5:5 };
+  const sectionCounts = { ex1:9, ex2:6, ex3:8, ex4:10, ex5:5, ex8:5 };
   const sectionCards = {
     ex1:'exercise-dataset',
     ex2:'exercise-metrics',
     ex3:'exercise-overview',
     ex4:'exercise-lossratio',
-    ex5:'exercise-retention'
+    ex5:'exercise-retention',
+    ex8:'exercise-homepage-assistant'
   };
   const sectionProgress = {};
   Object.keys(sectionCounts).forEach(k => sectionProgress[k] = 0);
@@ -1375,7 +1562,7 @@
   }
 
   /* ── OVERALL PROGRESS ── */
-  const totalSections = 8;
+  const totalSections = 11;
   function updateOverall() {
     const done = Object.values(sectionDone).filter(Boolean).length;
     const pct  = Math.round((done / totalSections) * 100);
