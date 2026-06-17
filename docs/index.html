@@ -1591,9 +1591,11 @@
             <span class="flow-arrow">-&gt;</span>
             <span class="flow-pill">Dashboard</span>
             <span class="flow-arrow">-&gt;</span>
-            <span class="flow-pill">Refine</span>
+            <span class="flow-pill">Follow-Up</span>
             <span class="flow-arrow">-&gt;</span>
-            <span class="flow-pill">Deep Dive</span>
+            <span class="flow-pill">Explore Workbook</span>
+            <span class="flow-arrow">-&gt;</span>
+            <span class="flow-pill">Save</span>
           </div>
         </div>
 
@@ -1601,9 +1603,13 @@
           <span>Homepage prompt</span>
           <strong>Build me an executive overview dashboard for Auto Insurance Dataset</strong>
         </div>
+        <div class="prompt-card">
+          <span>Follow-up prompt</span>
+          <strong>Analyze by household</strong>
+        </div>
 
         <div class="section-progress">
-          <span class="sp-label" id="ex8-label">0 / 5 steps done</span>
+          <span class="sp-label" id="ex8-label">0 / 6 steps done</span>
           <span class="sp-percent" id="ex8-percent">0%</span>
           <div class="sp-bar"><div class="sp-fill" id="ex8-fill"></div></div>
         </div>
@@ -1617,9 +1623,10 @@
             <ol class="step-list">
               <li onclick="toggleStep(this,'ex8')"><span class="step-num">1</span><div class="step-text"><strong>Login &amp; Ask:</strong> Sign in to OAC. In the Home page search bar, type <code>Build me an executive overview dashboard for Auto Insurance Dataset</code> and press <code>Shift + Enter</code>. The AI builds a dashboard with an insights summary, up to five visualizations, and related-content links.</div></li>
               <li onclick="toggleStep(this,'ex8')"><span class="step-num">2</span><div class="step-text"><strong>Follow-Up:</strong> Type a follow-up such as <code>Analyze by household</code> and press <code>Enter</code> to update the existing dashboard. Toggle between questions using the breadcrumbs on the left.</div></li>
-              <li onclick="toggleStep(this,'ex8')"><span class="step-num">3</span><div class="step-text"><strong>Explore or Modify:</strong> Click <strong>Data</strong> to swap the dataset, or click <strong>Explore as Workbook</strong> to open the result as a new workbook you can edit.</div></li>
-              <li onclick="toggleStep(this,'ex8')"><span class="step-num">4</span><div class="step-text"><strong>Invoke AI Assistant:</strong> Inside the workbook, click the Sparkle icon to open the AI Assistant for deeper, dataset-specific Q&amp;A.</div></li>
-              <li onclick="toggleStep(this,'ex8')"><span class="step-num">5</span><div class="step-text"><strong>Use the Agent:</strong> If an AI Agent is attached to the workbook, the Agent's business rules, KPI definitions, and knowledge documents enhance every answer.</div></li>
+              <li onclick="toggleStep(this,'ex8')"><span class="step-num">3</span><div class="step-text"><strong>Explore as Workbook:</strong> After the follow-up dashboard appears, click the <strong>Explore as Workbook</strong> icon highlighted on the right side of the canvas to open the AI result as an editable workbook.</div></li>
+              <li onclick="toggleStep(this,'ex8')"><span class="step-num">4</span><div class="step-text"><strong>Refine Visualizations:</strong> In the workbook, review the generated table, tiles, and charts. Adjust chart types, formatting, layout, filters, and titles as needed so the result is presentation-ready.</div></li>
+              <li onclick="toggleStep(this,'ex8')"><span class="step-num">5</span><div class="step-text"><strong>Save the Workbook:</strong> Save the refined workbook in <strong>Shared Folders &gt; Avery Dennison_Workshop &gt; Day 2 - AI Workshop</strong> with the name <strong>Exercise-8</strong>.</div></li>
+              <li onclick="toggleStep(this,'ex8')"><span class="step-num">6</span><div class="step-text"><strong>Deep Dive:</strong> Use the workbook Sparkle icon for dataset-specific AI Assistant Q&amp;A, or use an attached AI Agent when business rules, KPI definitions, and knowledge documents should guide the answer.</div></li>
             </ol>
           </div>
         </div>
@@ -1640,8 +1647,16 @@
           <figcaption>Follow-up result: asking "Analyze by household" refines the existing dashboard instead of creating a separate manual workbook build.</figcaption>
         </figure>
 
+        <h3>Explore and save as a workbook</h3>
+        <figure class="reference-shot wide-shot">
+          <a href="from-data-to-decisions-3hour-assets/homepage-ai-explore-as-workbook.png" target="_blank" rel="noopener">
+            <img src="from-data-to-decisions-3hour-assets/homepage-ai-explore-as-workbook.png" alt="OAC Homepage AI Assistant follow-up dashboard with Explore as Workbook icon highlighted">
+          </a>
+          <figcaption>After the follow-up answer is ready, click the highlighted <strong>Explore as Workbook</strong> icon, refine the generated visualizations, then save the workbook as <strong>Exercise-8</strong> in the Day 2 AI Workshop folder.</figcaption>
+        </figure>
+
         <div class="tip">
-          <strong>Key takeaway:</strong> Homepage AI is your zero-to-dashboard express lane. Start with intent, refine with follow-ups, then deep dive in the workbook or attached AI Agent when the business question needs more context.
+          <strong>Key takeaway:</strong> Homepage AI is your zero-to-dashboard express lane. Start with intent, refine with follow-ups, then turn the result into a saved workbook artifact that can be formatted, governed, and extended with AI Assistant or an attached Agent.
         </div>
 
         <button class="complete-btn" onclick="completeSection(this,'exercise-homepage-assistant','nc-ex8')">Complete Homepage AI Assistant</button>
