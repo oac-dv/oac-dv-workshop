@@ -1435,7 +1435,8 @@
           <figcaption>Step 4: review the default <strong>Insights</strong> tab, add useful system-identified visuals to the canvas, then click the underlined <strong>Assistant</strong> tab.</figcaption>
         </figure>
 
-        <h3>Business Overview prompts to try</h3>
+        <h3>Test AI Assistant with natural language</h3>
+        <p>Now let's test AI Assistant by asking questions in natural language. Below are reference prompts you can try to build the same canvas from Exercise 3 that we did yesterday.</p>
         <div class="prompt-grid">
           <div class="prompt-item"><span>Tile</span><code>Show me the total policy count in tile</code></div>
           <div class="prompt-item"><span>Tile</span><code>Show me the total claims count in tile</code></div>
@@ -1502,6 +1503,35 @@
           <div class="prereq-card">
             <strong>Knowledge with RAG</strong>
             <p>Uploaded documents let the agent cite and use policy, KPI, or process knowledge that is not stored in the dataset.</p>
+          </div>
+        </div>
+
+        <h3>The Anatomy of an Agent: Four Components</h3>
+        <p>Every OAC AI Agent is assembled from four components in the Agent Editor workspace. Together, they bridge the gap between raw data and a conversational answer that follows your organization's rules.</p>
+
+        <figure class="reference-shot wide-shot">
+          <a href="from-data-to-decisions-3hour-assets/ai-agent-editor-workspace-anatomy.png" target="_blank" rel="noopener">
+            <img src="from-data-to-decisions-3hour-assets/ai-agent-editor-workspace-anatomy.png" alt="The Anatomy of the Agent Editor Workspace showing Dataset, Supplemental Instructions, Knowledge Documents, and Welcome Message">
+          </a>
+          <figcaption>Agent Editor workspace anatomy: dataset facts, supplemental instructions, knowledge documents, and a welcome message work together to shape the agent experience.</figcaption>
+        </figure>
+
+        <div class="prereq-grid">
+          <div class="prereq-card">
+            <strong>1. Dataset - The Agent's Facts</strong>
+            <p>The foundational data source. Each agent attaches to exactly one dataset, so use multi-table joins or Local Subject Areas when you need to combine sources. Index the dataset for AI Assistant, then use column subsetting and agent filters to control what the agent can see and how every query is constrained.</p>
+          </div>
+          <div class="prereq-card">
+            <strong>2. Supplemental Instructions - The Agent's Brain</strong>
+            <p>Supplemental Instructions are custom rules, up to 6,000 characters, that teach the agent your terminology, KPI formulas, aggregation defaults, fiscal calendar mappings, naming conventions, and response format. Without them, the agent may infer; with them, it follows your business logic.</p>
+          </div>
+          <div class="prereq-card">
+            <strong>3. Knowledge Documents - The Agent's Reference Library</strong>
+            <p>PDF and TXT files add enterprise context beyond the structured dataset. OAC uses RAG to retrieve relevant excerpts for policy documents, product details, FAQs, or competitive context. Reconcile contradictory numbers before upload so the retrieved facts stay trustworthy.</p>
+          </div>
+          <div class="prereq-card">
+            <strong>4. Welcome Message - The Agent's Introduction</strong>
+            <p>The welcome message is the onboarding text and sample questions users see first. A strong welcome message sets expectations, explains what the agent can answer, and gives users practical starting prompts.</p>
           </div>
         </div>
 
