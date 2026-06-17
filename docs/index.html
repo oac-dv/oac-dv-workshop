@@ -1266,25 +1266,80 @@
       <div class="card-head">
         <span class="kicker">Exercise 6 of 8</span>
         <h2>Workbook AI Assistant</h2>
-        <p class="lead">Use natural language inside an OAC workbook to ask follow-up questions against the Auto Insurance dataset.</p>
+        <p class="lead">Use Workbook AI Assistant to recreate the Day 1 Exercise 3 Business Overview canvas, then refine each visualization with the formatting the business expects.</p>
       </div>
       <div class="card-body">
         <div class="ai-meta">
           <span class="ai-chip">Workbook AI Assistant</span>
           <span class="ai-chip">Authors + Consumers</span>
-          <span class="ai-chip">Content coming shortly</span>
+          <span class="ai-chip">Business Overview</span>
         </div>
 
-        <div class="placeholder-panel">
-          <h3>Exercise content coming shortly</h3>
-          <p>This section is reserved for the detailed Workbook AI Assistant lab. It will build on the workbook from Exercises 1-5 and show how to open the Sparkle icon, ask dataset-specific questions, add AI-generated answers to the canvas, and compare AI output with your manual retention analysis.</p>
+        <div class="tip">
+          <strong>Goal:</strong> Show that the same Business Overview canvas you built manually in Exercise 3 can also be assembled through the Workbook AI Assistant. After the AI creates each visualization, update the labels, chart type, placement, and formatting so the canvas matches the Day 1 target.
         </div>
+
+        <div class="section-progress">
+          <span class="sp-label" id="ex6-label">0 / 6 steps done</span>
+          <span class="sp-percent" id="ex6-percent">0%</span>
+          <div class="sp-bar"><div class="sp-fill" id="ex6-fill"></div></div>
+        </div>
+
+        <div class="exercise">
+          <div class="exercise-head">
+            <span>Rebuild Exercise 3 with AI</span>
+            <span class="ex-time">~20 min</span>
+          </div>
+          <div class="exercise-body">
+            <ol class="step-list">
+              <li onclick="toggleStep(this,'ex6')"><span class="step-num">1</span><div class="step-text">Open the Day 2 workbook for Exercise 6 and click the <strong>Sparkle</strong> icon to open Workbook AI Assistant.</div></li>
+              <li onclick="toggleStep(this,'ex6')"><span class="step-num">2</span><div class="step-text">Use the Business Overview prompts below to generate the same core visuals you built manually in Day 1 Exercise 3.</div></li>
+              <li onclick="toggleStep(this,'ex6')"><span class="step-num">3</span><div class="step-text">Add each AI-generated visualization to the canvas and position it in the Business Overview layout.</div></li>
+              <li onclick="toggleStep(this,'ex6')"><span class="step-num">4</span><div class="step-text">Update each visualization with required formatting: titles, chart type, number formatting, legends, colors, and placement.</div></li>
+              <li onclick="toggleStep(this,'ex6')"><span class="step-num">5</span><div class="step-text">Use the additional prompts to test follow-up analysis such as status by Household Type, insurance paid by state, and claim amount by marital status.</div></li>
+              <li onclick="toggleStep(this,'ex6')"><span class="step-num">6</span><div class="step-text">Compare the finished AI-assisted canvas to the Day 1 Exercise 3 manual canvas and note where AI accelerated the build.</div></li>
+            </ol>
+          </div>
+        </div>
+
+        <h3>Business Overview prompts to try</h3>
+        <div class="prompt-grid">
+          <div class="prompt-item"><span>Tile</span><code>Show me the total policy count in tile</code></div>
+          <div class="prompt-item"><span>Tile</span><code>Show me the total claims count in tile</code></div>
+          <div class="prompt-item"><span>Tile</span><code>Show me the total premium amount in tile</code></div>
+          <div class="prompt-item"><span>Tile</span><code>show me the total insurance paid amount in tile</code></div>
+          <div class="prompt-item"><span>Donut</span><code>Show me the Churned policy count by household type in Donut chart</code></div>
+          <div class="prompt-item"><span>Map</span><code>Which states have the highest claim amount</code></div>
+          <div class="prompt-item"><span>Bar Chart</span><code>Claim amount by incident month in bar chart</code></div>
+        </div>
+
+        <h3>Additional prompts to try</h3>
+        <div class="prompt-grid">
+          <div class="prompt-item"><span>Status</span><code>Show me the status by Household Type</code></div>
+          <div class="prompt-item"><span>State</span><code>Give total insurance paid amount by state</code></div>
+          <div class="prompt-item"><span>Segment</span><code>Analyze claim amount by marital status</code></div>
+        </div>
+
+        <figure class="reference-shot wide-shot">
+          <a href="from-data-to-decisions-3hour-assets/workbook-ai-exercise6-prompts.png" target="_blank" rel="noopener">
+            <img src="from-data-to-decisions-3hour-assets/workbook-ai-exercise6-prompts.png" alt="Exercise 6 Workbook AI Assistant prompts for Business Overview">
+          </a>
+          <figcaption>Exercise 6 prompt list: use Workbook AI Assistant to generate the Business Overview visuals that were built manually in Day 1 Exercise 3.</figcaption>
+        </figure>
+
+        <h3>Target Business Overview canvas</h3>
+        <figure class="reference-shot wide-shot">
+          <a href="from-data-to-decisions-3hour-assets/workbook-ai-business-overview-canvas.png" target="_blank" rel="noopener">
+            <img src="from-data-to-decisions-3hour-assets/workbook-ai-business-overview-canvas.png" alt="Workbook AI Assistant Business Overview canvas matching Day 1 Exercise 3">
+          </a>
+          <figcaption>Target result: Workbook AI Assistant generates the same canvas pattern as Day 1 Exercise 3, then you format each visualization to match the workshop standard.</figcaption>
+        </figure>
 
         <div class="concept">
-          <strong>Preview:</strong> The Workbook AI Assistant works inside an existing workbook. It is best when you already know the dataset or dashboard context and want to explore, refine, explain, or add visual answers without manually binding every chart.
+          <strong>Why this matters:</strong> Exercise 6 proves AI Assistant can accelerate the canvas-building workflow. Exercise 7 then shifts from building the Business Overview canvas to asking the AI Agent for loss-ratio insights and business interpretation.
         </div>
 
-        <button class="complete-btn" onclick="completeSection(this,'exercise-workbook-assistant','nc-ex6')">Complete Workbook AI Assistant review</button>
+        <button class="complete-btn" onclick="completeSection(this,'exercise-workbook-assistant','nc-ex6')">Complete Workbook AI Assistant canvas build</button>
       </div>
     </div>
 
@@ -1607,13 +1662,14 @@
     });
   });
 
-  const sectionCounts = { ex1:9, ex2:6, ex3:8, ex4:10, ex5:5, ex7:6, ex8:5 };
+  const sectionCounts = { ex1:9, ex2:6, ex3:8, ex4:10, ex5:5, ex6:6, ex7:6, ex8:5 };
   const sectionCards = {
     ex1:'exercise-dataset',
     ex2:'exercise-metrics',
     ex3:'exercise-overview',
     ex4:'exercise-lossratio',
     ex5:'exercise-retention',
+    ex6:'exercise-workbook-assistant',
     ex7:'exercise-ai-agent',
     ex8:'exercise-homepage-assistant'
   };
