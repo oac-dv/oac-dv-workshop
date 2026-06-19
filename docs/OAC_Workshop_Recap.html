@@ -615,6 +615,8 @@
      radial-gradient(720px 480px at 2% 28%,rgba(15,110,120,.09),transparent 55%); }
   .hero-grid{ display:grid; grid-template-columns:1.12fr .88fr; gap:44px; align-items:center; }
   .hero-copy h1{ max-width:16ch; font-size:clamp(36px,5vw,64px); }
+  .hero-recap{display:inline-flex;align-items:center;gap:10px;margin:0 0 18px;padding:12px 18px;border:1px solid rgba(199,70,52,.22);border-left:5px solid var(--rw-gold);border-radius:999px;background:var(--rw-ink);color:#fff;font-size:clamp(14px,1.6vw,18px);font-weight:800;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 14px 32px -22px rgba(33,28,24,.62)}
+  .hero-recap::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--rw-gold);box-shadow:0 0 0 5px rgba(198,138,48,.24)}
   .hero-art{ position:relative; }
   .hero-art svg{ width:100%; max-width:500px; height:auto; display:block; margin-left:auto; overflow:visible; animation:floaty 7s var(--ease) infinite; }
   /* source table chips */
@@ -719,6 +721,7 @@
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <div class="eyebrow reveal">Two-Day Workshop Recap · Oracle Analytics Cloud</div>
+      <p class="hero-recap reveal d1">Let us recap what we built over two days</p>
       <h1 class="reveal d1">From scattered data to a <em>decision</em> the business can act on.</h1>
       <p class="lead reveal d2">Oracle Analytics Cloud helps businesses move from scattered data to trusted decisions by first building a strong analytics foundation — connected datasets, governed metrics, and clear visual canvases — and then applying AI Assistants and AI Agents on top of that foundation. In this workshop, we used an auto-insurance retention scenario to show how OAC can make trusted insights available to more people, not just analysts.</p>
       <div class="hero-meta reveal d3">
@@ -1294,18 +1297,18 @@
 <section id="next" style="background:var(--rw-surface-2)">
   <div class="wrap">
     <div class="eyebrow reveal">Where we go from here</div>
-    <h2 class="sec-title reveal d1">The advanced tool training — hands-on, on your data</h2>
-    <p class="lead reveal d2">This workshop was the foundation. The advanced program is a deeper, hands-on series that runs on your own data — from a quick recap of the AI features to creating AI Agents, standing up production-quality agents, and enabling external connectivity. Here's the shape of it:</p>
+    <h2 class="sec-title reveal d1">Advanced OAC AI enablement — topics to discuss and POC planning</h2>
+    <p class="lead reveal d2">This workshop was the foundation. As a next step, we can discuss the topics below and work with your team to identify specific POC opportunities — from AI on Subject Areas and feedback loops to agents, MCP, and embedding. The goal is to shape the right plan around your priorities, use cases, data readiness, and timeline.</p>
 
     <div class="agenda">
-      <div class="mod reveal"><div class="mnum">1</div><div class="mbody"><h4>Recap &amp; orientation</h4><p>A fast refresher on the AI feature set from this week, then we go deeper on each one against your own data rather than the sample.</p><span class="mtag recap">Recap</span></div></div>
+      <div class="mod reveal"><div class="mnum">1</div><div class="mbody"><h4>Recap &amp; orientation</h4><p>A fast refresher on the AI feature set from this week, then alignment on which topics matter most for your priorities and possible POC use cases.</p><span class="mtag recap">Recap</span></div></div>
       <div class="mod reveal d1"><div class="mnum">2</div><div class="mbody"><h4>AI on Subject Areas &amp; Local Subject Areas</h4><p>Enable the AI Assistant on your governed Subject Areas and LSAs, so the semantic model you already trust powers natural-language analytics.</p><span class="mtag">Deep dive</span></div></div>
       <div class="mod reveal d2"><div class="mnum">3</div><div class="mbody"><h4>AI feedback pipeline</h4><p>Implementation steps to capture flagged Assistant and Agent answers, then close the loop — correct the answer, add synonyms, and enrich supplemental instructions.</p><span class="mtag">Deep dive</span></div></div>
       <div class="mod reveal"><div class="mnum">4</div><div class="mbody"><h4>OAC AI Functions</h4><p>What they are and how to use them for in-flow intelligence inside your analyses and data flows.</p><span class="mtag">Deep dive</span></div></div>
       <div class="mod reveal d1"><div class="mnum">5</div><div class="mbody"><h4>Create AI Agents manually and with Skill Builder</h4><p>Create an AI Agent from the ground up, then use AI Agent Skill Builder to accelerate the production version — auto-creating indexes, synonyms, supplemental instructions, and the welcome message.</p><span class="mtag">Hands-on</span></div></div>
       <div class="mod reveal d2"><div class="mnum">6</div><div class="mbody"><h4>OAC MCP Server</h4><p>Setup and configuration, and approaches for authenticating users via the MCP Server so external AI clients connect securely under existing governance.</p><span class="mtag">Hands-on</span></div></div>
       <div class="mod reveal"><div class="mnum">7</div><div class="mbody"><h4>Embedding the AI Assistant</h4><p>Drop the assistant into your external portals with the <code>&lt;oa-assistant&gt;</code> tag — analytics inside the tools your teams already use.</p><span class="mtag">Hands-on</span></div></div>
-      <div class="mod reveal d1"><div class="mnum">8</div><div class="mbody"><h4>Your data &amp; POCs</h4><p>Apply everything above to your own datasets and use cases, and scope the first proofs of concept together.</p><span class="mtag poc">POC</span></div></div>
+      <div class="mod reveal d1"><div class="mnum">8</div><div class="mbody"><h4>POC opportunities</h4><p>Identify where these capabilities could apply, then align on data readiness, scope, success criteria, and the right proof-of-concept candidates.</p><span class="mtag poc">POC</span></div></div>
     </div>
 
     <div class="agenda-note reveal d2"><b>Format:</b> there's a lot of depth here, so the advanced program is best run as a short series or a full-day deep dive rather than a single hour. Ravi will discuss with Manpreet, align the right Oracle resources, and come back with a plan sized to the group and the topics you most want to prioritize.</div>
@@ -1315,7 +1318,7 @@
       <h3>Happy to partner with your team to bring analytics to everyone</h3>
       <p>The goal is simple: make trusted insights available to everyone, not just analysts. We'll continue partnering with your team to put AI to work across your business and make natural-language analytics something every user can rely on.</p>
       <div class="home-ex">
-        <div class="he"><b>Next sessions</b><h5>POCs on your data</h5><p>We'll build proofs of concept on your own datasets and use cases — and stay alongside you to make your AI adoption successful.</p></div>
+        <div class="he"><b>Next sessions</b><h5>POC planning</h5><p>We'll work with your team to identify the right use cases, required data, success criteria, and next steps for potential proofs of concept.</p></div>
         <div class="he"><b>The outcome</b><h5>AI for everyone</h5><p>From Home-page prompts to embedded agents, insight that's a question away for every user on your team.</p></div>
       </div>
     </div>
