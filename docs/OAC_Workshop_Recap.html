@@ -1137,10 +1137,35 @@
   <div class="wrap">
     <div class="eyebrow reveal" style="color:var(--rw-teal)">Day 2 · AI extensions</div>
     <h2 class="sec-title reveal d1">Same trusted data, asked in plain English</h2>
-    <p class="lead reveal d2">Before the AI can answer anything reliably, the dataset has to be <em>ready</em> for it. That readiness is the part most people skip — so we covered it first.</p>
+    <p class="lead reveal d2">Because the audience was mainly business users, we started with what OAC AI lets them do: ask questions in natural language, build visuals faster, generate dashboards from prompts, and use governed agents for domain-specific answers. We then closed with the prerequisite readiness work that admins, power users, or dataset domain experts handle so those AI experiences answer reliably.</p>
 
-    <h3 class="reveal d1" style="font-size:24px;margin:40px 0 4px">Why indexing matters</h3>
-    <p class="reveal d2" style="font-size:15px;color:var(--rw-ink-soft);max-width:62ch"><strong>Indexing</strong> makes a dataset searchable for the AI Assistant, Homepage Search and Agents. An un-indexed dataset is invisible to AI — it can't find it, or doesn't know which columns and values can answer the prompt.</p>
+    <h3 class="reveal d1" style="font-size:24px;margin:40px 0 6px">Three AI experiences — and when business users use each</h3>
+    <div class="ai3">
+      <div class="aic reveal"><div class="ico">A</div><h4>Workbook AI Assistant</h4><p>Ask questions inside an existing workbook; the AI builds visuals you add to the canvas. We used it to rebuild the Exercise 3 Business Overview canvas from prompts, then formatted to match.</p><span class="ex-tag">Exercise 6</span></div>
+      <div class="aic reveal d1"><div class="ico">G</div><h4>AI Agent</h4><p>A <em>governed</em> conversation that combines the dataset with business rules, KPI definitions and knowledge documents. We asked it loss-ratio questions and got answers in the language of retention.</p><span class="ex-tag">Exercise 7</span></div>
+      <div class="aic reveal d2"><div class="ico">H</div><h4>Homepage AI Assistant</h4><p>Start on the OAC Home page and generate a full executive dashboard from a single prompt, then refine with follow-ups and "Explore as Workbook".</p><span class="ex-tag">Exercise 8</span></div>
+    </div>
+
+    <h3 class="reveal d1" style="font-size:23px;margin:50px 0 4px">What makes an AI Agent different — its four parts</h3>
+    <p class="reveal d2" style="font-size:14.5px;color:var(--rw-ink-soft);max-width:60ch">An Assistant builds a chart. An Agent applies your organisation's rules and vocabulary <em>before</em> it answers — that's the governance layer.</p>
+    <div class="agent4">
+      <div class="a4 reveal"><div class="num">1</div><b>Dataset — the facts</b><p>One indexed dataset the agent is grounded in. Column scope and filters constrain what it can see.</p></div>
+      <div class="a4 reveal d1"><div class="num">2</div><b>Supplemental instructions — the brain</b><p>Up to ~6,000 chars of your terminology, KPI formulas and response format. Without them the agent guesses.</p></div>
+      <div class="a4 reveal d2"><div class="num">3</div><b>Knowledge documents — the library</b><p>PDF/TXT files retrieved via RAG, adding policy and process context beyond the columns.</p></div>
+      <div class="a4 reveal d3"><div class="num">4</div><b>Welcome message — the intro</b><p>Onboarding text and sample prompts so users know what the agent can answer.</p></div>
+    </div>
+    <p class="reveal" style="font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--rw-teal);margin-bottom:6px">A few prompts we ran on the Agent</p>
+    <div class="prompt-row reveal d1">
+      <span class="pchip"><span class="lab">Q</span>loss ratio by state</span>
+      <span class="pchip"><span class="lab">Q</span>why is California high?</span>
+      <span class="pchip"><span class="lab">Q</span>top retention opportunities</span>
+    </div>
+
+    <h3 class="reveal d1" style="font-size:24px;margin:54px 0 4px">Readiness work behind the scenes</h3>
+    <p class="reveal d2" style="font-size:15px;color:var(--rw-ink-soft);max-width:66ch">At the end, we discussed the setup work that makes OAC AI reliable. An admin, power user, or dataset domain expert prepares the dataset by indexing it, adding useful synonyms, certifying trusted sources, setting column scope, and checking data types. <strong>Synonyms</strong> are business-language mappings to database columns and values, so a user can ask for "premium", "claims paid", or "customers" and OAC knows which fields those words mean.</p>
+
+    <h3 class="reveal d1" style="font-size:24px;margin:34px 0 4px">Why indexing matters</h3>
+    <p class="reveal d2" style="font-size:15px;color:var(--rw-ink-soft);max-width:62ch"><strong>Indexing</strong> makes a dataset searchable for the AI Assistant, Homepage Search, and Agents. An un-indexed dataset may be invisible to AI, or the AI may not know which columns and values can answer the prompt.</p>
     <div class="idx-grid">
       <div class="idx off reveal d1">
         <h4>✗ Not indexed</h4>
@@ -1160,39 +1185,12 @@
       <thead><tr><th>Setup item</th><th>Plain meaning</th><th>Why it matters</th></tr></thead>
       <tbody>
         <tr><td>Indexing</td><td>Makes the dataset searchable for AI.</td><td>Un-indexed = AI may not find it or know which fields answer the prompt.</td></tr>
-        <tr><td>Synonyms</td><td>Maps user words to columns &amp; values.</td><td>People say "premium", "claims paid", "customers" — synonyms connect those to Premium Amount, Insurance Paid, customer_policy_id.</td></tr>
+        <tr><td>Synonyms</td><td>Maps business words to columns &amp; values.</td><td>People say "premium", "claims paid", "customers" — synonyms connect those to Premium Amount, Insurance Paid, customer_policy_id.</td></tr>
         <tr><td>Certification</td><td>Marks a dataset as trusted.</td><td>Certified datasets rank higher when several could answer — Homepage AI picks the right source.</td></tr>
         <tr><td>Column scope</td><td>Controls which columns AI can use.</td><td>Hide technical/confusing fields so the AI reaches for the right data.</td></tr>
         <tr><td>Clean data types</td><td>Measures, attributes, dates, locations classified correctly.</td><td>Prevents bad answers — like summing IDs or failing to draw a map.</td></tr>
       </tbody>
     </table>
-
-    <h3 class="reveal d1" style="font-size:24px;margin:54px 0 6px">Three AI experiences — and when to use each</h3>
-    <div class="ai3">
-      <div class="aic reveal"><div class="ico">A</div><h4>Workbook AI Assistant</h4><p>Ask questions inside an existing workbook; the AI builds visuals you add to the canvas. We used it to rebuild the Exercise 3 Business Overview canvas from prompts, then formatted to match.</p><span class="ex-tag">Exercise 6</span></div>
-      <div class="aic reveal d1"><div class="ico">G</div><h4>AI Agent</h4><p>A <em>governed</em> conversation that combines the dataset with business rules, KPI definitions and knowledge documents. We asked it loss-ratio questions and got answers in the language of retention.</p><span class="ex-tag">Exercise 7</span></div>
-      <div class="aic reveal d2"><div class="ico">H</div><h4>Homepage AI Assistant</h4><p>Start on the OAC Home page and generate a full executive dashboard from a single prompt, then refine with follow-ups and "Explore as Workbook".</p><span class="ex-tag">Exercise 8</span></div>
-    </div>
-
-    <h3 class="reveal d1" style="font-size:23px;margin:50px 0 4px">What makes an AI Agent different — its four parts</h3>
-    <p class="reveal d2" style="font-size:14.5px;color:var(--rw-ink-soft);max-width:60ch">An Assistant builds a chart. An Agent applies your organisation's rules and vocabulary <em>before</em> it answers — that's the governance layer.</p>
-    <div class="agent4">
-      <div class="a4 reveal"><div class="num">1</div><b>Dataset — the facts</b><p>One indexed dataset the agent is grounded in. Column scope and filters constrain what it can see.</p></div>
-      <div class="a4 reveal d1"><div class="num">2</div><b>Supplemental instructions — the brain</b><p>Up to ~6,000 chars of your terminology, KPI formulas and response format. Without them the agent guesses.</p></div>
-      <div class="a4 reveal d2"><div class="num">3</div><b>Knowledge documents — the library</b><p>PDF/TXT files retrieved via RAG, adding policy and process context beyond the columns.</p></div>
-      <div class="a4 reveal d3"><div class="num">4</div><b>Welcome message — the intro</b><p>Onboarding text and sample prompts so users know what the agent can answer.</p></div>
-    </div>
-
-    <div style="margin-top:36px">
-      <p class="reveal" style="font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--rw-teal);margin-bottom:6px">A few prompts we ran on the Agent</p>
-      <div class="prompts reveal d1">
-        <span class="pchip"><span class="lab">map</span>Give me loss ratio by state</span>
-        <span class="pchip"><span class="lab">top 5</span>loss ratio by top 5 states</span>
-        <span class="pchip"><span class="lab">pie</span>loss ratio by good driver flag</span>
-        <span class="pchip"><span class="lab">table</span>top 5 states: policy count, claims, premium, loss ratio</span>
-      </div>
-      <div class="why teal" style="margin-top:18px;max-width:62ch"><b>What we saw:</b> New York carried the highest loss ratio; a good Agent answer returns both the visualization <em>and</em> a sentence that calls out the high-risk state or segment in plain business language.</div>
-    </div>
   </div>
 </section>
 
