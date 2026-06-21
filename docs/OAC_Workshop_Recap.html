@@ -417,7 +417,7 @@
   .qz.q1{top:0;left:0;color:var(--rw-gold)}        /* high loss, low value? -> top-left = high loss low value lowest */
   .qz.q2{top:0;left:50%;color:var(--rw-red-deep)}  /* high loss, high value review */
   .qz.q3{top:50%;left:0;color:var(--rw-ink-soft)}  /* low loss low value later */
-  .qz.q4{top:50%;left:50%;color:var(--rw-green)}    /* low loss high value call first */
+  .qz.q4{top:50%;left:50%;color:var(--rw-green)}    /* low loss high value prioritize first */
   .quad .axl{position:absolute;font-size:10px;font-weight:700;color:var(--rw-ink-soft);text-transform:uppercase;letter-spacing:.05em}
   .quad .axl.x{bottom:6px;right:10px}.quad .axl.y{top:8px;left:8px;writing-mode:vertical-rl}
   .pt{position:absolute;width:13px;height:13px;border-radius:50%;transform:scale(0);transition:transform .5s var(--ease)}
@@ -690,6 +690,81 @@
   .auth:hover{ transform:translateY(-3px); box-shadow:var(--sh-md); }
 
 
+
+
+  /* SaaS training guide section */
+  .training-grid{ display:grid; grid-template-columns:1.15fr 1fr 1fr; gap:16px; margin-top:34px; align-items:stretch; }
+  .training-card{ background:var(--rw-surface); border:1px solid var(--rw-line); border-radius:16px; padding:22px; box-shadow:var(--sh-sm); display:flex; flex-direction:column; min-height:190px; }
+  .training-card.primary{ grid-row:span 2; background:linear-gradient(180deg,var(--rw-ink),#2B241F); color:#F6F1EA; border-color:rgba(255,255,255,.1); box-shadow:var(--sh-lg); justify-content:center; }
+  .tc-label{ font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--rw-teal); margin-bottom:10px; }
+  .training-card.primary .tc-label{ color:var(--rw-gold); }
+  .training-card h3{ font-family:var(--display); font-size:clamp(21px,2.2vw,28px); line-height:1.12; margin-bottom:10px; }
+  .training-card p{ color:var(--rw-ink-soft); font-size:13.5px; line-height:1.55; }
+  .training-card.primary p{ color:#D9CFC4; font-size:14.5px; }
+  .journey{ display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-top:22px; background:var(--rw-surface); border:1px solid var(--rw-line); border-radius:16px; padding:14px; box-shadow:var(--sh-sm); }
+  .journey-step{ position:relative; padding:16px 14px; border-radius:12px; background:var(--rw-surface-2); text-align:center; }
+  .journey-step span{ display:inline-grid; place-items:center; width:32px; height:28px; border-radius:8px; background:var(--rw-red-soft); color:var(--rw-red-deep); font-family:var(--mono); font-size:11px; font-weight:800; margin-bottom:8px; }
+  .journey-step b{ display:block; font-size:13.5px; margin-bottom:4px; }
+  .journey-step p{ color:var(--rw-ink-soft); font-size:12px; line-height:1.4; }
+  section.in-view .training-card,
+  section.in-view .journey{ animation:cardGlow 8s ease-in-out infinite; }
+  section.in-view .journey-step span{ animation:numberGlow 5.8s ease-in-out infinite; }
+  @media(max-width:920px){
+    .training-grid{ grid-template-columns:1fr 1fr; }
+    .training-card.primary{ grid-column:1 / -1; grid-row:auto; }
+    .journey{ grid-template-columns:repeat(3,1fr); }
+  }
+  @media(max-width:620px){
+    .training-grid,.journey{ grid-template-columns:1fr; }
+    .journey-step{ text-align:left; }
+  }
+  /* balanced page alignment: section openers read like recap slides */
+  section:not(.hero) .wrap > .eyebrow{ justify-content:center; text-align:center; margin-left:auto; margin-right:auto; }
+  section:not(.hero) .wrap > .sec-title{ text-align:center; max-width:900px; margin-left:auto; margin-right:auto; }
+  section:not(.hero) .wrap > .lead{ text-align:center; max-width:860px; margin-left:auto; margin-right:auto; }
+  section:not(.hero) .wrap > h3.reveal{ text-align:center; max-width:820px; margin-left:auto!important; margin-right:auto!important; }
+  section:not(.hero) .wrap > h3.reveal + p.reveal{ text-align:center; max-width:760px!important; margin-left:auto!important; margin-right:auto!important; }
+  section:not(.hero) .wrap > .concept,
+  section:not(.hero) .wrap > .join-primer,
+  section:not(.hero) .wrap > .fan-stage,
+  section:not(.hero) .wrap > .grain-demo,
+  section:not(.hero) .wrap > .home-box,
+  section:not(.hero) .wrap > .story-quote,
+  section:not(.hero) .wrap > .scenario-pattern{ max-width:1080px; margin-left:auto; margin-right:auto; }
+  .sec-title::after{ margin-left:auto; margin-right:auto; transform-origin:center; }
+  .eyebrow::before{ flex:none; }
+  .concept h3,.join-copy h3,.home-box h3,.session-sequence h3{ line-height:1.18; }
+  .concept p,.why,.story-quote p,.qcard h4,.mcard p,.cv p,.aic p,.cap p,.nx p,.mod p{ text-wrap:pretty; }
+
+  /* beginning scenario pattern block */
+  .scenario-pattern{ display:grid; grid-template-columns:minmax(0,.9fr) minmax(360px,1.1fr); gap:28px; align-items:stretch; margin-top:34px; background:linear-gradient(180deg,var(--rw-surface),var(--rw-surface-2)); border:1px solid var(--rw-line); border-radius:18px; padding:clamp(24px,3.4vw,36px); box-shadow:var(--sh-md); }
+  .scenario-copy{ display:flex; flex-direction:column; justify-content:center; }
+  .scenario-kicker{ font-size:11px; font-weight:800; letter-spacing:.11em; text-transform:uppercase; color:var(--rw-red-deep); margin-bottom:10px; }
+  .scenario-copy h3{ font-family:var(--display); font-size:clamp(24px,2.6vw,32px); margin-bottom:12px; }
+  .scenario-copy p{ font-size:14.5px; color:var(--rw-ink-soft); margin-top:10px; line-height:1.58; }
+  .scenario-flow{ display:grid; grid-template-columns:1fr; gap:12px; }
+  .sf-step{ position:relative; background:var(--rw-surface); border:1px solid var(--rw-line); border-left:4px solid var(--rw-red); border-radius:0 14px 14px 0; padding:16px 18px 16px 20px; box-shadow:var(--sh-sm); transition:transform .3s var(--ease), box-shadow .3s var(--ease); }
+  .sf-step:nth-child(2){ border-left-color:var(--rw-gold); }
+  .sf-step:nth-child(3){ border-left-color:var(--rw-teal); }
+  .sf-step span{ display:inline-block; font-size:10.5px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--rw-ink-soft); margin-bottom:5px; }
+  .sf-step b{ display:block; font-family:var(--display); font-size:20px; margin-bottom:4px; }
+  .sf-step p{ font-size:12.8px; color:var(--rw-ink-soft); line-height:1.45; }
+  section.in-view .sf-step{ animation:cardGlow 8s ease-in-out infinite; }
+  section.in-view .sf-step:nth-child(2){ animation-delay:.45s; }
+  section.in-view .sf-step:nth-child(3){ animation-delay:.9s; }
+  @media(max-width:860px){
+    .scenario-pattern{ grid-template-columns:1fr; }
+    section:not(.hero) .wrap > .lead{ max-width:720px; }
+  }
+  @media(max-width:560px){
+    section:not(.hero) .wrap > .sec-title,
+    section:not(.hero) .wrap > .lead,
+    section:not(.hero) .wrap > h3.reveal,
+    section:not(.hero) .wrap > h3.reveal + p.reveal{ text-align:left; }
+    section:not(.hero) .wrap > .eyebrow{ justify-content:flex-start; text-align:left; }
+    .sec-title::after{ margin-left:0; transform-origin:left; }
+    .scenario-pattern{ padding:22px; }
+  }
   /* presentation polish: consistent rhythm, card alignment and section framing */
   section .wrap > h3,
   section .wrap > .reveal h3{ line-height:1.15; }
@@ -883,7 +958,7 @@
   <div class="rail-in">
     <div class="brand"><span class="dot"></span>From Data to Decisions</div>
     <div class="rail-links">
-      <a href="#story">Story</a>
+      <a href=\
       <a href="#days">Two Days</a>
       <a href="#dataset">Dataset</a>
       <a href="#joins">Joins</a>
@@ -972,12 +1047,66 @@
   </div>
 </section>
 
+<!-- TRAINING GUIDE -->
+<section id="guide">
+  <div class="wrap">
+    <div class="eyebrow reveal">How to read this recap</div>
+    <h2 class="sec-title reveal d1">A practical training guide, not just a workshop summary</h2>
+    <p class="lead reveal d2">Use this as a decision playbook. The insurance data is only the sample; the method is what matters: start with a trusted model, focus on the few visuals that answer the business question, then use AI to make those trusted insights available to more people.</p>
+
+    <div class="training-grid reveal d2">
+      <div class="training-card primary">
+        <span class="tc-label">Training objective</span>
+        <h3>Move from scattered data to a decision-ready workflow</h3>
+        <p>By the end of the recap, readers should understand what was built, why each step mattered, and how the same pattern can be reused for their own business questions.</p>
+      </div>
+      <div class="training-card">
+        <span class="tc-label">Business users</span>
+        <h3>Follow the story</h3>
+        <p>Understand the business scenario, the three canvases, the key metrics, and how OAC AI helps ask follow-up questions without waiting for another dashboard.</p>
+      </div>
+      <div class="training-card">
+        <span class="tc-label">Power users</span>
+        <h3>Understand the build</h3>
+        <p>Review datasets, joins, preserve grain, attributes versus measures, calculated metrics, formatting choices, and readiness work for AI.</p>
+      </div>
+      <div class="training-card">
+        <span class="tc-label">Next meetings</span>
+        <h3>Map it to your use cases</h3>
+        <p>Use this pattern to discuss your own business overview, loss/risk drivers, action prioritization, data readiness, and potential POC opportunities.</p>
+      </div>
+    </div>
+
+    <div class="journey reveal d3" aria-label="Workshop learning journey">
+      <div class="journey-step"><span>01</span><b>Foundation</b><p>Join trusted data and protect grain.</p></div>
+      <div class="journey-step"><span>02</span><b>Metrics</b><p>Define the numbers the business trusts.</p></div>
+      <div class="journey-step"><span>03</span><b>Canvases</b><p>Keep only the visuals that help analysis.</p></div>
+      <div class="journey-step"><span>04</span><b>AI experience</b><p>Ask the same questions in natural language.</p></div>
+      <div class="journey-step"><span>05</span><b>POC planning</b><p>Apply the pattern to your own decisions.</p></div>
+    </div>
+  </div>
+</section>
+
 <!-- BUSINESS STORY -->
 <section id="story" style="background:var(--rw-surface-2)">
   <div class="wrap">
     <div class="eyebrow reveal">The scenario behind the workshop</div>
     <h2 class="sec-title reveal d1">How OAC turns scattered data into decisions</h2>
-    <p class="lead reveal d2">We used an auto-insurance retention scenario as the example, but the pattern applies to any business use case where decisions depend on data spread across systems. Starting with policies, premiums, claims, drivers, and vehicles, we used OAC features — dataset joins, calculated metrics, canvases, indexing, AI Assistants, and AI Agents — to answer a practical business question: which customers should the team prioritize for retention? The same approach can be applied to your own customer, product, operations, finance, supply-chain, or sales data to drive decisions in the areas that matter most to your business.</p>
+    <p class="lead reveal d2">The auto-insurance retention story was a sample scenario. We used it to show a repeatable OAC pattern: build a trusted data foundation, understand the whole business picture, identify the factors creating loss or margin pressure, and then decide the action to take. The same approach can be applied to your own business use cases in future discussions.</p>
+
+    <div class="scenario-pattern reveal d2">
+      <div class="scenario-copy">
+        <div class="scenario-kicker">Sample scenario · reusable decision pattern</div>
+        <h3>From overview to root cause to action</h3>
+        <p>In the workshop, the insurance example helped us practice the full decision path. In your environment, the same structure can be mapped to your own customer, product, operations, finance, supply-chain, or sales questions.</p>
+        <p>We also discussed keeping only the visualizations that matter most and formatting each canvas so the audience can analyze quickly instead of scanning through unnecessary charts.</p>
+      </div>
+      <div class="scenario-flow" aria-label="Three canvas decision flow">
+        <div class="sf-step"><span>Canvas 1</span><b>Business Overview</b><p>See the whole picture and understand the current state of the business.</p></div>
+        <div class="sf-step"><span>Canvas 2</span><b>Loss Ratio Analysis</b><p>Find the factors causing loss, margin pressure, or operational risk.</p></div>
+        <div class="sf-step"><span>Canvas 3</span><b>Retention Priority</b><p>Turn insight into the action list: who to prioritize and why.</p></div>
+      </div>
+    </div>
 
     <div class="story-quote reveal d2">
       <span class="sq-mark">&ldquo;</span>
@@ -1016,7 +1145,7 @@
           <div class="ex"><span class="n">2</span><div class="tx"><b>Create the Six Decision Metrics</b><span>Churn rate, loss ratio, customer value…</span></div><span class="badge done">Done</span></div>
           <div class="ex"><span class="n">3</span><div class="tx"><b>Business Overview Canvas</b><span>"What is the current state of the business?"</span></div><span class="badge done">Done</span></div>
           <div class="ex"><span class="n">4</span><div class="tx"><b>Loss Ratio Analysis Canvas</b><span>Where claim cost outruns premium</span></div><span class="badge home">At home</span></div>
-          <div class="ex"><span class="n">5</span><div class="tx"><b>Retention Priority Canvas</b><span>The payoff — who to call first</span></div><span class="badge home">At home</span></div>
+          <div class="ex"><span class="n">5</span><div class="tx"><b>Retention Priority Canvas</b><span>The payoff — who to prioritize first</span></div><span class="badge home">At home</span></div>
         </div>
       </div>
       <div class="day-card d2 reveal d1">
@@ -1069,7 +1198,7 @@
                 <div class="ds-label">Questions unlocked</div>
                 <div class="ds-question">What is churn rate?</div>
                 <div class="ds-question">Where is loss ratio high?</div>
-                <div class="ds-question">Who should we call first?</div>
+                <div class="ds-question">Who should we prioritize first?</div>
               </div>
             </div>
             <div class="ds-foundation"><b>Foundation:</b> each table tells only part of the story. The dataset stitches them together into a trusted model, so OAC can calculate metrics and answer business questions consistently.</div>
@@ -1300,7 +1429,7 @@
     <div class="canvases">
       <div class="cv reveal"><div class="top"><span class="cn">Canvas 1 · Exercise 3</span><span class="badge done">Done in session</span></div><div class="body"><h4>Business Overview</h4><p class="q">"What's the current state of the business?"</p><ul><li>KPI tiles: policy count, loss ratio, claim amount, churn</li><li>Claim amount by state (map)</li><li>Churn by household type (donut)</li><li>Claim amount by incident month, with trend &amp; forecast</li></ul></div></div>
       <div class="cv reveal d1"><div class="top"><span class="cn">Canvas 2 · Exercise 4</span><span class="badge home">Take-home</span></div><div class="body"><h4>Loss Ratio Analysis</h4><p class="q">"Where are claim costs high relative to premium?"</p><ul><li>Loss ratio by good-driver, gender, marital, employment</li><li>State map coloured by loss ratio</li><li>Household-type summary table</li><li>Butterfly: claim amount vs insurance paid</li></ul></div></div>
-      <div class="cv reveal d2"><div class="top"><span class="cn">Canvas 3 · Exercise 5</span><span class="badge home">Take-home</span></div><div class="body"><h4>Retention Priority</h4><p class="q">"Which at-risk customers do we call first?"</p><ul><li>Dashboard filters: renewal status, household, state</li><li>Scatter: Customer Value Score × Loss Ratio</li><li>Customer detail table that updates on selection</li></ul></div></div>
+      <div class="cv reveal d2"><div class="top"><span class="cn">Canvas 3 · Exercise 5</span><span class="badge home">Take-home</span></div><div class="body"><h4>Retention Priority</h4><p class="q">"Which at-risk customers do we prioritize first?"</p><ul><li>Dashboard filters: renewal status, household, state</li><li>Scatter: Customer Value Score × Loss Ratio</li><li>Customer detail table that updates on selection</li></ul></div></div>
     </div>
 
     <h3 class="reveal d1" style="font-size:24px;margin:54px 0 6px">Reading the retention scatter — the four zones</h3>
@@ -1313,7 +1442,7 @@
         <div class="qz q1">Lowest priority<small>low value · high cost</small></div>
         <div class="qz q2">Review first<small>valuable · costly</small></div>
         <div class="qz q3">Consider later<small>low value · stable</small></div>
-        <div class="qz q4">Call first<small>valuable · cheap</small></div>
+        <div class="qz q4">Prioritize first<small>valuable · manageable</small></div>
         <!-- points: top = high loss -->
         <span class="pt dim" style="top:18%;left:20%"></span>
         <span class="pt rev" style="top:24%;left:70%"></span>
@@ -1325,7 +1454,7 @@
         <span class="pt call" style="top:66%;left:66%"></span>
       </div>
       <div class="zone-key">
-        <div class="zk reveal"><span class="sw" style="background:var(--rw-green)"></span><div><b>Call first</b><p>High value, low loss ratio. Strong net value, manageable claim cost — the best retention ROI.</p></div></div>
+        <div class="zk reveal"><span class="sw" style="background:var(--rw-green)"></span><div><b>Prioritize first</b><p>High value, low loss ratio. Strong net value, manageable claim cost — the best retention ROI.</p></div></div>
         <div class="zk reveal d1"><span class="sw" style="background:var(--rw-red)"></span><div><b>Review before acting</b><p>High value but high loss ratio. Potentially worth saving, but understand the claim history before making an offer.</p></div></div>
         <div class="zk reveal d2"><span class="sw" style="background:var(--rw-ink-soft)"></span><div><b>Lower priority</b><p>Low value — stable or costly. Not where to start retention effort.</p></div></div>
       </div>
@@ -1496,7 +1625,7 @@
     <div class="home-box reveal d1">
       <div class="eyebrow">Continue when you're ready</div>
       <h3>Review Exercises 4 &amp; 5 on your own</h3>
-      <p>You have everything you need — the dataset, the six metrics, and Canvas 1 are done. Review the guide for the Loss Ratio Analysis and Retention Priority canvases, and bring your top-5 customers-to-call list to the next session. If you get stuck, send the question, screenshot, or step you're on and we'll help you get unstuck.</p>
+      <p>You have everything you need — the dataset, the six metrics, and Canvas 1 are done. Review the guide for the Loss Ratio Analysis and Retention Priority canvases, and bring your top-5 customers-to-prioritize list to the next session. If you get stuck, send the question, screenshot, or step you're on and we'll help you get unstuck.</p>
       <div class="home-ex">
         <div class="he"><b>Exercise 4</b><h5>Loss Ratio Analysis</h5><p>Duplicate Canvas 1, then swap in the loss-ratio views and segment bars.</p></div>
         <div class="he"><b>Exercise 5</b><h5>Retention Priority</h5><p>Add the filters, build the value × loss-ratio scatter, and read the four zones.</p></div>
