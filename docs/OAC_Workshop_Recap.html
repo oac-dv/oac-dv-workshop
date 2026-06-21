@@ -692,6 +692,20 @@
 
 
 
+
+  /* readability tuning: avoid awkward sentence breaks */
+  h1,h2,h3,h4,.sec-title{ text-wrap:balance; }
+  p,li,.lead,.why,.training-card p,.scenario-copy p,.sf-step p,.qcard h4,.cv .q,.cap p,.aic p,.nx p{ text-wrap:pretty; hyphens:none; word-break:normal; overflow-wrap:normal; }
+  section:not(.hero) .wrap > .lead{ max-width:920px; }
+  .story-quote p{ max-width:92ch; }
+  .concept p{ max-width:82ch; }
+  .qcard h4{ max-width:24ch; }
+  .cv .q{ line-height:1.42; }
+  .training-card p,.scenario-copy p{ max-width:70ch; }
+  .scenario-copy p + p{ margin-top:12px; }
+  @media(max-width:680px){
+    p,li,.lead{ overflow-wrap:anywhere; }
+  }
   /* SaaS training guide section */
   .training-grid{ display:grid; grid-template-columns:1.15fr 1fr 1fr; gap:16px; margin-top:34px; align-items:stretch; }
   .training-card{ background:var(--rw-surface); border:1px solid var(--rw-line); border-radius:16px; padding:22px; box-shadow:var(--sh-sm); display:flex; flex-direction:column; min-height:190px; }
@@ -958,7 +972,7 @@
   <div class="rail-in">
     <div class="brand"><span class="dot"></span>From Data to Decisions</div>
     <div class="rail-links">
-      <a href=\
+      <a href="#guide">Guide</a>
       <a href="#days">Two Days</a>
       <a href="#dataset">Dataset</a>
       <a href="#joins">Joins</a>
@@ -980,7 +994,7 @@
       <div class="eyebrow reveal">Two-Day Workshop Recap · Oracle Analytics Cloud</div>
       <p class="hero-recap reveal d1">Let us recap what we built over two days</p>
       <h1 class="reveal d1">From scattered data to a <em>decision</em> the business can act on.</h1>
-      <p class="lead reveal d2">Oracle Analytics Cloud helps businesses move from scattered data to trusted decisions by first building a strong analytics foundation — connected datasets, governed metrics, and clear visual canvases — and then applying AI Assistants and AI Agents on top of that foundation. In this workshop, we used an auto-insurance retention scenario to show how OAC can make trusted insights available to more people, not just analysts.</p>
+      <p class="lead reveal d2">Oracle Analytics Cloud helps businesses solve critical business decisions with confidence by first building a strong analytics foundation — connected datasets, governed metrics, and key visualizations that answer critical business questions — and then applying AI Assistants and AI Agents on top of that foundation. In this workshop, we used a sample auto-insurance retention scenario to show how trusted insights can be democratized beyond analysts and brought closer to the people making decisions.</p>
       <div class="hero-meta reveal d3">
         <span class="pill d1c"><span class="ic"></span>Day 1 · Manual build · Exercises 1–3</span>
         <span class="pill d2c"><span class="ic"></span>Day 2 · AI extensions · Exercises 6–8</span>
@@ -1052,13 +1066,13 @@
   <div class="wrap">
     <div class="eyebrow reveal">How to read this recap</div>
     <h2 class="sec-title reveal d1">A practical training guide, not just a workshop summary</h2>
-    <p class="lead reveal d2">Use this as a decision playbook. The insurance data is only the sample; the method is what matters: start with a trusted model, focus on the few visuals that answer the business question, then use AI to make those trusted insights available to more people.</p>
+    <p class="lead reveal d2">Use this as a decision playbook. The specific dataset is only the sample; the method is what matters: start with a trusted model, focus on the key visualizations that answer critical business questions, and use AI to help more people solve critical business decisions with confidence.</p>
 
     <div class="training-grid reveal d2">
       <div class="training-card primary">
         <span class="tc-label">Training objective</span>
-        <h3>Move from scattered data to a decision-ready workflow</h3>
-        <p>By the end of the recap, readers should understand what was built, why each step mattered, and how the same pattern can be reused for their own business questions.</p>
+        <h3>Move from scattered data to confident decisions</h3>
+        <p>By the end of the recap, readers should understand what was built, why each step mattered, and how the same pattern can be reused to solve critical business decisions with confidence.</p>
       </div>
       <div class="training-card">
         <span class="tc-label">Business users</span>
@@ -1080,9 +1094,9 @@
     <div class="journey reveal d3" aria-label="Workshop learning journey">
       <div class="journey-step"><span>01</span><b>Foundation</b><p>Join trusted data and protect grain.</p></div>
       <div class="journey-step"><span>02</span><b>Metrics</b><p>Define the numbers the business trusts.</p></div>
-      <div class="journey-step"><span>03</span><b>Canvases</b><p>Keep only the visuals that help analysis.</p></div>
+      <div class="journey-step"><span>03</span><b>Canvases</b><p>Keep only the key visuals that answer the critical question.</p></div>
       <div class="journey-step"><span>04</span><b>AI experience</b><p>Ask the same questions in natural language.</p></div>
-      <div class="journey-step"><span>05</span><b>POC planning</b><p>Apply the pattern to your own decisions.</p></div>
+      <div class="journey-step"><span>05</span><b>POC planning</b><p>Apply the pattern to your own critical decisions.</p></div>
     </div>
   </div>
 </section>
@@ -1092,14 +1106,14 @@
   <div class="wrap">
     <div class="eyebrow reveal">The scenario behind the workshop</div>
     <h2 class="sec-title reveal d1">How OAC turns scattered data into decisions</h2>
-    <p class="lead reveal d2">The auto-insurance retention story was a sample scenario. We used it to show a repeatable OAC pattern: build a trusted data foundation, understand the whole business picture, identify the factors creating loss or margin pressure, and then decide the action to take. The same approach can be applied to your own business use cases in future discussions.</p>
+    <p class="lead reveal d2">For the workshop, we used one sample scenario: an auto-insurance retention problem. The value is the reusable pattern: build a trusted data foundation, understand the whole picture, identify what is creating loss or margin pressure, and decide the next best action. In future meetings, the same structure can be mapped to business use cases specific to your team.</p>
 
     <div class="scenario-pattern reveal d2">
       <div class="scenario-copy">
         <div class="scenario-kicker">Sample scenario · reusable decision pattern</div>
         <h3>From overview to root cause to action</h3>
-        <p>In the workshop, the insurance example helped us practice the full decision path. In your environment, the same structure can be mapped to your own customer, product, operations, finance, supply-chain, or sales questions.</p>
-        <p>We also discussed keeping only the visualizations that matter most and formatting each canvas so the audience can analyze quickly instead of scanning through unnecessary charts.</p>
+        <p>This structure can be reused for customer, product, operations, finance, supply-chain, or sales questions: start broad, identify the driver, then prioritize the action.</p>
+        <p>We also discussed keeping only the key visualizations that answer critical business questions, then formatting each canvas so decision-makers can analyze quickly and act with confidence.</p>
       </div>
       <div class="scenario-flow" aria-label="Three canvas decision flow">
         <div class="sf-step"><span>Canvas 1</span><b>Business Overview</b><p>See the whole picture and understand the current state of the business.</p></div>
@@ -1114,8 +1128,8 @@
     </div>
 
     <div class="concept reveal d2">
-      <h3 style="font-size:23px;margin-bottom:10px">The scenario we worked through</h3>
-      <p style="font-size:14.5px;color:var(--rw-ink-soft);max-width:74ch">Imagine you are an analyst in the auto-insurance business. Your leadership team needs to know which customers are at risk of leaving, which customers are still profitable, and where claim costs are putting pressure on margin. The challenge is that the answer is spread across multiple tables: policies, premiums, claims, drivers, and vehicles.</p>
+      <h3 style="font-size:23px;margin-bottom:10px">The business decision in the sample</h3>
+      <p style="font-size:14.5px;color:var(--rw-ink-soft);max-width:78ch">The leadership question was simple: which customers are at risk, which customers are still profitable, and where claim costs are putting pressure on margin? The answer lived across several tables, so the first job was to bring those pieces together before building metrics or visuals.</p>
       <div class="why"><b>The decision:</b> use OAC to connect the scattered data, create trusted metrics, and identify the customers worth prioritizing for retention. Some customers have already churned, others are flagged value-at-risk, and premium changes can protect margin but also create churn risk. The business needs a targeted action list, not a blanket campaign.</div>
     </div>
 
@@ -1678,7 +1692,7 @@
       <div class="auth"><b>Manpreet Shahi</b><span>Sr. Director, Customer Excellence Advisory Lead</span></div>
     </div>
     <div class="foot-meta">
-      <span>Workshop recap · Oracle Analytics Cloud · Auto Insurance retention scenario</span>
+      <span>Workshop recap · Oracle Analytics Cloud · From sample scenario to reusable decision pattern</span>
       <a href="https://oac-dv.github.io/oac-dv-workshop/" target="_blank" rel="noopener">oac-dv.github.io/oac-dv-workshop ↗</a>
     </div>
   </div>
