@@ -182,9 +182,15 @@
   @media(max-width:820px){.join-primer{grid-template-columns:1fr}}
   .join-copy h3{font-size:23px;margin-bottom:10px}
   .join-copy p{font-size:14.5px;color:var(--rw-ink-soft);margin-bottom:14px}
-  .join-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 14px}
-  .join-tab{font-family:var(--body);font-weight:800;font-size:12px;letter-spacing:.02em;border:1.5px solid var(--rw-line);background:var(--rw-surface);color:var(--rw-ink-soft);padding:9px 13px;border-radius:9px;cursor:pointer;transition:.2s var(--ease)}
-  .join-tab.active{background:var(--rw-ink);border-color:var(--rw-ink);color:#fff;transform:translateY(-1px)}
+  .join-guide{display:flex;align-items:center;gap:8px;margin:18px 0 10px;padding:10px 12px;border:1px solid var(--rw-line);border-left:4px solid var(--rw-gold);border-radius:0 10px 10px 0;background:rgba(255,255,255,.58);font-size:12.5px;color:var(--rw-ink-soft)}
+  .join-guide b{color:var(--rw-ink)}
+  .join-guide-dot{width:8px;height:8px;border-radius:50%;background:var(--rw-gold);box-shadow:0 0 0 0 rgba(198,138,48,.38);animation:joinPulse 1.8s ease-in-out infinite;flex:none}
+  .join-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+  .join-tab{font-family:var(--body);font-weight:800;font-size:12px;letter-spacing:.02em;border:1.5px solid var(--rw-line);background:var(--rw-surface);color:var(--rw-ink-soft);padding:9px 13px;border-radius:9px;cursor:pointer;transition:.2s var(--ease);display:inline-flex;align-items:center;gap:7px}
+  .join-tab .jt-num{font-family:var(--mono);font-size:10px;color:var(--rw-red-deep);background:var(--rw-red-soft);border-radius:5px;padding:2px 5px;transition:.2s var(--ease)}
+  .join-tab.active{background:var(--rw-ink);border-color:var(--rw-ink);color:#fff;transform:translateY(-1px);box-shadow:0 10px 22px -16px rgba(33,28,24,.55)}
+  .join-tab.active .jt-num{background:var(--rw-gold);color:var(--rw-ink)}
+  @keyframes joinPulse{0%,100%{box-shadow:0 0 0 0 rgba(198,138,48,.38)}50%{box-shadow:0 0 0 7px rgba(198,138,48,0)}}
   .join-rule{background:var(--rw-surface);border:1px solid var(--rw-line);border-left:4px solid var(--rw-red);border-radius:0 12px 12px 0;padding:13px 15px;font-size:13.5px;color:var(--rw-ink-soft)}
   .join-rule b{color:var(--rw-ink)}
   .join-demo{background:var(--rw-surface);border:1px solid var(--rw-line);border-radius:15px;padding:18px;box-shadow:var(--sh-sm)}
@@ -683,6 +689,182 @@
   .auth{ transition:transform .25s var(--ease), box-shadow .25s var(--ease); }
   .auth:hover{ transform:translateY(-3px); box-shadow:var(--sh-md); }
 
+
+  /* presentation polish: consistent rhythm, card alignment and section framing */
+  section .wrap > h3,
+  section .wrap > .reveal h3{ line-height:1.15; }
+  .lead{ line-height:1.55; }
+  section p{ line-height:1.58; }
+  .concept,.join-primer,.fan-stage,.grain-demo,.home-box{ border-radius:18px; }
+  .day-grid,.story-qs,.metrics,.canvases,.research,.eco,.ai3,.agent4,.sec3,.next-grid,.agenda{ align-items:stretch; }
+  .qcard,.mcard,.cv,.aic,.cap,.rcard,.a4,.secp,.nx,.mod,.day-card{ height:100%; }
+  .mcard,.cv,.aic,.cap,.rcard,.a4,.secp,.nx{ display:flex; flex-direction:column; }
+  .mcard .f,.aic .ex-tag,.cap .ctag,.nx p{ margin-top:auto; }
+  .cv .body{ display:flex; flex-direction:column; height:100%; }
+  .cv ul{ margin-top:auto; }
+  .setup-table th,.setup-table td,.join-table th,.join-table td{ line-height:1.45; }
+
+  /* ecosystem opening: make the story and the session sequence intentional */
+  .ecosystem-intro{ display:grid; grid-template-columns:minmax(0,1.08fr) minmax(300px,.74fr); gap:clamp(24px,4vw,46px); align-items:start; margin-bottom:42px; }
+  .ecosystem-copy{ max-width:760px; }
+  .ecosystem-title{ max-width:820px; margin-bottom:14px; }
+  .ecosystem-title .title-subline{ margin-top:12px; line-height:1.22; }
+  .ecosystem-callout{ display:flex; align-items:flex-start; gap:10px; max-width:66ch; margin-top:18px; padding:16px 18px; border:1px solid rgba(154,51,40,.14); border-left:4px solid var(--rw-red); border-radius:0 14px 14px 0; background:rgba(255,255,255,.46); line-height:1.5; }
+  .ecosystem-callout .spark{ flex:none; margin:1px 0 0; }
+  .ecosystem-copy .lead{ max-width:66ch; margin-top:18px; font-size:clamp(15.5px,1.45vw,17.5px); }
+  .session-sequence{ background:var(--rw-surface); border:1px solid var(--rw-line); border-top:4px solid var(--rw-teal); border-radius:16px; padding:22px; box-shadow:var(--sh-md); }
+  .session-sequence .seq-kicker{ font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:var(--rw-teal); margin-bottom:8px; }
+  .session-sequence h3{ font-family:var(--display); font-size:23px; margin-bottom:14px; }
+  .seq-list{ list-style:none; display:flex; flex-direction:column; gap:12px; }
+  .seq-list li{ display:grid; grid-template-columns:32px 1fr; gap:12px; align-items:start; padding:12px; border:1px solid var(--rw-line); border-radius:12px; background:var(--rw-surface-2); }
+  .seq-list .seq-num{ width:32px; height:32px; border-radius:9px; display:grid; place-items:center; background:var(--rw-teal-soft); color:var(--rw-teal); font-family:var(--mono); font-size:12px; font-weight:800; }
+  .seq-list b{ display:block; font-size:13.5px; margin-bottom:2px; }
+  .seq-list span{ display:block; color:var(--rw-ink-soft); font-size:12.5px; line-height:1.45; }
+
+  .flow-strip{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); flex-wrap:nowrap; margin-top:26px; box-shadow:var(--sh-sm); }
+  .fs{ min-width:0; padding:22px 18px 20px; display:flex; flex-direction:column; gap:6px; }
+  .fs .fn{ display:inline-flex; align-items:center; justify-content:center; width:32px; height:28px; border-radius:8px; background:var(--rw-red-soft); color:var(--rw-red-deep); }
+  .fs b{ margin:2px 0 0; line-height:1.2; }
+  .fs p{ line-height:1.48; }
+  .flow-tail{ margin-top:22px; }
+
+  .research{ gap:16px; }
+  .rcard{ min-height:188px; padding:20px; gap:12px; }
+  .rcard .big{ font-size:clamp(28px,3vw,34px); }
+  .rcard p{ font-size:13px; line-height:1.5; }
+  .rcard .src{ margin:0; padding-top:12px; border-top:1px solid var(--rw-line); margin-top:auto; }
+
+  .eco,.ai3,.agent4,.metrics,.canvases,.agenda{ gap:18px; }
+  .cap,.aic,.mcard,.mod{ padding:22px; }
+  .cap p,.aic p,.mcard p,.mod .mbody p,.nx p{ line-height:1.5; }
+  .fbloop{ justify-content:flex-start; align-items:stretch; }
+  .fbn{ flex:1 1 170px; max-width:none; display:flex; flex-direction:column; justify-content:center; }
+
+  @media(max-width:900px){
+    .ecosystem-intro{ grid-template-columns:1fr; margin-bottom:34px; }
+    .session-sequence{ max-width:680px; }
+    .flow-strip{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .fs:nth-child(2){ border-right:none; }
+    .fs:nth-child(-n+2){ border-bottom:1px solid var(--rw-line); }
+    .fs .arr{ display:none; }
+  }
+  @media(max-width:560px){
+    section{ padding:66px 18px; }
+    .ecosystem-callout{ border-radius:14px; border-left-width:1px; }
+    .flow-strip{ grid-template-columns:1fr; }
+    .fs{ border-right:none; border-bottom:1px solid var(--rw-line); }
+    .fs:last-child{ border-bottom:none; }
+    .research{ grid-template-columns:1fr; }
+  }
+
+  /* dataset foundation animation */
+  .dataset-animation{ background:linear-gradient(180deg,var(--rw-surface),var(--rw-surface-2)); border:1px solid var(--rw-line); border-radius:18px; padding:22px; box-shadow:var(--sh-md); overflow:hidden; }
+  .ds-stage{ display:grid; grid-template-columns:minmax(140px,1fr) 54px minmax(156px,.95fr) 54px minmax(150px,1fr); gap:12px; align-items:center; min-height:312px; }
+  .ds-col{ display:flex; flex-direction:column; gap:9px; }
+  .ds-label{ font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--rw-ink-soft); margin-bottom:2px; }
+  .ds-table,.ds-question{ background:var(--rw-surface); border:1px solid var(--rw-line); border-radius:11px; padding:11px 12px; box-shadow:var(--sh-sm); opacity:0; transform:translateX(-18px); transition:opacity .55s var(--ease), transform .55s var(--ease), border-color .35s; }
+  .ds-table b{ display:block; font-size:13.5px; color:var(--rw-ink); margin-bottom:2px; }
+  .ds-table span{ display:block; font-size:11.5px; color:var(--rw-ink-soft); line-height:1.35; }
+  .ds-t2,.ds-t4{ margin-left:12px; }
+  .dataset-animation.in .ds-table{ opacity:1; transform:none; }
+  .dataset-animation.in .ds-t1{ transition-delay:.05s; }
+  .dataset-animation.in .ds-t2{ transition-delay:.14s; }
+  .dataset-animation.in .ds-t3{ transition-delay:.23s; }
+  .dataset-animation.in .ds-t4{ transition-delay:.32s; }
+  .dataset-animation.in .ds-t5{ transition-delay:.41s; }
+  .ds-join,.ds-ask{ display:flex; align-items:center; gap:6px; color:var(--rw-gold); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; }
+  .ds-join{ flex-direction:column; }
+  .ds-ask{ flex-direction:column; }
+  .ds-join span,.ds-ask span{ width:2px; height:54px; border-radius:999px; background:linear-gradient(var(--rw-line),var(--rw-gold)); transform:scaleY(0); transform-origin:top; transition:transform .55s var(--ease); }
+  .dataset-animation.in .ds-join span{ transform:scaleY(1); transition-delay:.55s; }
+  .dataset-animation.in .ds-ask span{ transform:scaleY(1); transition-delay:1s; }
+  .ds-hub{ min-height:172px; border-radius:18px; border:2px solid var(--rw-teal); background:radial-gradient(circle at 50% 14%,rgba(15,110,120,.13),transparent 42%),var(--rw-surface); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; box-shadow:0 0 0 6px var(--rw-teal-soft),var(--sh-md); opacity:0; transform:scale(.9); transition:opacity .55s var(--ease), transform .55s var(--ease); }
+  .dataset-animation.in .ds-hub{ opacity:1; transform:scale(1); transition-delay:.78s; animation:datasetPulse 3.2s ease-in-out 1.25s infinite; }
+  .ds-hub-kicker{ font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--rw-teal); }
+  .ds-hub b{ font-family:var(--display); font-size:24px; line-height:1.05; margin:8px 0 7px; color:var(--rw-ink); }
+  .ds-hub small{ font-size:12px; color:var(--rw-ink-soft); line-height:1.35; }
+  .ds-question{ border-left:4px solid var(--rw-red); font-weight:700; font-size:13px; color:var(--rw-ink); transform:translateX(18px); }
+  .dataset-animation.in .ds-question{ opacity:1; transform:none; }
+  .dataset-animation.in .ds-question:nth-child(2){ transition-delay:1.15s; }
+  .dataset-animation.in .ds-question:nth-child(3){ transition-delay:1.27s; }
+  .dataset-animation.in .ds-question:nth-child(4){ transition-delay:1.39s; }
+  .ds-foundation{ margin-top:18px; background:rgba(255,255,255,.62); border:1px solid var(--rw-line); border-left:4px solid var(--rw-teal); border-radius:0 12px 12px 0; padding:14px 16px; font-size:13.5px; line-height:1.55; color:var(--rw-ink-soft); }
+  .ds-foundation b{ color:var(--rw-teal); }
+  @keyframes datasetPulse{ 0%,100%{ box-shadow:0 0 0 6px var(--rw-teal-soft),var(--sh-md); } 50%{ box-shadow:0 0 0 10px rgba(15,110,120,.10),var(--sh-teal); } }
+  @media(max-width:960px){
+    .ds-stage{ grid-template-columns:1fr; min-height:0; }
+    .ds-join,.ds-ask{ flex-direction:row; justify-content:center; }
+    .ds-join span,.ds-ask span{ width:70px; height:2px; transform:scaleX(0); }
+    .dataset-animation.in .ds-join span,.dataset-animation.in .ds-ask span{ transform:scaleX(1); }
+    .ds-t2,.ds-t4{ margin-left:0; }
+    .ds-hub{ min-height:132px; }
+  }
+
+  /* engaging section motion: subtle, professional, and scroll-aware */
+  section{ overflow:hidden; }
+  section:not(.hero)::before{ content:""; position:absolute; top:0; left:24px; right:24px; height:2px; border-radius:999px; background:linear-gradient(90deg,var(--rw-red),var(--rw-gold),var(--rw-teal)); opacity:.18; transform:scaleX(.12); transform-origin:left; transition:transform .9s var(--ease), opacity .9s var(--ease); }
+  section.in-view:not(.hero)::before{ transform:scaleX(1); opacity:.48; }
+  .sec-title::after{ content:""; display:block; width:72px; height:3px; margin-top:14px; border-radius:999px; background:linear-gradient(90deg,var(--rw-red),var(--rw-gold),var(--rw-teal)); transform:scaleX(0); transform-origin:left; opacity:.72; transition:transform .75s var(--ease); }
+  section.in-view .sec-title::after{ transform:scaleX(1); }
+  section.in-view .eyebrow::before{ animation:accentBreath 3.6s ease-in-out infinite; }
+
+  .day-card,.concept,.join-primer,.fan-stage,.grain-demo,.story-quote,.qcard,.mcard,.cv,.aic,.cap,.rcard,.a4,.secp,.nx,.mod,.home-box,.dataset-animation,.session-sequence{ will-change:box-shadow,border-color; }
+  section.in-view .day-card,
+  section.in-view .concept,
+  section.in-view .join-primer,
+  section.in-view .fan-stage,
+  section.in-view .grain-demo,
+  section.in-view .qcard,
+  section.in-view .mcard,
+  section.in-view .cv,
+  section.in-view .aic,
+  section.in-view .cap,
+  section.in-view .rcard,
+  section.in-view .a4,
+  section.in-view .secp,
+  section.in-view .nx,
+  section.in-view .mod,
+  section.in-view .dataset-animation,
+  section.in-view .session-sequence{ animation:cardGlow 8s ease-in-out infinite; }
+  section.in-view .qcard:nth-child(2),
+  section.in-view .mcard:nth-child(2),
+  section.in-view .cv:nth-child(2),
+  section.in-view .aic:nth-child(2),
+  section.in-view .cap:nth-child(2),
+  section.in-view .rcard:nth-child(2),
+  section.in-view .mod:nth-child(2){ animation-delay:.45s; }
+  section.in-view .qcard:nth-child(3),
+  section.in-view .mcard:nth-child(3),
+  section.in-view .cv:nth-child(3),
+  section.in-view .aic:nth-child(3),
+  section.in-view .cap:nth-child(3),
+  section.in-view .rcard:nth-child(3),
+  section.in-view .mod:nth-child(3){ animation-delay:.9s; }
+  section.in-view .mcard:nth-child(4),
+  section.in-view .cap:nth-child(4),
+  section.in-view .rcard:nth-child(4),
+  section.in-view .mod:nth-child(4){ animation-delay:1.25s; }
+
+  section.in-view .pill,
+  section.in-view .badge,
+  section.in-view .qtag,
+  section.in-view .ctag,
+  section.in-view .mtag,
+  section.in-view .ex-tag{ animation:badgePulse 6.5s ease-in-out infinite; }
+  section.in-view .stat .num,
+  section.in-view .qcard .qn,
+  section.in-view .mcard .mn,
+  section.in-view .pstep .pn{ animation:numberGlow 5.8s ease-in-out infinite; }
+  section.in-view .flow-strip,
+  section.in-view .fbloop,
+  section.in-view .grain-lesson,
+  section.in-view .pattern{ animation:softSettle 7.5s ease-in-out infinite; }
+
+  @keyframes cardGlow{ 0%,100%{ box-shadow:var(--sh-sm); } 50%{ box-shadow:0 18px 38px -26px rgba(15,110,120,.38); } }
+  @keyframes badgePulse{ 0%,100%{ filter:saturate(1); } 50%{ filter:saturate(1.18) brightness(1.03); } }
+  @keyframes numberGlow{ 0%,100%{ filter:none; } 50%{ filter:drop-shadow(0 4px 10px rgba(198,138,48,.22)); } }
+  @keyframes softSettle{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-2px); } }
+  @keyframes accentBreath{ 0%,100%{ opacity:.72; transform:scaleX(1); } 50%{ opacity:1; transform:scaleX(1.16); } }
   /* smoother reveal */
   .reveal{ transform:translateY(28px) scale(.992); }
   .reveal.in{ transform:none; }
@@ -866,14 +1048,32 @@
           <div class="why"><b>What we did:</b> Create → Dataset → upload the Excel file → select all five sheets. Each sheet becomes a table; the joins make them one model we saved as <code>Customer Insurance</code>.</div>
         </div>
         <div>
-          <div class="tables-viz" id="tablesViz">
-            <div class="tbl t1"><div class="h"><span class="k"></span>Policies</div><div class="r">customer · state</div><div class="r">household type</div></div>
-            <div class="tbl t2"><div class="h"><span class="k"></span>Customer Premiums</div><div class="r">premium amount</div><div class="r">renewal status</div></div>
-            <div class="tbl t3"><div class="h"><span class="k"></span>Insurance Claims</div><div class="r">claim amount</div><div class="r">insurance paid</div></div>
-            <div class="tbl t4"><div class="h"><span class="k"></span>Drivers</div><div class="r">good driver flag</div></div>
-            <div class="tbl t5"><div class="h"><span class="k"></span>Cars Insured</div><div class="r">vehicle · driver</div></div>
+          <div class="dataset-animation dataset-viz" id="datasetViz" aria-label="Animation showing five separate tables becoming one trusted dataset foundation">
+            <div class="ds-stage">
+              <div class="ds-col ds-sources">
+                <div class="ds-label">Separate tables</div>
+                <div class="ds-table ds-t1"><b>Policies</b><span>customer · state · household</span></div>
+                <div class="ds-table ds-t2"><b>Premiums</b><span>premium amount · renewal</span></div>
+                <div class="ds-table ds-t3"><b>Claims</b><span>claim amount · insurance paid</span></div>
+                <div class="ds-table ds-t4"><b>Drivers</b><span>good driver flag</span></div>
+                <div class="ds-table ds-t5"><b>Cars</b><span>vehicle · driver</span></div>
+              </div>
+              <div class="ds-join" aria-hidden="true"><span></span><b>join keys</b><span></span></div>
+              <div class="ds-hub">
+                <span class="ds-hub-kicker">Trusted dataset</span>
+                <b>One analytical model</b>
+                <small>relationships + grain + definitions</small>
+              </div>
+              <div class="ds-ask" aria-hidden="true"><span></span><b>ask</b><span></span></div>
+              <div class="ds-col ds-questions">
+                <div class="ds-label">Questions unlocked</div>
+                <div class="ds-question">What is churn rate?</div>
+                <div class="ds-question">Where is loss ratio high?</div>
+                <div class="ds-question">Who should we call first?</div>
+              </div>
+            </div>
+            <div class="ds-foundation"><b>Foundation:</b> each table tells only part of the story. The dataset stitches them together into a trusted model, so OAC can calculate metrics and answer business questions consistently.</div>
           </div>
-          <p class="viz-cap">Five tables → one trusted model. Policies is the driving table.</p>
         </div>
       </div>
     </div>
@@ -891,10 +1091,11 @@
       <div class="join-copy">
         <h3>What is a join?</h3>
         <p>Think of a join as a matching rule plus a keep rule. The matching rule says which values must line up. The keep rule says what happens when a row has no match.</p>
+        <div class="join-guide"><span class="join-guide-dot"></span><b>Auto demo:</b> watch the examples rotate, or select a join type below.</div>
         <div class="join-tabs" role="tablist" aria-label="Join type examples">
-          <button class="join-tab active" type="button" data-join="inner">Inner / Equi</button>
-          <button class="join-tab" type="button" data-join="left">Left Join</button>
-          <button class="join-tab" type="button" data-join="right">Right Join</button>
+          <button class="join-tab active" type="button" data-join="inner"><span class="jt-num">01</span>Inner / Equi</button>
+          <button class="join-tab" type="button" data-join="left"><span class="jt-num">02</span>Left Join</button>
+          <button class="join-tab" type="button" data-join="right"><span class="jt-num">03</span>Right Join</button>
         </div>
         <div class="join-rule" id="joinTypeText"><b>Inner / equi join:</b> keep only rows where the keys are equal on both sides. In SQL terms, the equality part is the equi join condition: <code>Policy ID = Policy ID</code>.</div>
         <div class="why" style="margin-top:16px"><b>Key distinction:</b> <em>equi</em> describes the match condition, usually key equals key. <em>left, right, and inner</em> describe which unmatched rows stay in the result.</div>
@@ -1135,10 +1336,25 @@
 <!-- ECOSYSTEM (Day 2 deck) -->
 <section id="ecosystem">
   <div class="wrap">
-    <div class="eyebrow reveal" style="color:var(--rw-teal)">Day 2 · The bigger picture</div>
-    <h2 class="sec-title reveal d1 ecosystem-title">The future of analytics isn’t about building more dashboards.<span class="title-subline">It’s about enabling better decisions, faster, with confidence.</span></h2>
-    <p class="ecosystem-callout reveal d2"><span class="spark" aria-hidden="true">→</span><b>Explore the Oracle Analytics Cloud AI Ecosystem</b> — and experience how Oracle Analytics Cloud is redefining enterprise analytics for the agentic era.</p>
-    <p class="lead reveal d2">Day 2 started with a discussion of the OAC AI features available to business users: natural-language assistants, domain-specific agents, feedback loops, embedding, mobile access, and MCP connectivity. The discussion framed why the hands-on exercises mattered — OAC is not just about building more dashboards; it is about helping more business users ask trusted questions and move to decisions faster.</p>
+    <div class="ecosystem-intro">
+      <div class="ecosystem-copy">
+        <div class="eyebrow reveal" style="color:var(--rw-teal)">Day 2 · The bigger picture</div>
+        <h2 class="sec-title reveal d1 ecosystem-title">The future of analytics isn’t about building more dashboards.<span class="title-subline">It’s about enabling better decisions, faster, with confidence.</span></h2>
+        <p class="ecosystem-callout reveal d2"><span class="spark" aria-hidden="true">→</span><span><b>Explore the Oracle Analytics Cloud AI Ecosystem</b> — and experience how Oracle Analytics Cloud is redefining enterprise analytics for the agentic era.</span></p>
+        <p class="lead reveal d2">Day 2 started with a discussion of the OAC AI features available to business users: natural-language assistants, domain-specific agents, feedback loops, embedding, mobile access, and MCP connectivity. The discussion framed why the hands-on exercises mattered — OAC is not just about building more dashboards; it is about helping more business users ask trusted questions and move to decisions faster.</p>
+      </div>
+      <aside class="session-sequence reveal d2" aria-label="Day 2 workshop sequence">
+        <div class="seq-kicker">Session flow</div>
+        <h3>How Day 2 unfolded</h3>
+        <ol class="seq-list">
+          <li><span class="seq-num">01</span><div><b>OAC AI features</b><span>Started with the bigger ecosystem and what business users can do with AI.</span></div></li>
+          <li><span class="seq-num">08</span><div><b>Homepage AI Assistant</b><span>Generated an executive dashboard from a prompt.</span></div></li>
+          <li><span class="seq-num">06</span><div><b>Workbook AI Assistant</b><span>Rebuilt the Day 1 canvas using natural language.</span></div></li>
+          <li><span class="seq-num">07</span><div><b>AI Agent</b><span>Asked governed, domain-specific retention and loss-ratio questions.</span></div></li>
+          <li><span class="seq-num">AI</span><div><b>Readiness work</b><span>Closed with indexing, synonyms, certification, column scope, and data types.</span></div></li>
+        </ol>
+      </aside>
+    </div>
 
     <h3 class="reveal d1" style="font-size:23px;margin:40px 0 4px">The cycle we're breaking — the analyst bottleneck</h3>
     <p class="reveal d2" style="font-size:14.5px;color:var(--rw-ink-soft);max-width:60ch">For years the same loop has repeated: a question goes in, an analyst builds a static report, the user waits, and the answer raises new questions. Analysts build; users wait.</p>
@@ -1154,9 +1370,9 @@
     <p class="reveal d2" style="font-size:14px;color:var(--rw-ink-soft);max-width:60ch">The cost of slow insight is measurable. A few figures we shared:</p>
     <div class="research">
       <div class="rcard reveal"><div class="big">5–6%</div><p>Productivity lift when time-to-insight drops from weeks to hours — with up to 20% better decision quality.</p><div class="src">McKinsey &amp; Company</div></div>
-      <div class="rcard reveal d1"><div class="big">20%</div><div class="src">Gartner</div><p>Business-value edge for organisations that open data to everyone through natural-language AI tools.</p></div>
-      <div class="rcard reveal d2"><div class="big">Millions</div><div class="src">Harvard Business Review</div><p>What delayed decisions can cost in fast markets — real-time analytics is essential, not a luxury.</p></div>
-      <div class="rcard reveal d3"><div class="big">80% / 25%</div><div class="src">IDC</div><p>80% of CIOs call speed-to-insight their top goal; only 25% feel their current tools deliver it.</p></div>
+      <div class="rcard reveal d1"><div class="big">20%</div><p>Business-value edge for organisations that open data to everyone through natural-language AI tools.</p><div class="src">Gartner</div></div>
+      <div class="rcard reveal d2"><div class="big">Millions</div><p>What delayed decisions can cost in fast markets — real-time analytics is essential, not a luxury.</p><div class="src">Harvard Business Review</div></div>
+      <div class="rcard reveal d3"><div class="big">80% / 25%</div><p>80% of CIOs call speed-to-insight their top goal; only 25% feel their current tools deliver it.</p><div class="src">IDC</div></div>
     </div>
 
     <h3 class="reveal d1" style="font-size:23px;margin:54px 0 4px">The six capabilities of the OAC AI Ecosystem</h3>
@@ -1358,9 +1574,20 @@
   var io = new IntersectionObserver(function(es){
     es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
   }, {threshold:0.18, rootMargin:'0px 0px -8% 0px'});
-  document.querySelectorAll('.reveal,.day-card,.tables-viz,.joinmap,.quad,.pstep').forEach(function(el){
+  document.querySelectorAll('.reveal,.day-card,.tables-viz,.dataset-viz,.joinmap,.quad,.pstep').forEach(function(el){
     if(reduce){ el.classList.add('in'); } else { io.observe(el); }
   });
+
+  /* section-level animation state */
+  var sectionEls = Array.prototype.slice.call(document.querySelectorAll('section'));
+  if(reduce){
+    sectionEls.forEach(function(section){ section.classList.add('in-view'); });
+  } else if('IntersectionObserver' in window){
+    var sectionIo = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){ entry.target.classList.toggle('in-view', entry.isIntersecting); });
+    }, {threshold:.22, rootMargin:'-8% 0px -18% 0px'});
+    sectionEls.forEach(function(section){ sectionIo.observe(section); });
+  }
 
   /* count up */
   function countUp(el){
@@ -1426,8 +1653,41 @@
     joinTabs.forEach(function(btn){ btn.classList.toggle('active', btn.dataset.join === kind); });
   }
   if(joinTabs.length){
-    joinTabs.forEach(function(btn){ btn.addEventListener('click', function(){ renderJoin(btn.dataset.join); }); });
-    renderJoin('inner');
+    var joinOrder = ['inner','left','right'];
+    var joinTimer = null, joinResumeTimer = null, joinIndex = 0;
+    function renderJoinAndIndex(kind){
+      joinIndex = Math.max(0, joinOrder.indexOf(kind));
+      renderJoin(kind);
+    }
+    function startJoinLoop(){
+      if(reduce || joinTimer) return;
+      renderJoinAndIndex(joinOrder[joinIndex]);
+      joinTimer = window.setInterval(function(){
+        joinIndex = (joinIndex + 1) % joinOrder.length;
+        renderJoin(joinOrder[joinIndex]);
+      }, 3300);
+    }
+    function pauseThenResumeJoinLoop(){
+      if(joinTimer){ window.clearInterval(joinTimer); joinTimer = null; }
+      if(joinResumeTimer){ window.clearTimeout(joinResumeTimer); }
+      joinResumeTimer = window.setTimeout(startJoinLoop, 7000);
+    }
+    joinTabs.forEach(function(btn){ btn.addEventListener('click', function(){ renderJoinAndIndex(btn.dataset.join); pauseThenResumeJoinLoop(); }); });
+    renderJoinAndIndex('inner');
+    var joinPrimer = document.getElementById('joinPrimer');
+    if('IntersectionObserver' in window && joinPrimer){
+      var joinAutoObserver = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            startJoinLoop();
+            joinAutoObserver.unobserve(entry.target);
+          }
+        });
+      }, {threshold:.35});
+      joinAutoObserver.observe(joinPrimer);
+    } else {
+      startJoinLoop();
+    }
   }
   /* preserve-grain interactive table demo */
   var gswitch = document.getElementById('grainSwitch');
@@ -1445,9 +1705,38 @@
       gnote.innerHTML = on ? '\u2713 premium counted once \u2014 correct' : '\u2717 premium counted 3\u00d7 \u2014 inflated';
       ghint.innerHTML = on
         ? 'Preserve grain holds the policy grain, so the two duplicate premium rows are ignored \u2014 the total is correct.'
-        : 'Flip <b>Preserve Grain</b> on to hold the analysis at the policy grain and watch the duplicate premiums stop counting.';
+        : 'Auto demo: OFF shows the fan-out problem. In a moment it flips ON to show how Preserve Grain fixes the total.';
     }
-    gswitch.addEventListener('click', function(){ setGrain(!gpanel.classList.contains('on')); });
+    var grainTimer = null, grainResumeTimer = null;
+    function startGrainLoop(){
+      if(reduce || grainTimer) return;
+      setGrain(false);
+      window.setTimeout(function(){ setGrain(true); }, 1100);
+      grainTimer = window.setInterval(function(){ setGrain(!gpanel.classList.contains('on')); }, 2800);
+    }
+    function pauseThenResumeGrainLoop(){
+      if(grainTimer){ window.clearInterval(grainTimer); grainTimer = null; }
+      if(grainResumeTimer){ window.clearTimeout(grainResumeTimer); }
+      grainResumeTimer = window.setTimeout(startGrainLoop, 6500);
+    }
+    gswitch.addEventListener('click', function(){
+      setGrain(!gpanel.classList.contains('on'));
+      pauseThenResumeGrainLoop();
+    });
+    var grainDemo = document.getElementById('grainDemo');
+    if('IntersectionObserver' in window && grainDemo){
+      var grainAutoObserver = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            startGrainLoop();
+            grainAutoObserver.unobserve(entry.target);
+          }
+        });
+      }, {threshold:.35});
+      grainAutoObserver.observe(grainDemo);
+    } else {
+      startGrainLoop();
+    }
   }
 })();
 </script>
