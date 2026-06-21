@@ -708,8 +708,8 @@
       <a href="#grain">Grain</a>
       <a href="#metrics">Metrics</a>
       <a href="#canvases">Canvases</a>
-      <a href="#ai">AI Build</a>
       <a href="#ecosystem">Ecosystem</a>
+      <a href="#ai">AI Build</a>
       <a href="#pattern">Pattern</a>
       <a href="#next">What's Next</a>
     </div>
@@ -842,11 +842,11 @@
         <h3>AI answers the same questions</h3>
         <p class="sub">Same dataset, same questions — now asked in plain English through OAC AI.</p>
         <div class="ex-list">
+          <div class="ex"><span class="n">8</span><div class="tx"><b>Homepage AI Assistant</b><span>An executive dashboard from one prompt</span></div><span class="badge done">Done</span></div>
           <div class="ex"><span class="n">6</span><div class="tx"><b>Workbook AI Assistant</b><span>Rebuilt the Exercise 3 canvas with prompts</span></div><span class="badge done">Done</span></div>
           <div class="ex"><span class="n">7</span><div class="tx"><b>AI Agent</b><span>Governed loss-ratio Q&amp;A with business rules</span></div><span class="badge done">Done</span></div>
-          <div class="ex"><span class="n">8</span><div class="tx"><b>Homepage AI Assistant</b><span>An executive dashboard from one prompt</span></div><span class="badge done">Done</span></div>
         </div>
-        <div class="why teal" style="margin-top:18px"><b>Exercise 6 ≈ "Exercise 3 by AI."</b> On Day 2 we recreated the same Business Overview canvas using natural-language prompts, then formatted it to match what we built by hand — proving the AI reaches the same place faster.</div>
+        <div class="why teal" style="margin-top:18px"><b>Actual Day 2 sequence:</b> We started with the bigger OAC AI ecosystem, then tested Homepage AI Assistant (Exercise 8), Workbook AI Assistant (Exercise 6), and AI Agent (Exercise 7). We closed with the admin, power-user, or domain-expert readiness work: indexing, synonyms, certification, column scope, and clean data types.</div>
       </div>
     </div>
   </div>
@@ -1132,75 +1132,13 @@
   </div>
 </section>
 
-<!-- DAY 2 AI -->
-<section id="ai" style="background:var(--rw-surface-2)">
-  <div class="wrap">
-    <div class="eyebrow reveal" style="color:var(--rw-teal)">Day 2 · AI extensions</div>
-    <h2 class="sec-title reveal d1">Same trusted data, asked in plain English</h2>
-    <p class="lead reveal d2">Because the audience was mainly business users, we started with what OAC AI lets them do: ask questions in natural language, build visuals faster, generate dashboards from prompts, and use governed agents for domain-specific answers. We then closed with the prerequisite readiness work that admins, power users, or dataset domain experts handle so those AI experiences answer reliably.</p>
-
-    <h3 class="reveal d1" style="font-size:24px;margin:40px 0 6px">Three AI experiences — and when business users use each</h3>
-    <div class="ai3">
-      <div class="aic reveal"><div class="ico">A</div><h4>Workbook AI Assistant</h4><p>Ask questions inside an existing workbook; the AI builds visuals you add to the canvas. We used it to rebuild the Exercise 3 Business Overview canvas from prompts, then formatted to match.</p><span class="ex-tag">Exercise 6</span></div>
-      <div class="aic reveal d1"><div class="ico">G</div><h4>AI Agent</h4><p>A <em>governed</em> conversation that combines the dataset with business rules, KPI definitions and knowledge documents. We asked it loss-ratio questions and got answers in the language of retention.</p><span class="ex-tag">Exercise 7</span></div>
-      <div class="aic reveal d2"><div class="ico">H</div><h4>Homepage AI Assistant</h4><p>Start on the OAC Home page and generate a full executive dashboard from a single prompt, then refine with follow-ups and "Explore as Workbook".</p><span class="ex-tag">Exercise 8</span></div>
-    </div>
-
-    <h3 class="reveal d1" style="font-size:23px;margin:50px 0 4px">What makes an AI Agent different — its four parts</h3>
-    <p class="reveal d2" style="font-size:14.5px;color:var(--rw-ink-soft);max-width:60ch">An Assistant builds a chart. An Agent applies your organisation's rules and vocabulary <em>before</em> it answers — that's the governance layer.</p>
-    <div class="agent4">
-      <div class="a4 reveal"><div class="num">1</div><b>Dataset — the facts</b><p>One indexed dataset the agent is grounded in. Column scope and filters constrain what it can see.</p></div>
-      <div class="a4 reveal d1"><div class="num">2</div><b>Supplemental instructions — the brain</b><p>Up to ~6,000 chars of your terminology, KPI formulas and response format. Without them the agent guesses.</p></div>
-      <div class="a4 reveal d2"><div class="num">3</div><b>Knowledge documents — the library</b><p>PDF/TXT files retrieved via RAG, adding policy and process context beyond the columns.</p></div>
-      <div class="a4 reveal d3"><div class="num">4</div><b>Welcome message — the intro</b><p>Onboarding text and sample prompts so users know what the agent can answer.</p></div>
-    </div>
-    <p class="reveal" style="font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--rw-teal);margin-bottom:6px">A few prompts we ran on the Agent</p>
-    <div class="prompt-row reveal d1">
-      <span class="pchip"><span class="lab">Q</span>loss ratio by state</span>
-      <span class="pchip"><span class="lab">Q</span>why is California high?</span>
-      <span class="pchip"><span class="lab">Q</span>top retention opportunities</span>
-    </div>
-
-    <h3 class="reveal d1" style="font-size:24px;margin:54px 0 4px">Readiness work behind the scenes</h3>
-    <p class="reveal d2" style="font-size:15px;color:var(--rw-ink-soft);max-width:66ch">At the end, we discussed the setup work that makes OAC AI reliable. An admin, power user, or dataset domain expert prepares the dataset by indexing it, adding useful synonyms, certifying trusted sources, setting column scope, and checking data types. <strong>Synonyms</strong> are business-language mappings to database columns and values, so a user can ask for "premium", "claims paid", or "customers" and OAC knows which fields those words mean.</p>
-
-    <h3 class="reveal d1" style="font-size:24px;margin:34px 0 4px">Why indexing matters</h3>
-    <p class="reveal d2" style="font-size:15px;color:var(--rw-ink-soft);max-width:62ch"><strong>Indexing</strong> makes a dataset searchable for the AI Assistant, Homepage Search, and Agents. An un-indexed dataset may be invisible to AI, or the AI may not know which columns and values can answer the prompt.</p>
-    <div class="idx-grid">
-      <div class="idx off reveal d1">
-        <h4>✗ Not indexed</h4>
-        <div class="pr">"Which states have the highest claim amount?"</div>
-        <div class="flow">prompt → &nbsp;<span>✕ dataset not found</span></div>
-        <div class="res">AI can't see the data — no answer, or the wrong source</div>
-      </div>
-      <div class="idx on reveal d2">
-        <h4>✓ Indexed &amp; certified</h4>
-        <div class="pr"><span class="sp">"Which states have the highest claim amount?"</span></div>
-        <div class="flow">prompt → index → &nbsp;✓ matched columns</div>
-        <div class="res">Returns a state map + a business-readable answer</div>
-      </div>
-    </div>
-
-    <table class="setup-table reveal d2">
-      <thead><tr><th>Setup item</th><th>Plain meaning</th><th>Why it matters</th></tr></thead>
-      <tbody>
-        <tr><td>Indexing</td><td>Makes the dataset searchable for AI.</td><td>Un-indexed = AI may not find it or know which fields answer the prompt.</td></tr>
-        <tr><td>Synonyms</td><td>Maps business words to columns &amp; values.</td><td>People say "premium", "claims paid", "customers" — synonyms connect those to Premium Amount, Insurance Paid, customer_policy_id.</td></tr>
-        <tr><td>Certification</td><td>Marks a dataset as trusted.</td><td>Certified datasets rank higher when several could answer — Homepage AI picks the right source.</td></tr>
-        <tr><td>Column scope</td><td>Controls which columns AI can use.</td><td>Hide technical/confusing fields so the AI reaches for the right data.</td></tr>
-        <tr><td>Clean data types</td><td>Measures, attributes, dates, locations classified correctly.</td><td>Prevents bad answers — like summing IDs or failing to draw a map.</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
 <!-- ECOSYSTEM (Day 2 deck) -->
 <section id="ecosystem">
   <div class="wrap">
     <div class="eyebrow reveal" style="color:var(--rw-teal)">Day 2 · The bigger picture</div>
     <h2 class="sec-title reveal d1 ecosystem-title">The future of analytics isn’t about building more dashboards.<span class="title-subline">It’s about enabling better decisions, faster, with confidence.</span></h2>
     <p class="ecosystem-callout reveal d2"><span class="spark" aria-hidden="true">→</span><b>Explore the Oracle Analytics Cloud AI Ecosystem</b> — and experience how Oracle Analytics Cloud is redefining enterprise analytics for the agentic era.</p>
-    <p class="lead reveal d2">Alongside the hands-on build, Day 2 stepped back to the full OAC AI picture: governed data, natural-language assistants, domain-specific agents, feedback loops, embedding, mobile access, and MCP connectivity. One thread runs through all of them — let people <em>ask</em> their data instead of waiting on a report.</p>
+    <p class="lead reveal d2">Day 2 started with a discussion of the OAC AI features available to business users: natural-language assistants, domain-specific agents, feedback loops, embedding, mobile access, and MCP connectivity. The discussion framed why the hands-on exercises mattered — OAC is not just about building more dashboards; it is about helping more business users ask trusted questions and move to decisions faster.</p>
 
     <h3 class="reveal d1" style="font-size:23px;margin:40px 0 4px">The cycle we're breaking — the analyst bottleneck</h3>
     <p class="reveal d2" style="font-size:14.5px;color:var(--rw-ink-soft);max-width:60ch">For years the same loop has repeated: a question goes in, an analyst builds a static report, the user waits, and the answer raises new questions. Analysts build; users wait.</p>
@@ -1215,7 +1153,7 @@
     <h3 class="reveal d1" style="font-size:23px;margin:50px 0 4px">Why speed matters — from industry research</h3>
     <p class="reveal d2" style="font-size:14px;color:var(--rw-ink-soft);max-width:60ch">The cost of slow insight is measurable. A few figures we shared:</p>
     <div class="research">
-      <div class="rcard reveal"><div class="big">5–6%</div><div class="src">McKinsey &amp; Company</div><p>Productivity lift when time-to-insight drops from weeks to hours — with up to 20% better decision quality.</p></div>
+      <div class="rcard reveal"><div class="big">5–6%</div><p>Productivity lift when time-to-insight drops from weeks to hours — with up to 20% better decision quality.</p><div class="src">McKinsey &amp; Company</div></div>
       <div class="rcard reveal d1"><div class="big">20%</div><div class="src">Gartner</div><p>Business-value edge for organisations that open data to everyone through natural-language AI tools.</p></div>
       <div class="rcard reveal d2"><div class="big">Millions</div><div class="src">Harvard Business Review</div><p>What delayed decisions can cost in fast markets — real-time analytics is essential, not a luxury.</p></div>
       <div class="rcard reveal d3"><div class="big">80% / 25%</div><div class="src">IDC</div><p>80% of CIOs call speed-to-insight their top goal; only 25% feel their current tools deliver it.</p></div>
@@ -1255,6 +1193,69 @@
       <span class="fba">↻</span>
       <div class="fbn">Better next answer<small>continuous system tuning</small></div>
     </div>
+  </div>
+</section>
+
+<!-- DAY 2 AI -->
+<section id="ai" style="background:var(--rw-surface-2)">
+  <div class="wrap">
+    <div class="eyebrow reveal" style="color:var(--rw-teal)">Day 2 · AI extensions</div>
+    <h2 class="sec-title reveal d1">Same trusted data, asked in plain English</h2>
+    <p class="lead reveal d2">After the OAC AI feature discussion, we tested the experiences in the same order used in the session: Homepage AI Assistant first (Exercise 8), then Workbook AI Assistant (Exercise 6), and then AI Agent (Exercise 7). That let business users see the experience first, before we discussed the prerequisite setup work needed to make those responses reliable.</p>
+
+    <h3 class="reveal d1" style="font-size:24px;margin:40px 0 6px">The AI experiences we tested, in session order</h3>
+    <div class="ai3">
+      <div class="aic reveal"><div class="ico">H</div><h4>Homepage AI Assistant</h4><p>Start on the OAC Home page and generate a full executive dashboard from a single prompt, then refine with follow-ups and "Explore as Workbook".</p><span class="ex-tag">Exercise 8</span></div>
+      <div class="aic reveal d1"><div class="ico">W</div><h4>Workbook AI Assistant</h4><p>Ask questions inside an existing workbook; the AI builds visuals you add to the canvas. We used it to rebuild the Exercise 3 Business Overview canvas from prompts, then formatted to match.</p><span class="ex-tag">Exercise 6</span></div>
+      <div class="aic reveal d2"><div class="ico">G</div><h4>AI Agent</h4><p>A <em>governed</em> conversation that combines the dataset with business rules, KPI definitions and knowledge documents. We asked it loss-ratio questions and got answers in the language of retention.</p><span class="ex-tag">Exercise 7</span></div>
+    </div>
+
+    <h3 class="reveal d1" style="font-size:23px;margin:50px 0 4px">What makes an AI Agent different — its four parts</h3>
+    <p class="reveal d2" style="font-size:14.5px;color:var(--rw-ink-soft);max-width:60ch">An Assistant builds a chart. An Agent applies your organisation's rules and vocabulary <em>before</em> it answers — that's the governance layer.</p>
+    <div class="agent4">
+      <div class="a4 reveal"><div class="num">1</div><b>Dataset — the facts</b><p>One indexed dataset the agent is grounded in. Column scope and filters constrain what it can see.</p></div>
+      <div class="a4 reveal d1"><div class="num">2</div><b>Supplemental instructions — the brain</b><p>Up to ~6,000 chars of your terminology, KPI formulas and response format. Without them the agent guesses.</p></div>
+      <div class="a4 reveal d2"><div class="num">3</div><b>Knowledge documents — the library</b><p>PDF/TXT files retrieved via RAG, adding policy and process context beyond the columns.</p></div>
+      <div class="a4 reveal d3"><div class="num">4</div><b>Welcome message — the intro</b><p>Onboarding text and sample prompts so users know what the agent can answer.</p></div>
+    </div>
+    <p class="reveal" style="font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--rw-teal);margin-bottom:6px">A few prompts we ran on the Agent</p>
+    <div class="prompt-row reveal d1">
+      <span class="pchip"><span class="lab">Q</span>loss ratio by state</span>
+      <span class="pchip"><span class="lab">Q</span>why is California high?</span>
+      <span class="pchip"><span class="lab">Q</span>top retention opportunities</span>
+    </div>
+
+    <h3 class="reveal d1" style="font-size:24px;margin:54px 0 4px">Readiness work behind the scenes</h3>
+    <p class="reveal d2" style="font-size:15px;color:var(--rw-ink-soft);max-width:66ch">After seeing the Homepage Assistant, Workbook Assistant, and AI Agent in action, we closed with the pre-work required to make those responses reliable. An admin, power user, or dataset domain expert prepares the dataset by indexing it, adding useful synonyms, certifying trusted sources, setting column scope, and checking data types. <strong>Synonyms</strong> are business-language mappings to database columns and values, so a user can ask for "premium", "claims paid", or "customers" and OAC knows which fields those words mean.</p>
+
+    <h3 class="reveal d1" style="font-size:24px;margin:34px 0 4px">Why indexing matters</h3>
+    <p class="reveal d2" style="font-size:15px;color:var(--rw-ink-soft);max-width:62ch"><strong>Indexing</strong> makes a dataset searchable for the AI Assistant, Homepage Search, and Agents. An un-indexed dataset may be invisible to AI, or the AI may not know which columns and values can answer the prompt.</p>
+    <div class="idx-grid">
+      <div class="idx off reveal d1">
+        <h4>✗ Not indexed</h4>
+        <div class="pr">"Which states have the highest claim amount?"</div>
+        <div class="flow">prompt → &nbsp;<span>✕ dataset not found</span></div>
+        <div class="res">AI can't see the data — no answer, or the wrong source</div>
+      </div>
+      <div class="idx on reveal d2">
+        <h4>✓ Indexed &amp; certified</h4>
+        <div class="pr"><span class="sp">"Which states have the highest claim amount?"</span></div>
+        <div class="flow">prompt → index → &nbsp;✓ matched columns</div>
+        <div class="res">Returns a state map + a business-readable answer</div>
+      </div>
+    </div>
+
+    <table class="setup-table reveal d2">
+      <thead><tr><th>Setup item</th><th>Plain meaning</th><th>Why it matters</th></tr></thead>
+      <tbody>
+        <tr><td>Indexing</td><td>Makes the dataset searchable for AI.</td><td>Un-indexed = AI may not find it or know which fields answer the prompt.</td></tr>
+        <tr><td>Synonyms</td><td>Maps business words to columns &amp; values.</td><td>People say "premium", "claims paid", "customers" — synonyms connect those to Premium Amount, Insurance Paid, customer_policy_id.</td></tr>
+        <tr><td>Certification</td><td>Marks a dataset as trusted.</td><td>Certified datasets rank higher when several could answer — Homepage AI picks the right source.</td></tr>
+        <tr><td>Column scope</td><td>Controls which columns AI can use.</td><td>Hide technical/confusing fields so the AI reaches for the right data.</td></tr>
+        <tr><td>Clean data types</td><td>Measures, attributes, dates, locations classified correctly.</td><td>Prevents bad answers — like summing IDs or failing to draw a map.</td></tr>
+      </tbody>
+    </table>
+    <div class="why teal reveal d2" style="margin-top:18px;max-width:68ch"><b>How Day 2 wrapped:</b> Once the end-user AI experience and the required setup were clear, we closed by aligning that future deep-dive sessions can cover Subject Areas and Local Subject Areas, feedback loops, OAC AI Functions, creating AI Agents manually and with Skill Builder, MCP Server, embedding, and specific POC planning.</div>
   </div>
 </section>
 
