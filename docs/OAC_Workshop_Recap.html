@@ -650,19 +650,17 @@
   .hero-art .ai-label{ fill:#fff; font-family:var(--display); font-size:11px; font-weight:700; text-anchor:middle; }
   .hero-art .ask-chip{ fill:var(--rw-red-soft); stroke:rgba(154,51,40,.25); stroke-width:1.1; }
   .hero-art .ask-label{ font-family:var(--body); font-size:8.5px; font-weight:800; fill:var(--rw-red-deep); text-anchor:middle; }
-  .hero-art .flow-chip{ fill:rgba(255,255,255,.86); stroke:var(--rw-line); stroke-width:1.1; }
-  .hero-art .flow-chip.d1{ stroke:rgba(154,51,40,.30); }
-  .hero-art .flow-chip.d2{ stroke:rgba(15,110,120,.34); }
-  .hero-art .flow-copy{ font-family:var(--body); font-size:7.5px; font-weight:800; text-anchor:middle; fill:var(--rw-ink-soft); letter-spacing:.015em; }
-  .hero-art .flow-copy.d1{ fill:var(--rw-red-deep); }
-  .hero-art .flow-copy.d2{ fill:var(--rw-teal); }
   /* flowing data particles */
   .hero-art .pdot{ filter:drop-shadow(0 1px 2px rgba(0,0,0,.2)); }
+  .hero-art .day1-dot{ animation:day1Window 7.2s ease-in-out infinite; }
+  .hero-art .day2-dot{ animation:day2Window 7.2s ease-in-out infinite; }
   @keyframes draw{ to{ stroke-dashoffset:0; } }
   @keyframes floaty{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-9px); } }
   @keyframes ring{ 0%{ transform:scale(.5); opacity:.5; } 100%{ transform:scale(2); opacity:0; } }
   @keyframes corepulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.06); } }
   @keyframes barGrow{ 0%,100%{ transform:scaleY(.72); opacity:.75; } 50%{ transform:scaleY(1); opacity:1; } }
+  @keyframes day1Window{ 0%,48%{ opacity:1; } 56%,100%{ opacity:0; } }
+  @keyframes day2Window{ 0%,50%{ opacity:0; } 58%,100%{ opacity:1; } }
 
   /* polished training-guide navigation */
   nav.rail{ background:rgba(252,250,246,.82); backdrop-filter:blur(18px) saturate(1.18); -webkit-backdrop-filter:blur(18px) saturate(1.18); border-bottom:1px solid rgba(33,28,24,.08); }
@@ -1041,13 +1039,6 @@
         <path id="fl5" class="fl f5"   d="M106,274 C160,264 200,226 242,206"/>
         <path id="flh" class="fl fh"   d="M294,180 C326,148 330,136 342,136"/>
         <path id="flai" class="fl fh t" d="M294,180 C326,210 330,232 342,232"/>
-
-        <rect class="flow-chip d1" x="126" y="92" width="92" height="20" rx="10"/>
-        <text class="flow-copy d1" x="172" y="105">Day 1: join tables</text>
-        <rect class="flow-chip d1" x="312" y="118" width="66" height="18" rx="9"/>
-        <text class="flow-copy d1" x="345" y="130">manual build</text>
-        <rect class="flow-chip d2" x="303" y="218" width="76" height="18" rx="9"/>
-        <text class="flow-copy d2" x="341" y="230">same dataset</text>
         <!-- source table chips -->
         <g>
           <rect class="chip" x="20" y="43"  width="86" height="30" rx="9"/><rect class="red"  x="28" y="50"  width="6" height="16" rx="3"/><text class="tlabel" x="42" y="61.5">Policies</text>
@@ -1071,7 +1062,7 @@
         <rect class="bar teal b2" x="385" y="135" width="9" height="21" rx="2"/>
         <rect class="bar gold b3" x="403" y="128" width="9" height="28" rx="2"/>
         <path class="hub-ico" d="M421,136 h14 M421,145 h14 M421,154 h10"/>
-        <text class="out-sub" x="400" y="166">metrics + canvases</text>
+        <text class="out-sub" x="400" y="166">joined data + canvases</text>
 
         <rect class="out-card ai" x="342" y="202" width="116" height="66" rx="13"/>
         <circle class="ai-dot" cx="375" cy="233" r="17"/>
@@ -1079,13 +1070,13 @@
         <rect class="ask-chip" x="401" y="216" width="38" height="18" rx="9"/>
         <text class="ask-label" x="420" y="228">Ask</text>
         <text class="out-title" x="400" y="251">Day 2 AI layer</text>
-        <text class="out-sub" x="400" y="263">assistants + agents</text>
+        <text class="out-sub" x="400" y="263">same dataset + AI</text>
         <!-- flowing data particles -->
-        <circle class="pdot red"  r="3.4"><animateMotion dur="2.8s" begin="0s"   repeatCount="indefinite"><mpath href="#fl3"/></animateMotion></circle>
-        <circle class="pdot teal" r="3"  ><animateMotion dur="3.1s" begin="0.9s" repeatCount="indefinite"><mpath href="#fl1"/></animateMotion></circle>
-        <circle class="pdot gold" r="3"  ><animateMotion dur="3.0s" begin="0.5s" repeatCount="indefinite"><mpath href="#fl5"/></animateMotion></circle>
-        <circle class="pdot red"  r="3.8"><animateMotion dur="2.4s" begin="0.3s" repeatCount="indefinite"><mpath href="#flh"/></animateMotion></circle>
-        <circle class="pdot teal" r="3.2"><animateMotion dur="2.6s" begin="0.7s" repeatCount="indefinite"><mpath href="#flai"/></animateMotion></circle>
+        <circle class="pdot red day1-dot"  r="3.4"><animateMotion dur="2.8s" begin="0s"   repeatCount="indefinite"><mpath href="#fl3"/></animateMotion></circle>
+        <circle class="pdot teal day1-dot" r="3"  ><animateMotion dur="3.1s" begin="0.9s" repeatCount="indefinite"><mpath href="#fl1"/></animateMotion></circle>
+        <circle class="pdot gold day1-dot" r="3"  ><animateMotion dur="3.0s" begin="0.5s" repeatCount="indefinite"><mpath href="#fl5"/></animateMotion></circle>
+        <circle class="pdot red day1-dot"  r="3.8"><animateMotion dur="2.4s" begin="0.3s" repeatCount="indefinite"><mpath href="#flh"/></animateMotion></circle>
+        <circle class="pdot teal day2-dot" r="3.2"><animateMotion dur="2.6s" begin="0.7s" repeatCount="indefinite"><mpath href="#flai"/></animateMotion></circle>
       </svg>
     </div>
   </div>
