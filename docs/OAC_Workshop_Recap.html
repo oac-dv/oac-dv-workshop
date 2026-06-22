@@ -621,8 +621,8 @@
      radial-gradient(720px 480px at 2% 28%,rgba(15,110,120,.09),transparent 55%); }
   .hero-grid{ display:grid; grid-template-columns:1.12fr .88fr; gap:44px; align-items:center; }
   .hero-copy h1{ max-width:16ch; font-size:clamp(36px,5vw,64px); }
-  .hero-recap{display:inline-flex;align-items:center;gap:10px;margin:0 0 18px;padding:12px 18px;border:1px solid rgba(199,70,52,.22);border-left:5px solid var(--rw-gold);border-radius:999px;background:var(--rw-ink);color:#fff;font-size:clamp(14px,1.6vw,18px);font-weight:800;letter-spacing:.06em;text-transform:uppercase;box-shadow:0 14px 32px -22px rgba(33,28,24,.62)}
-  .hero-recap::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--rw-gold);box-shadow:0 0 0 5px rgba(198,138,48,.24)}
+  .hero-recap{display:inline-flex;align-items:center;gap:9px;margin:0 0 18px;padding:9px 14px;border:1px solid rgba(15,110,120,.18);border-left:3px solid var(--rw-teal);border-radius:999px;background:rgba(15,110,120,.07);color:var(--rw-teal);font-size:clamp(13px,1.35vw,15px);font-weight:700;letter-spacing:.01em;box-shadow:none}
+  .hero-recap::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--rw-teal);box-shadow:0 0 0 4px rgba(15,110,120,.12)}
   .hero-art{ position:relative; }
   .hero-art svg{ width:100%; max-width:500px; height:auto; display:block; margin-left:auto; overflow:visible; animation:floaty 7s var(--ease) infinite; }
   /* source table chips */
@@ -637,21 +637,25 @@
   .hero-art .hub{ fill:var(--rw-red-soft); stroke:var(--rw-red); stroke-width:2; stroke-linejoin:round; transform-box:fill-box; transform-origin:center; animation:corepulse 4s ease-in-out infinite; }
   .hero-art .hub-ico{ fill:none; stroke:var(--rw-red); stroke-width:1.5; stroke-linecap:round; }
   .hero-art .lbl{ font-family:var(--body); font-size:10px; font-weight:700; fill:var(--rw-ink-soft); text-anchor:middle; }
-  /* AI decision core */
-  .hero-art .ring{ fill:none; stroke:var(--rw-red); stroke-width:1.5; transform-box:fill-box; transform-origin:center; animation:ring 3.6s ease-out infinite; }
-  .hero-art .ring.r2{ animation-delay:1.8s; }
-  .hero-art .core{ fill:var(--rw-red); filter:drop-shadow(0 10px 18px rgba(199,70,52,.45)); transform-box:fill-box; transform-origin:center; animation:corepulse 3.6s ease-in-out infinite; }
-  .hero-art .core-label{ fill:#fff; font-family:var(--display); font-size:15px; font-weight:700; text-anchor:middle; }
-  /* natural-language ask bubble */
-  .hero-art .bubble{ fill:#fff; stroke:var(--rw-line); stroke-width:1.4; }
-  .hero-art .bubble-label{ font-family:var(--body); font-size:10px; font-weight:700; fill:var(--rw-teal); text-anchor:middle; }
-  .hero-art .dash{ stroke:var(--rw-line); stroke-width:1.4; stroke-dasharray:2 3; }
-  /* flowing data particles */
+  /* two-day outcomes */
+  .hero-art .out-card{ fill:#fff; stroke:var(--rw-line); stroke-width:1.4; filter:drop-shadow(0 10px 18px rgba(33,28,24,.10)); }
+  .hero-art .out-card.manual{ stroke:rgba(15,110,120,.45); }
+  .hero-art .out-card.ai{ stroke:rgba(154,51,40,.42); }
+  .hero-art .out-title{ font-family:var(--body); font-size:9px; font-weight:800; text-anchor:middle; fill:var(--rw-ink); }
+  .hero-art .out-sub{ font-family:var(--body); font-size:8px; font-weight:650; text-anchor:middle; fill:var(--rw-ink-soft); }
+  .hero-art .bar{ transform-box:fill-box; transform-origin:bottom; animation:barGrow 3.4s ease-in-out infinite; }
+  .hero-art .bar.b2{ animation-delay:.25s; }
+  .hero-art .bar.b3{ animation-delay:.5s; }
+  .hero-art .ai-dot{ fill:var(--rw-red); filter:drop-shadow(0 7px 12px rgba(199,70,52,.28)); transform-box:fill-box; transform-origin:center; animation:corepulse 3.6s ease-in-out infinite; }
+  .hero-art .ai-label{ fill:#fff; font-family:var(--display); font-size:11px; font-weight:700; text-anchor:middle; }
+  .hero-art .ask-chip{ fill:var(--rw-red-soft); stroke:rgba(154,51,40,.25); stroke-width:1.1; }
+  .hero-art .ask-label{ font-family:var(--body); font-size:8.5px; font-weight:800; fill:var(--rw-red-deep); text-anchor:middle; }  /* flowing data particles */
   .hero-art .pdot{ filter:drop-shadow(0 1px 2px rgba(0,0,0,.2)); }
   @keyframes draw{ to{ stroke-dashoffset:0; } }
   @keyframes floaty{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-9px); } }
   @keyframes ring{ 0%{ transform:scale(.5); opacity:.5; } 100%{ transform:scale(2); opacity:0; } }
   @keyframes corepulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.06); } }
+  @keyframes barGrow{ 0%,100%{ transform:scaleY(.72); opacity:.75; } 50%{ transform:scaleY(1); opacity:1; } }
   @media(prefers-reduced-motion:reduce){ .hero-art .pdot{ display:none; } }
   @media(max-width:860px){
     .hero-grid{ grid-template-columns:1fr; gap:10px; }
@@ -991,7 +995,7 @@
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <div class="eyebrow reveal">Two-Day Workshop Recap · Oracle Analytics Cloud</div>
-      <p class="hero-recap reveal d1">Let us recap what we built over two days</p>
+      <p class="hero-recap reveal d1">A quick recap of what we built across two days</p>
       <h1 class="reveal d1">From scattered data to a <em>decision</em> the business can act on.</h1>
       <p class="lead reveal d2">Oracle Analytics Cloud helps businesses solve critical business decisions with confidence by first building a strong analytics foundation — connected datasets, governed metrics, and key visualizations that answer critical business questions — and then applying AI Assistants and AI Agents on top of that foundation. In this workshop, we used a sample auto-insurance retention scenario to show how trusted insights can be democratized beyond analysts and brought closer to the people making decisions.</p>
       <div class="hero-meta reveal d3">
@@ -1004,14 +1008,15 @@
       </div>
     </div>
     <div class="hero-art reveal d3" aria-hidden="true">
-      <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five source tables converging into one trusted dataset, then flowing into an AI decision">
+      <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five source tables converging into one trusted dataset, then flowing into a Day 1 manual canvas and a Day 2 AI layer">
         <!-- converging flow lines -->
         <path id="fl1" class="fl f1"   d="M106,58 C160,72 196,116 240,150"/>
         <path id="fl2" class="fl f2 t" d="M106,110 C160,116 192,140 230,166"/>
         <path id="fl3" class="fl f3"   d="M106,162 C160,164 192,172 226,180"/>
         <path id="fl4" class="fl f4 t" d="M106,218 C160,212 196,204 234,196"/>
         <path id="fl5" class="fl f5"   d="M106,274 C160,264 200,226 242,206"/>
-        <path id="flh" class="fl fh"   d="M294,180 C330,176 352,178 378,180"/>
+        <path id="flh" class="fl fh"   d="M294,180 C326,148 330,136 342,136"/>
+        <path id="flai" class="fl fh t" d="M294,180 C326,210 330,232 342,232"/>
 
         <!-- source table chips -->
         <g>
@@ -1029,24 +1034,28 @@
         <path class="hub-ico" d="M251,176 A9,3.2 0 0 0 269,176"/>
         <text class="lbl" x="260" y="230">Trusted dataset</text>
 
-        <!-- AI decision core -->
-        <circle class="ring r1" cx="404" cy="180" r="24"/>
-        <circle class="ring r2" cx="404" cy="180" r="24"/>
-        <circle class="core" cx="404" cy="180" r="24"/>
-        <text class="core-label" x="404" y="185">AI</text>
-        <text class="lbl" x="404" y="224">Decision</text>
+        <!-- two-day outcomes: manual build first, AI second -->
+        <rect class="out-card manual" x="342" y="104" width="116" height="66" rx="13"/>
+        <text class="out-title" x="400" y="124">Day 1 manual build</text>
+        <rect class="bar red b1" x="367" y="143" width="9" height="13" rx="2"/>
+        <rect class="bar teal b2" x="385" y="135" width="9" height="21" rx="2"/>
+        <rect class="bar gold b3" x="403" y="128" width="9" height="28" rx="2"/>
+        <path class="hub-ico" d="M421,136 h14 M421,145 h14 M421,154 h10"/>
+        <text class="out-sub" x="400" y="166">metrics + canvases</text>
 
-        <!-- natural-language ask bubble -->
-        <rect class="bubble" x="375" y="97" width="58" height="30" rx="10"/>
-        <path class="bubble" d="M397,126 L411,126 L404,135 Z"/>
-        <text class="bubble-label" x="404" y="116">Ask…</text>
-        <line class="dash" x1="404" y1="137" x2="404" y2="156"/>
-
+        <rect class="out-card ai" x="342" y="202" width="116" height="66" rx="13"/>
+        <circle class="ai-dot" cx="375" cy="233" r="17"/>
+        <text class="ai-label" x="375" y="237">AI</text>
+        <rect class="ask-chip" x="401" y="216" width="38" height="18" rx="9"/>
+        <text class="ask-label" x="420" y="228">Ask</text>
+        <text class="out-title" x="400" y="251">Day 2 AI layer</text>
+        <text class="out-sub" x="400" y="263">assistants + agents</text>
         <!-- flowing data particles -->
         <circle class="pdot red"  r="3.4"><animateMotion dur="2.8s" begin="0s"   repeatCount="indefinite"><mpath href="#fl3"/></animateMotion></circle>
         <circle class="pdot teal" r="3"  ><animateMotion dur="3.1s" begin="0.9s" repeatCount="indefinite"><mpath href="#fl1"/></animateMotion></circle>
         <circle class="pdot gold" r="3"  ><animateMotion dur="3.0s" begin="0.5s" repeatCount="indefinite"><mpath href="#fl5"/></animateMotion></circle>
         <circle class="pdot red"  r="3.8"><animateMotion dur="2.4s" begin="0.3s" repeatCount="indefinite"><mpath href="#flh"/></animateMotion></circle>
+        <circle class="pdot teal" r="3.2"><animateMotion dur="2.6s" begin="0.7s" repeatCount="indefinite"><mpath href="#flai"/></animateMotion></circle>
       </svg>
     </div>
   </div>
