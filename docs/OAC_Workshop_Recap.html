@@ -650,6 +650,12 @@
   .hero-art .ai-label{ fill:#fff; font-family:var(--display); font-size:11px; font-weight:700; text-anchor:middle; }
   .hero-art .ask-chip{ fill:var(--rw-red-soft); stroke:rgba(154,51,40,.25); stroke-width:1.1; }
   .hero-art .ask-label{ font-family:var(--body); font-size:8.5px; font-weight:800; fill:var(--rw-red-deep); text-anchor:middle; }
+  .hero-art .flow-chip{ fill:rgba(255,255,255,.86); stroke:var(--rw-line); stroke-width:1.1; }
+  .hero-art .flow-chip.d1{ stroke:rgba(154,51,40,.30); }
+  .hero-art .flow-chip.d2{ stroke:rgba(15,110,120,.34); }
+  .hero-art .flow-copy{ font-family:var(--body); font-size:7.5px; font-weight:800; text-anchor:middle; fill:var(--rw-ink-soft); letter-spacing:.015em; }
+  .hero-art .flow-copy.d1{ fill:var(--rw-red-deep); }
+  .hero-art .flow-copy.d2{ fill:var(--rw-teal); }
   /* flowing data particles */
   .hero-art .pdot{ filter:drop-shadow(0 1px 2px rgba(0,0,0,.2)); }
   @keyframes draw{ to{ stroke-dashoffset:0; } }
@@ -1026,7 +1032,7 @@
       </div>
     </div>
     <div class="hero-art reveal d3" aria-hidden="true">
-      <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five source tables converging into one trusted dataset, with separate branches to the Day 1 manual build and the Day 2 AI layer">
+      <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Day 1 connects source tables into a trusted dataset and builds manual canvases; Day 2 uses the same trusted dataset as the base for the AI layer">
         <!-- converging flow lines -->
         <path id="fl1" class="fl f1"   d="M106,58 C160,72 196,116 240,150"/>
         <path id="fl2" class="fl f2 t" d="M106,110 C160,116 192,140 230,166"/>
@@ -1036,6 +1042,12 @@
         <path id="flh" class="fl fh"   d="M294,180 C326,148 330,136 342,136"/>
         <path id="flai" class="fl fh t" d="M294,180 C326,210 330,232 342,232"/>
 
+        <rect class="flow-chip d1" x="126" y="92" width="92" height="20" rx="10"/>
+        <text class="flow-copy d1" x="172" y="105">Day 1: join tables</text>
+        <rect class="flow-chip d1" x="312" y="118" width="66" height="18" rx="9"/>
+        <text class="flow-copy d1" x="345" y="130">manual build</text>
+        <rect class="flow-chip d2" x="303" y="218" width="76" height="18" rx="9"/>
+        <text class="flow-copy d2" x="341" y="230">same dataset</text>
         <!-- source table chips -->
         <g>
           <rect class="chip" x="20" y="43"  width="86" height="30" rx="9"/><rect class="red"  x="28" y="50"  width="6" height="16" rx="3"/><text class="tlabel" x="42" y="61.5">Policies</text>
